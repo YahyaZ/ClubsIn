@@ -8,7 +8,7 @@ const router = express.Router();
 const API_PORT = process.env.API_PORT || 3001;
 
 //temporary way to connect our db
-mongoose.connect('mongodb://MDarwiche:Kelam123!@ds111562.mlab.com:11562/clubbin');
+mongoose.connect('mongodb://<username>:<password>@ds111562.mlab.com:11562/clubbin');
 
 //start off with testing basics
 let userSchema = new mongoose.Schema({
