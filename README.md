@@ -1,5 +1,7 @@
 # ClubsIn
 
+`npm install -g yarn`
+
 To run project:
 
 `yarn start:server` Start backend server.
