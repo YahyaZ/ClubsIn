@@ -15,5 +15,18 @@
   "bugs": {
     "url": "https://github.com/YahyaZ/ClubsIn/issues"
   },
-  "homepage": "https://github.com/YahyaZ/ClubsIn#readme"
+  "homepage": "https://github.com/YahyaZ/ClubsIn#readme",
+  "dependencies": {
+    "prop-types": "^15.6.2",
+    "react-markdown": "^3.4.1",
+    "whatwg-fetch": "^2.0.4"
+  },
+  "devDependencies": {
+    "babel-eslint": "^8.2.6",
+    "eslint": "^4.19.1",
+    "eslint-config-airbnb": "^17.0.0",
+    "eslint-plugin-import": "^2.12.0",
+    "eslint-plugin-jsx-a11y": "^6.0.3",
+    "eslint-plugin-react": "^7.9.1"
+  }
 }
