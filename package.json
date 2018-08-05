@@ -1,0 +1,19 @@
+{
+  "name": "clubsin",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/YahyaZ/ClubsIn.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/YahyaZ/ClubsIn/issues"
+  },
+  "homepage": "https://github.com/YahyaZ/ClubsIn#readme"
+}
