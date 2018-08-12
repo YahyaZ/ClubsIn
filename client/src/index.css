@@ -1,5 +1,19 @@
+@import url('https://fonts.googleapis.com/css?family=Roboto');
+
+:root{
+  /* Declaring Variables */
+  --logo-blue: rgba(0, 103, 191, 1);
+  --light-grey: rgba(198, 197, 185, 1);
+  --light-blue: rgba(98, 146, 158, 1);
+  --green: rgba(50, 147, 111, 1);
+  --red: rgba(255, 22, 84, 1);
+}
+
 body {
   margin: 0;
   padding: 0;
-  font-family: sans-serif;
+  font-family: 'Roboto', sans-serif;
+  background-color: var(--light-grey);
+  color: black;
+  font-size: 24px;
 }
