@@ -1,13 +1,13 @@
 import React, { Component } from "react";
 
-class Authentication extends Component {
+class Landing extends Component {
     render() {
         return(
             <div>
-                This is the Authentication Container.    
+                This is the Landing Component.    
             </div>
         )
     }
 }
 
-export default Authentication;
+export default Landing;
