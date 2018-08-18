@@ -8,12 +8,14 @@ const router = express.Router();
 const API_PORT = process.env.API_PORT || 3001;
 
 //temporary way to connect our db
-mongoose.connect('mongodb://<username>:<password>@ds111562.mlab.com:11562/clubbin');
+mongoose.connect('mongodb://admin:Password123!@ds111562.mlab.com:11562/clubbin');
 
 //start off with testing basics
 let userSchema = new mongoose.Schema({
-    name: String,
-    email: String
+    firstName: String,
+    lastName: String,
+    email: String,
+    password: String
 });
 let users = mongoose.model('Users', userSchema, 'users');
 
@@ -25,6 +27,36 @@ let getUsers = function(callback){
     })
 }
 
+let registerUser = function(callback, first, last, email, password){
+    var newUser = new users({firstName: first, lastName: last, email: email, password: password});
+    newUser.save(function (err){
+        if(err) callback(err);
+        callback(`New user: ${first} ${last} created!`);
+    })
+}
+
+let findUser = function(callback, email, password){
+    users.findOne({email: email, password: password}, function(err,doc){
+        if(err) callback(err);
+        callback(doc);
+    });
+};
+
+router.post('/login', (req, res) =>{
+    findUser(function(result){
+        try {
+            res.send(`${result.firstName} ${result.lastName}`);
+        }catch(err){
+            res.send(`Authentication failed: incorrect details`);
+        }
+    }, "Yahyaiscool@cool.com", "touchmeDaddy");
+});
+
+router.post('/signup', (req, res) =>{
+    registerUser(function(result){
+        res.send(result);
+    }, "Yahya", "isCool", "Yahyaiscool@cool.com", "touchmeDaddy");
+});
 
 router.get('/', (req, res) => {
     getUsers(function(result){
