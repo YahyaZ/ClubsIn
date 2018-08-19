@@ -7,6 +7,7 @@ import SignUpFormNewClub from "./SignUpFormNewClub";
 
 
 
+
 class SignUp extends Component {
     constructor(props){
         super(props);
@@ -63,6 +64,10 @@ class SignUp extends Component {
                             footerLinkText="Find it here"
                             footerLinkClick={() => this.goToPage('existingClub')}
                             />
+                )
+            default:
+                return(
+                    <p>404 - Page Not Found</p>
                 )
 
         }

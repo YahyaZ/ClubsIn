@@ -1,11 +1,7 @@
 import React, { Component } from "react";
-import { FaEnvelope, FaLock, FaUser, FaUniversity} from "react-icons/fa";
+import { FaUniversity} from "react-icons/fa";
 
-class SignUpFormNewClub extends Component{
-    constructor(props){
-        super(props);
-    }
-    
+class SignUpFormNewClub extends Component{    
     render(){
         return (
             <form className="form-body">

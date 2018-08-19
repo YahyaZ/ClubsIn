@@ -2,10 +2,7 @@ import React, { Component } from "react";
 import { FaEnvelope, FaLock, FaUser } from "react-icons/fa";
 
 class SignUpFormStart extends Component{
-    constructor(props){
-        super(props);
-    }
-    
+   
     render(){
         return (
             <form className="form-body">
