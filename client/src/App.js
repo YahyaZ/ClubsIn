@@ -1,8 +1,10 @@
 import React from 'react';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
 import Landing from './components/Landing';
-import Login from './components/Login';
-import SignUp from './components/SignUp';
+import Authentication from './containers/authentication'
+
+const Login = () => <Authentication type='login' />
+const SignUp = () => <Authentication type='Sign Up' />
 
 const App = () => {
     return (
@@ -10,7 +12,7 @@ const App = () => {
             <div>
                 <Route exact path="/" component={Landing}/>
                 <Route path="/login" component={Login}/>
-                <Route path="/signup" component={SignUp}/>
+                <Route path="/signup"  component={SignUp}/>
             </div>
         </Router>
     )
