@@ -18,6 +18,10 @@ class SignUp extends Component {
         this.renderSwitch = this.renderSwitch.bind(this);
     }
 
+    componentDidMount(){
+        document.title = "Sign Up - club'in"
+    }
+
     goToPage(pageName) {
         this.setState({
             page: pageName,

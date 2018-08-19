@@ -11,6 +11,10 @@ class LoginForm extends Component{
         this.showHidePassword = this.showHidePassword.bind(this);
     }
 
+    componentDidMount(){
+        document.title = "Login - club'in"
+    }
+
 
     showHidePassword (e) {
         e.preventDefault();
