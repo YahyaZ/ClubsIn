@@ -55,7 +55,8 @@ class Login extends Component {
             <Form   formBody={<LoginForm />} 
                     tagline="Log in to manage your club" 
                     footerText="Don't have an account yet?"
-                    footerLinkText="Sign up here" />
+                    footerLinkText="Sign up here"
+                    footerLink="/signup" />
         )
     }
 }

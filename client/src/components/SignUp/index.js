@@ -31,7 +31,8 @@ class SignUp extends Component {
                     <Form   formBody={<SignUpFormStart buttonClick={() => this.goToPage('chooseClubType')} />} 
                             tagline="Start Managing your club today!" 
                             footerText="Already have an account"
-                            footerLinkText="Log in here" />
+                            footerLinkText="Log in here"
+                            footerLink="/login" />
                 );
             case 'chooseClubType':
                 return (
@@ -47,6 +48,7 @@ class SignUp extends Component {
                             tagline="Find your Club!"
                             footerText="Haven't registered your club yet?"
                             footerLinkText="Create one here"
+                            footerLinkClick={() => this.goToPage('newClub')}
                             />
                 );
             case 'newClub':
@@ -55,6 +57,7 @@ class SignUp extends Component {
                             tagline="Register your Club Now!"
                             footerText="Already registered your club yet?"
                             footerLinkText="Find it here"
+                            footerLinkClick={() => this.goToPage('existingClub')}
                             />
                 )
 

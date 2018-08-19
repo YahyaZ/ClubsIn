@@ -10,7 +10,12 @@ const Header = (props) => (
     );
 
 const Footer = (props) => (
-        <div className="form-footer">{props.text} <a href={props.link} className="link">{props.linkText}</a></div>
+        <div className="form-footer">{props.text} <a    href={props.link} 
+                                                        className="link"
+                                                        onClick={props.linkClick}>
+                                                            {props.linkText}
+                                                            </a>
+        </div>
      )
 
 
@@ -20,7 +25,10 @@ class Form extends Component {
             <div>
                 <Header tagline={this.props.tagline}/>
                 {this.props.formBody}
-                <Footer text={this.props.footerText} linkText ={this.props.footerLinkText}/> 
+                <Footer text={this.props.footerText} 
+                        linkText ={this.props.footerLinkText} 
+                        link={this.props.footerLink}
+                        linkClick={this.props.footerLinkClick}/> 
             </div>
         )
     }
