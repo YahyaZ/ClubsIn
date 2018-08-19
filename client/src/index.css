@@ -4,16 +4,131 @@
   /* Declaring Variables */
   --logo-blue: rgba(0, 103, 191, 1);
   --light-grey: rgba(198, 197, 185, 1);
-  --light-blue: rgba(98, 146, 158, 1);
+  --light-blue: rgb(153, 209, 223);
   --green: rgba(50, 147, 111, 1);
   --red: rgba(255, 22, 84, 1);
+  --white: rgb(255, 255, 255);
+  --font: 'Roboto'
 }
 
 body {
-  margin: 0;
-  padding: 0;
-  font-family: 'Roboto', sans-serif;
-  background-color: var(--light-grey);
+  font-family: var(--font), sans-serif;
+  background-color: var(--light-blue);
   color: black;
   font-size: 24px;
 }
+
+.form-container {
+  position:absolute;
+  top:50%;
+  left:50%;
+  max-width: 500px;
+  margin: auto;
+  -ms-transform: translateX(-50%) translateY(-50%);
+  -webkit-transform: translate(-50%,-50%);
+  transform: translate(-50%,-50%);
+  background-color: var(--white);
+  text-align: center;
+  padding: 20px 0px 20px 0px;
+}
+
+.logo {
+  max-width: 30%;
+  height: auto;
+ 
+}
+
+.form-header {
+  margin: 20px;
+}
+
+.tagline{
+  font-size: 18px;
+}
+
+.input-container {
+  display: -ms-flexbox; /* IE10 */
+  display: flex;
+  margin-bottom: 15px;
+  border: 1px solid var(--light-grey);
+}
+
+.form-body{
+  margin-left: auto;
+  margin-right: auto;
+  width: 80%;
+}
+
+.icon {
+  padding: 10px 0px 10px 10px;
+  background: var(--white);
+  color: var(--logo-blue);
+  min-width: 50px;
+  text-align: center;
+  border: 0px;
+}
+
+.show-password {
+  min-width: 1em;
+  padding-right: 5px;
+  cursor: pointer;
+}
+
+.input-container:focus-within {
+  border: 2px solid var(--logo-blue);
+}
+
+.input-field {
+  width: 100%;
+  padding: 10px;
+  border: 0px;
+  outline-style:none;
+  box-shadow:none;
+  border-color:transparent;
+}
+
+.form-body-footer{
+  display: -ms-flexbox; /* IE10 */
+  display: flex;
+  font-size: 14px;
+  position:relative;
+  margin-bottom: 40px;
+}
+
+.form-checkbox{
+  display: -ms-flexbox; /* IE10 */
+  display: flex;
+  font-size: 14px;
+  position: absolute;
+  left: 0%;
+  align-items: center;
+}
+
+.form-bottom-left{
+  position: absolute;
+  right: 0%;
+}
+
+.form-button{
+  background: var(--logo-blue);
+  box-shadow: 0px 5px 3px rgba(0, 0, 0, 0.25);
+  color: var(--white);
+  width: 80%;
+  padding: 10px;
+  margin-bottom: 10px;
+}
+
+.form-footer{
+  font-size: 12px;
+}
+
+.link{
+  color: var(--logo-blue);
+  font-weight: bold;
+}
+
+
+
+
+
+
