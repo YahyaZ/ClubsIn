@@ -25,11 +25,11 @@ class LoginForm extends Component{
             <form className="form-body">
                 <div className="input-container">
                     <FaEnvelope className="icon"/>
-                    <input className="input-field" type="text" placeholder="email" name="email" />
+                    <input className="input-field" type="email" placeholder="Email Address" name="email" />
                 </div>
                 <div className="input-container">
                     <FaLock className="icon"/>
-                    <input className="input-field" type={this.state.type} placeholder="password" name="password" />
+                    <input className="input-field" type={this.state.type} placeholder="Password" name="password" />
                     <div className="icon show-password" onMouseDown={this.showHidePassword} onMouseUp={this.showHidePassword}>
                         {this.state.type === 'input' ? <FaEye /> : <FaEyeSlash />}
                     </div>
@@ -54,8 +54,8 @@ class Login extends Component {
         return(
             <Form   formBody={<LoginForm />} 
                     tagline="Log in to manage your club" 
-                    footerText="Already have an account"
-                    footerLinkText="Sign in here" />
+                    footerText="Don't have an account yet?"
+                    footerLinkText="Sign up here" />
         )
     }
 }
