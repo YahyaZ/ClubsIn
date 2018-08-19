@@ -4,9 +4,11 @@ import mongoose, { Model, Schema } from 'mongoose';
 //temporary way to connect our db
 mongoose.connect('mongodb://admin:Password123!@ds111562.mlab.com:11562/clubbin');
 
+//exports file functions to be used in other files e.g. server.js
 module.exports.registerUser = registerUser;
 module.exports.getUsers = getUsers;
 module.exports.findUser = findUser;
+
 /**
  * Create a schema for users when connecting to our mongo database
  */

@@ -7,10 +7,10 @@ const app = express();
 const router = express.Router();
 const API_PORT = process.env.API_PORT || 3001;
 
+//Allows the application to parse the body of requests to access data
 app.use(bodyParser.urlencoded({
     extended: true
 }));
-
 app.use(bodyParser.json());
 
 /**
@@ -41,6 +41,11 @@ router.post('/signup', (req, res) =>{
     }, req.body.name, req.body.lastName, req.body.email, req.body.password);
 });
 
+/**
+ * Homepage GET function
+ * Returns array of all users for now
+ * TODO: Modify functionality to suit homepage
+ */
 router.get('/', (req, res) => {
     database.getUsers(function(result){
         //get callback then display
@@ -48,6 +53,6 @@ router.get('/', (req, res) => {
     })
 });
 
+//localhost3001:api
 app.use('/api', router);
-
 app.listen(API_PORT, () => console.log(`Listening on port ${API_PORT}`)); 
