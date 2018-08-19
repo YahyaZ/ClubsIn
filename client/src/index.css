@@ -69,6 +69,7 @@ body {
 .show-password {
   min-width: 1em;
   padding-right: 5px;
+  cursor: pointer;
 }
 
 .input-container:focus-within {
@@ -98,6 +99,7 @@ body {
   font-size: 14px;
   position: absolute;
   left: 0%;
+  align-items: center;
 }
 
 .form-bottom-left{
