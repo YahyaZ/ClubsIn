@@ -1,26 +1,45 @@
 import mongoose, { Model, Schema } from 'mongoose';
-
+import collectionSchemas from './collection-schemas';
 
 //temporary way to connect our db
 mongoose.connect('mongodb://admin:Password123!@ds111562.mlab.com:11562/clubbin');
 
-//exports file functions to be used in other files e.g. server.js
 module.exports.registerUser = registerUser;
 module.exports.getUsers = getUsers;
 module.exports.findUser = findUser;
+module.exports.getClubs = getClubs;
+module.exports.createClub = createClub;
+module.exports.findClub = findClub;
 
-/**
- * Create a schema for users when connecting to our mongo database
- */
-let userSchema = new mongoose.Schema({
-    firstName: String,
-    lastName: String,
-    email: String,
-    password: String
-});
+//DB Schema types and models
+let userSchema = collectionSchemas.getUserSchema();
+let users = mongoose.model('Users', userSchema , 'users');
 
-//User collection which handles any retrievals or changes in our user section
-let users = mongoose.model('Users', userSchema, 'users');
+let clubSchema = collectionSchemas.getClubSchema();
+let clubs = mongoose.model('Clubs', clubSchema, 'clubs');
+
+
+function getClubs(callback){
+    clubs.find(function(err, clubss){
+        if(err) return console.error(err);
+        callback(clubss);
+    })
+}
+
+function createClub(callback, name, type, university){
+    var club = new clubs({name: name, type: type, university: university});
+    club.save(function(err){
+        if(err) console.error(err);
+        callback(`Club '${name}' created at ${university}`);
+    })
+}
+
+function findClub(callback, name, university){
+    clubs.findOne({name: name, university: university}, function(err, doc){
+        if(err) callback(err);
+        callback(doc);
+    });
+}
 
 /**
  * Returns all users within the collection and returns it in a callback (async)
