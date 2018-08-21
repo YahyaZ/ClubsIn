@@ -2,8 +2,15 @@
     background-color: #fff;
     width: 250px;
     max-height: 210px;
-    box-shadow: 0 5px 12px 0 #3e3e3e;
-    margin: 20px
+    box-shadow: 0 5px 12px 0 #c4c4c4;
+    margin: 20px;
+    cursor: pointer;
+    border: 1px solid #c4c4c4;
+}
+
+.event-container:hover {
+    box-shadow: none;
+    border: 1px solid #c4c4c4;
 }
 
 .event-date {
