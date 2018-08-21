@@ -63,25 +63,35 @@ class Club extends Component {
         })
     }
 
+    renderEvents(eventType, events) {
+        return (
+            <div className="events-container">
+                <h2>{eventType}</h2>
+                <div className="events-list">
+                    {events.map((e, i) =>
+                        <Event date={e.date} name={e.name} members={e.members} key={i}/>
+                    )}
+                </div>
+            </div>
+        )
+    }
+
+    renderNoEvents() {
+        return (
+            <div className="events-container no-events">
+                <h1>Sorry no events! :(</h1>
+            </div>
+        )
+    }
+
     render() {
+        var myEvents = this.getMyEvents();
+        var allEvents = this.getEvents(); // []; //for no events
+
         return (
             <div>
-                <div className="events-container">
-                    <h2>My Events</h2>
-                    <div className="events-list">
-                        {this.getMyEvents().map((e, i) => 
-                            <Event date={e.date} name={e.name} members={e.members} key={i}/>
-                        )}
-                    </div>
-                </div>
-                <div className="events-container">
-                    <h2>All Events</h2>
-                    <div className="events-list">
-                        {this.getEvents().map((e, i) => 
-                            <Event date={e.date} name={e.name} members={e.members} key={i}/>
-                        )}
-                    </div>
-                </div>
+                {myEvents.length > 0 ? this.renderEvents("My Events", myEvents) : this.renderNoEvents()}
+                {allEvents.length > 0 ? this.renderEvents("All Events", allEvents) : this.renderNoEvents()}
             </div>
         );
     }

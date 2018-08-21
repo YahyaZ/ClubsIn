@@ -12,3 +12,10 @@
     display: flex;
     flex-wrap: wrap;
 }
+
+.no-events {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #c4c4c4;
+}
