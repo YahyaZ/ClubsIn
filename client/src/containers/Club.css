@@ -1,0 +1,14 @@
+.events-container {
+    background-color: #fff;
+    padding: 30px;
+    margin-bottom: 50px;
+}
+
+.events-container h2 {
+    margin: 0 0 10px 0;
+}
+
+.events-list {
+    display: flex;
+    flex-wrap: wrap;
+}
