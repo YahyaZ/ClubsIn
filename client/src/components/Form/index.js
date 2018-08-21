@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { Link } from 'react-router-dom';
 import Logo from '../LOGO/logo.png'
 
 
@@ -10,11 +11,10 @@ const Header = (props) => (
     );
 
 const Footer = (props) => (
-        <div className="form-footer">{props.text} <a    href={props.link} 
-                                                        className="link"
-                                                        onClick={props.linkClick}>
-                                                            {props.linkText}
-                                                            </a>
+        <div className="form-footer">{props.text} <span className="link">{!props.linkClick ?    <Link to={`${props.link}`}> {props.linkText} </Link> :
+                                                                                                <span onClick={props.linkClick}>{props.linkText}</span>}
+                                                  </span>
+                        
         </div>
      )
 
