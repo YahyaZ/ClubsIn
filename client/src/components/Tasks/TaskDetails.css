@@ -1,0 +1,26 @@
+.task-details-container {
+    padding: 20px;
+}
+
+.task-details-info-container {
+    display: flex;
+    align-items: center;
+    margin-bottom: 30px;
+}
+
+.task-details-info {
+    flex-grow: 2;
+}
+
+.task-details-member {
+    display: flex;
+    align-items: center;
+}
+
+.task-details-buttons {
+    margin-top: 30px;
+}
+
+.task-details-buttons button {
+    margin-right: 20px;
+}

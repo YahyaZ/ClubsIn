@@ -14,6 +14,7 @@ class Club extends Component {
             {
                 date: "24 Aug",
                 name: "Clubs Day",
+                link: "/event",
                 members: [
                     {
                         color: "#5A86DC",
@@ -32,6 +33,7 @@ class Club extends Component {
             {
                 date: "07 Sep",
                 name: "Spider-Man Release date",
+                link: "/event",
                 members: [
                     {
                         color: "#FF7816",
@@ -42,6 +44,7 @@ class Club extends Component {
             {
                 date: "08 Sep",
                 name: "Play Spider-man",
+                link: "/event",
                 members: [
                     {
                         color: "#28DAA5",
@@ -69,7 +72,7 @@ class Club extends Component {
                 <h2>{eventType}</h2>
                 <div className="events-list">
                     {events.map((e, i) =>
-                        <Event date={e.date} name={e.name} members={e.members} key={i}/>
+                        <Event date={e.date} name={e.name} link={e.link} members={e.members} key={i}/>
                     )}
                 </div>
             </div>

@@ -1,0 +1,19 @@
+.task-container {
+    display: flex;
+    padding: 10px;
+    align-items: center;
+    min-width: 450px;
+    height: 75px;
+}
+
+.task-container h3 {
+    font-weight: 500;
+}
+
+.task-container p {
+    font-size: 16px;
+}
+
+.task-info {
+    flex-grow: 2;
+}
