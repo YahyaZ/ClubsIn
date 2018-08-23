@@ -35,7 +35,6 @@ body {
 .logo {
   max-width: 30%;
   height: auto;
- 
 }
 
 .form-header {
@@ -91,22 +90,16 @@ body {
   display: -ms-flexbox; /* IE10 */
   display: flex;
   font-size: 14px;
-  position:relative;
-  margin-bottom: 40px;
+  align-items: center;
+  justify-content: space-between;
 }
 
 .form-checkbox{
   display: -ms-flexbox; /* IE10 */
   display: flex;
   font-size: 14px;
-  position: absolute;
   left: 0%;
   align-items: center;
-}
-
-.form-bottom-left{
-  position: absolute;
-  right: 0%;
 }
 
 .form-button{
@@ -124,7 +117,6 @@ body {
 
 .link{
   color: var(--logo-blue);
-  font-weight: bold;
   text-decoration: underline;
   cursor: pointer;
 }

@@ -1,6 +1,8 @@
 import React, { Component } from "react";
 import { FaEnvelope, FaLock, FaEye, FaEyeSlash } from "react-icons/fa";
 import Form from "../Form";
+import { FormGroup, FormControl, InputGroup, Checkbox } from "react-bootstrap";
+import { Link } from 'react-router-dom';
 
 class LoginForm extends Component{
     constructor(props){
@@ -27,25 +29,32 @@ class LoginForm extends Component{
     render(){
         return (
             <form className="form-body">
-                <div className="input-container">
-                    <FaEnvelope className="icon"/>
-                    <input className="input-field" type="email" placeholder="Email Address" name="email" />
-                </div>
-                <div className="input-container">
-                    <FaLock className="icon"/>
-                    <input className="input-field" type={this.state.type} placeholder="Password" name="password" />
-                    <div className="icon show-password" onMouseDown={this.showHidePassword} onMouseUp={this.showHidePassword}>
-                        {this.state.type === 'input' ? <FaEye /> : <FaEyeSlash />}
-                    </div>
-                </div>
+                <FormGroup>
+                    <InputGroup>
+                        <InputGroup.Addon>
+                            <FaEnvelope />
+                        </InputGroup.Addon>
+                        <FormControl type="email" placeholder="Email Address" name="email"/>
+                    </InputGroup>
+                </FormGroup>
+                <FormGroup>
+                    <InputGroup>
+                        <InputGroup.Addon>
+                            <FaLock />
+                        </InputGroup.Addon>
+                        <FormControl type={this.state.type} placeholder="Password" name="password" />
+                        <InputGroup.Addon onClick={this.showHidePassword}>
+                            {this.state.type === 'input' ? <FaEye /> : <FaEyeSlash />}
+                        </InputGroup.Addon>
+                    </InputGroup>
+                </FormGroup>
                 <div className="form-body-footer" >
-                    <div className="form-checkbox">
-                        <input type="checkbox" name="RememberMe" />
-                        <label>Remember Me</label>
-                    </div>
-                    <div className="form-bottom-left link">
+                    <Checkbox name="rememberMe">
+                        Remember Me
+                    </Checkbox>
+                    <Link to="/forgotten" className="form-bottom-left link">
                         Forgot Password?
-                    </div>
+                    </Link>
                 </div>
                 <button className="form-button">Log In</button>
             </form>

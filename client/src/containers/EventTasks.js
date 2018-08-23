@@ -38,6 +38,8 @@ class EventTasks extends Component {
 
     render() {
         var allTasks = this.getTasks();
+        // TODO: Dynamically set selected task (right now it's just the second task)
+        // TODO: Dynamically set the menu too lol
         return (
             <div className="event-tasks-container">
                 <div className="event-menu">
