@@ -4,7 +4,7 @@ ClubIn is a web application created using the MERN stack and is used to manage u
 
 
 ## Installation and Running of the Project
-------------------------------------------
+
 
 Installing The project:
 
@@ -19,7 +19,7 @@ Start react client - `yarn start:client`
 Start both simultaneously - `yarn start:dev` 
 
 ## Code Style and Guidelines
-------------------------------------------
+
 * All variables should be in lower camel case e.g. emailAddress
 * There should be spaces around the operators and after commas e.g. ["UTS", "UNSW", ]
 * All files should have comments on the top describing what the file does. Methods which are not self explaining must have comments in it
@@ -39,13 +39,13 @@ Start both simultaneously - `yarn start:dev`
 * Use trailing commas in arrays and objects, e.g. ['One', 'Two', ]
 
 ## Credits
-----------
+
 * Malek Darwiche
 * Yahya Zein
 * Ramanathan Udaiyappan
 
 ## Acknowledgements
--------------------
+
 Made in the Advanced Internet Programming Course at UTS.
 
 Subject Coordinator - Bejamin Johnson
