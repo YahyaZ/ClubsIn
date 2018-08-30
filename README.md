@@ -7,7 +7,7 @@ ClubIn is a web application created using the MERN stack and is used to manage u
 
 
 Installing The project:
-
+`npm install`
 `npm install -g yarn`
 
 To run project:
@@ -40,12 +40,12 @@ Start both simultaneously - `yarn start:dev`
 
 ## Credits
 
-* Malek Darwiche
-* Yahya Zein
-* Ramanathan Udaiyappan
+* Malek Darwiche - 12580357
+* Yahya Zein - 12623118
+* Ramanathan Udaiyappan - 12544134
 
 ## Acknowledgements
 
 Made in the Advanced Internet Programming Course at UTS.
 
-Subject Coordinator - Bejamin Johnson
+Subject Coordinator - Benjamin Johnson

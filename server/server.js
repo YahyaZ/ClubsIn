@@ -57,7 +57,7 @@ router.post('/login', (req, res) =>{
         }catch(err){
             res.send(`Authentication failed: incorrect details`);
         }
-    }, "Yahyaiscool@cool.com", "touchmeDaddy");
+    }, res.body.email, res.body.password);
 });
 
 /**

@@ -13,6 +13,9 @@ let userSchema = new mongoose.Schema({
     password: String
 });
 
+/**
+ * Club schema
+ */
 let clubSchema = new mongoose.Schema({
     name: String,
     type: String,
