@@ -27,11 +27,11 @@ function getClubs(callback){
 }
 
 function createClub(callback, name, type, university){
-    var club = new clubs({name: name, type: type, university: university});
-    club.save(function(err){
+    new clubs({name: name, type: type, university: university})
+    .save(function(err){
         if(err) console.error(err);
         callback(`Club '${name}' created at ${university}`);
-    })
+    });
 }
 
 function findClub(callback, name, university){
@@ -63,11 +63,15 @@ function getUsers(callback){
  * @param {*} password 
  */
 function registerUser(callback, first, last, email, password){
-    var newUser = new users({firstName: first, lastName: last, email: email, password: password});
-    newUser.save(function (err){
+    new users({firstName: first, lastName: last, email: email, password: password})
+    .save(function(err){
         if(err) callback(err);
         callback(`New user: ${first} ${last} created!`);
-    })
+    });
+        
+    // newUser.save(function (err){
+    //     if(err) callback(err);
+    //     callback(`New user: ${first} ${last} created!`);
 }
 
 /**
@@ -77,7 +81,8 @@ function registerUser(callback, first, last, email, password){
  * @param {*} password 
  */
 function findUser(callback, email, password){
-    users.findOne({email: email, password: password}, function(err,doc){
+    users.findOne({email: email, password: password}, 
+        function(err,doc){
         if(err) callback(err);
         callback(doc);
     })
