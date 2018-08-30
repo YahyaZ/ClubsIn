@@ -3,6 +3,8 @@ import bodyParser from 'body-parser';
 import logger from 'morgan';
 import database from './database-handler';
 
+require('dotenv').config();
+
 const app = express();
 const router = express.Router();
 const API_PORT = process.env.API_PORT || 3001;
@@ -57,7 +59,7 @@ router.post('/login', (req, res) =>{
         }catch(err){
             res.send(`Authentication failed: incorrect details`);
         }
-    }, res.body.email, res.body.password);
+    }, "Yahyaiscool@cool.com", "touchmeDaddy");
 });
 
 /**

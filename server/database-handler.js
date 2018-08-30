@@ -1,8 +1,9 @@
 import mongoose, { Model, Schema } from 'mongoose';
 import collectionSchemas from './collection-schemas';
+require('dotenv').config();
 
-//temporary way to connect our db
-mongoose.connect('mongodb://admin:Password123!@ds111562.mlab.com:11562/clubbin');
+
+mongoose.connect(process.env.DB_URL);
 
 module.exports.registerUser = registerUser;
 module.exports.getUsers = getUsers;
