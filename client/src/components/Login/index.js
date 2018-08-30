@@ -43,7 +43,7 @@ class LoginForm extends Component{
                             <FaLock />
                         </InputGroup.Addon>
                         <FormControl type={this.state.type} placeholder="Password" name="password" />
-                        <InputGroup.Addon onClick={this.showHidePassword}>
+                        <InputGroup.Addon onMouseDown={this.showHidePassword} onMouseUp={this.showHidePassword}>
                             {this.state.type === 'input' ? <FaEye /> : <FaEyeSlash />}
                         </InputGroup.Addon>
                     </InputGroup>
