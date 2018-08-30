@@ -2,7 +2,7 @@ import React from 'react';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
 import Landing from './components/Landing';
 import Authentication from './containers/authentication'
-import Club from './containers/Club';
+import Club from './containers/Clubs';
 import EventTasks from './containers/EventTasks';
 
 const Login = () => <Authentication type='login' />

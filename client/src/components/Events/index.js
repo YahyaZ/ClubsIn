@@ -1,5 +1,5 @@
 import React from 'react';
-import Member from '../Members/Member';
+import Member from '../Members';
 import { Link } from 'react-router-dom';
 import './Event.css';
 

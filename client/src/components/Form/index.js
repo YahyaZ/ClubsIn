@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { Link } from 'react-router-dom';
-import Logo from '../LOGO/logo.png'
+import Logo from '../../resources/LOGO/logo.png'
 
 
 const Header = (props) => (   

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import Task from '../components/Tasks/Task';
-import TaskDetails from '../components/Tasks/TaskDetails';
+import Task from '../../components/Tasks';
+import TaskDetails from '../../components/Tasks/TaskDetails';
 import './EventTasks.css';
 
 class EventTasks extends Component {
