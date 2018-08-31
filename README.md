@@ -8,15 +8,14 @@ ClubIn is a web application created using the MERN stack and is used to manage u
 
 Installing The project:
 `npm install`
-`npm install -g yarn`
 
 To run project:
 
-Start backend server - `yarn start:server`
+Start backend server - `npm run start:server`
 
-Start react client - `yarn start:client` 
+Start react client - `npm run start:client` 
 
-Start both simultaneously - `yarn start:dev` 
+Start both simultaneously - `npm start` 
 
 ## Code Style and Guidelines
 
