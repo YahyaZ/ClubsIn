@@ -11,9 +11,12 @@ const Header = (props) => (
     );
 
 const Footer = (props) => (
-        <div className="form-footer">{props.text} <span className="link">{!props.linkClick ?    <Link to={`${props.link}`}> {props.linkText} </Link> :
-                                                                                                <span onClick={props.linkClick}>{props.linkText}</span>}
-                                                  </span>
+        <div className="form-footer">{props.text} 
+            <span className="link">
+                {!props.linkClick  
+                     ? <Link to={`${props.link}`}> {props.linkText} </Link>
+                     : <span onClick={props.linkClick}>{props.linkText}</span>}
+            </span>
                         
         </div>
      )
