@@ -1,7 +1,8 @@
 import mongoose, { Model, Schema } from 'mongoose';
 import collectionSchemas from './collection-schemas';
-require('dotenv').config();
+import dotenv from 'dotenv';
 
+dotenv.config();
 
 mongoose.connect(process.env.DB_URL);
 
