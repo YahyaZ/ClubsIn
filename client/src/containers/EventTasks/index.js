@@ -4,7 +4,46 @@ import TaskDetails from '../../components/Tasks/TaskDetails';
 import './EventTasks.css';
 
 class EventTasks extends Component {
-    getTasks() {
+    constructor() {
+        super();
+        this.state = {
+            selectedMenu: 'myTasks',
+            tasks: [],
+            selectedTask: null
+        }
+    }
+
+    componentDidMount() {
+        const tasks = this.getMyTasks();
+        this.setState({
+            tasks: tasks
+        })
+    }
+
+    getMyTasks() {
+        return [
+            {
+                name: "Get refreshments",
+                date: "28th August",
+                description: "Get refreshments from woolies or something",
+                member: {
+                    name: "Yahya",
+                    color: "#FF7816"
+                }
+            },
+            {
+                name: "Get food",
+                date: "28th August",
+                description: "Secure food supplies from woolies or coles, SOMETHING",
+                member: {
+                    name: "Yahya",
+                    color: "#FF7816"
+                }
+            }
+        ]
+    }
+    
+    getAllTasks() {
         return [
             {
                 name: "Get refreshments",
@@ -36,28 +75,67 @@ class EventTasks extends Component {
         ];
     }
 
+    selectMenu(item) {
+        if (item != this.state.selectedMenu) {
+            this.setState({
+                selectedMenu: item,
+                selectedTask: null
+            });
+    
+            if (item === 'myTasks') {
+                const tasks = this.getMyTasks();
+                this.setState({
+                    tasks: tasks
+                });
+            } else if (item === 'allTasks') {
+                const tasks = this.getAllTasks();
+                this.setState({
+                    tasks: tasks
+                });
+            }
+        }
+    }
+
+    selectTask(task) {
+        if (task != this.state.selectedTask) {
+            this.setState({
+                selectedTask: task
+            });
+        }
+    }
+
+    isSelectedMenu(item) {
+        return this.state.selectedMenu === item ? 'active' : '';
+    }
+
+    isSelectedTask(task) {
+        return this.state.selectedTask === task ? 'active' : '';
+    }
+
     render() {
-        var allTasks = this.getTasks();
-        // TODO: Dynamically set selected task (right now it's just the second task)
-        // TODO: Dynamically set the menu too lol
         return (
             <div className="event-tasks-container">
                 <div className="event-menu">
-                    <div>
+                    <div className={'event-menu-item ' + this.isSelectedMenu('myTasks')} onClick={() => this.selectMenu('myTasks')}>
                         <h2>My Tasks</h2>
                     </div>
-                    <div className="active">
+                    <div className={'event-menu-item ' + this.isSelectedMenu('allTasks')} onClick={() => this.selectMenu('allTasks')}>
                         <h2>All Tasks</h2>
                     </div>
                 </div>
                 <div className="event-task-list">
-                    {allTasks.map((task, i) =>
-                        <Task name={task.name} date={task.date} member={task.member} key={i}/>
-                    )}
+                    {this.state.tasks ? 
+                        this.state.tasks.map((task, i) =>
+                            <Task name={task.name} date={task.date} member={task.member} key={i} 
+                                onClick={() => this.selectTask(task)} active={this.isSelectedTask(task)}/>
+                        )
+                        : ''}
                 </div>
                 <div className="event-task-details">
-                    <TaskDetails name={allTasks[1].name} date={allTasks[1].date} 
-                        description={allTasks[1].description} member={allTasks[1].member}/>
+                    {this.state.selectedTask ? 
+                    <TaskDetails name={this.state.selectedTask.name} date={this.state.selectedTask.date} 
+                        description={this.state.selectedTask.description} member={this.state.selectedTask.member}/>
+                    : ''}
                 </div>
             </div>
         )

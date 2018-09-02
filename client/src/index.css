@@ -121,6 +121,15 @@ body {
   cursor: pointer;
 }
 
+.active {
+  background-color: #0085FF;
+  color: #fff;
+}
+
+main > div {
+  margin-top: 75px;
+}
+
 /* Text styles */
 h1, h2, h3, h4, p {
   margin: 0;

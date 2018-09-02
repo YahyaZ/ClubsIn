@@ -4,7 +4,6 @@ import { Link } from 'react-router-dom';
 import './Event.css';
 
 const Event = ({date, name, link, members}) => {
-    console.log(link);
     return (
         <Link to={{pathname: link}}>
             <div className="event-container">

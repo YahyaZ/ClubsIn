@@ -1,10 +1,15 @@
 import React from 'react';
+import Header from './components/Header';
 
 const App = ({ children }) => {
     return (
-        <main>
-            {children}
-        </main>
+        <div>
+            <Header/>
+
+            <main>
+                {children}
+            </main>
+        </div>
     )
 }
 
