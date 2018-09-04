@@ -78,19 +78,27 @@ router.post('/signup', function (req, res, next) {
         password: req.body.password,
         passwordConf: req.body.passwordConf,
       }
-  
-      User.create(userData, function (error, user) {
-        if (error) {
-          return next(error);
-        } else {
-          req.session.userId = user._id;
-          return res.json(userData)
+
+      User.findOne({email: req.body.email}, function(err, user){
+        if(err) {
+          console.log(err);
         }
-      });
+        if(user) {
+          res.status(400).json({"error":"User Already Exists"})
+        } else {
+           console.log('Creating User');
+           User.create(userData, function (error, user) {
+            if (error) {
+              return next(error);
+            } else {
+              req.session.userId = user._id;
+              return res.json(userData)
+            }
+          });
+        }
+    });
     } else {
-      var err = new Error('All fields required.');
-      err.status = 400;
-      return next(err);
+      res.status(400).json({"error":"All fields required."})
     }
   });
 
