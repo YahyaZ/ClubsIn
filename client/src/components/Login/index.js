@@ -4,17 +4,62 @@ import Form from "../Form";
 import { FormGroup, FormControl, InputGroup, Checkbox } from "react-bootstrap";
 import { Link } from 'react-router-dom';
 
+
+const loginApi = "http://localhost:4000/api/user/login";
 class LoginForm extends Component{
     constructor(props){
         super(props);
         this.state = {
-            type: 'password'
+            type: 'password',
+            message: '',
+            input:{
+                email: '',
+                password:'',
+            },
         }
         this.showHidePassword = this.showHidePassword.bind(this);
+        this.login = this.login.bind(this);
+        this.handleInputChange = this.handleInputChange.bind(this);
     }
 
     componentDidMount(){
         document.title = "Login - club'in"
+    }
+
+    login(e){
+        let self = this;
+        e.preventDefault();
+        console.log(this.state);
+        fetch(loginApi,{
+            method:"POST",
+            mode:"cors",
+            credentials:"same-origin",
+            headers:{
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(this.state.input)
+        }).then(function(response){
+            if(response.status === 400){
+                response.json().then(function(data){
+                    self.setState({message:data.error});
+                });
+            } else if (response.status === 200){
+                console.log('User logged in');
+               
+            }
+        });
+    }
+    
+
+    handleInputChange(newPartialInput) {
+        this.setState(state => ({
+            ...state,
+            input:{
+                ...state.input,
+                ...newPartialInput
+            }
+                
+        }))
     }
 
 
@@ -28,13 +73,19 @@ class LoginForm extends Component{
     
     render(){
         return (
-            <form className="form-body">
+            <div>
+                {this.state.message}
+                <form className="form-body" onSubmit={this.login}>
                 <FormGroup>
                     <InputGroup>
                         <InputGroup.Addon>
                             <FaEnvelope />
                         </InputGroup.Addon>
-                        <FormControl type="email" placeholder="Email Address" name="email"/>
+                        <FormControl    type="email" 
+                                        placeholder="Email Address" 
+                                        name="email"
+                                        onChange={e => this.handleInputChange({email: e.target.value})}
+                                        />
                     </InputGroup>
                 </FormGroup>
                 <FormGroup>
@@ -42,7 +93,11 @@ class LoginForm extends Component{
                         <InputGroup.Addon>
                             <FaLock />
                         </InputGroup.Addon>
-                        <FormControl type={this.state.type} placeholder="Password" name="password" />
+                        <FormControl    type={this.state.type} 
+                                        placeholder="Password" 
+                                        name="password" 
+                                        onChange={e => this.handleInputChange({password: e.target.value})}
+                                        />
                         <InputGroup.Addon onMouseDown={this.showHidePassword} onMouseUp={this.showHidePassword}>
                             {this.state.type === 'input' ? <FaEye /> : <FaEyeSlash />}
                         </InputGroup.Addon>
@@ -56,8 +111,9 @@ class LoginForm extends Component{
                         Forgot Password?
                     </Link>
                 </div>
-                <button className="form-button">Log In</button>
-            </form>
+                <button type="submit" className="form-button">Log In</button>
+                </form>
+            </div>
         )
 }
 }

@@ -23,11 +23,14 @@ class SignUp extends Component {
         document.title = "Sign Up - club'in"
     }
 
+    
+
     goToPage(pageName) {
         this.setState({
             page: pageName,
         }) 
     }
+
 
     renderSwitch(){
         switch(this.state.page){
