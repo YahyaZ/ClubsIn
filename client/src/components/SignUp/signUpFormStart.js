@@ -61,10 +61,6 @@ class SignUpFormStart extends Component{
         }
             
         )
-
-
-        //this.props.buttonClick();
-        
     }
 
     render(){
@@ -125,7 +121,6 @@ class SignUpFormStart extends Component{
                             I agree to the terms and conditions
                         </Checkbox>
                     </div>
-                    {/*onClick={}*/}
                     <button type="submit" className="form-button"  >Sign Up</button>
                 </form>
             </div>

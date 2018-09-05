@@ -33,7 +33,6 @@ class LoginForm extends Component{
         fetch(loginApi,{
             method:"POST",
             mode:"cors",
-            credentials:"same-origin",
             headers:{
                 "Content-Type": "application/json"
             },
@@ -45,7 +44,8 @@ class LoginForm extends Component{
                 });
             } else if (response.status === 200){
                 console.log('User logged in');
-               
+                console.log(response.json())
+                window.location = '/club'
             }
         });
     }

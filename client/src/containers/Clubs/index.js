@@ -2,12 +2,27 @@ import React, { Component } from 'react';
 import Event from '../../components/Events';
 import './Club.css'
 
+const profileAPI = "http://localhost:4000/api/user/profile"
+
 class Club extends Component {
     constructor() {
         super();
         this.getEvents = this.getEvents.bind(this);
         this.getMyEvents = this.getMyEvents.bind(this);
+    
+        }
+    
+
+    componentDidMount(){
+        fetch(profileAPI,{
+            method: 'GET',
+            mode:"cors",
+            credentials:"include"
+        })
+        .then(response => response.json())
+        .then(data => this.setState({ data }));
     }
+
 
     getEvents() {
         return [
@@ -93,6 +108,7 @@ class Club extends Component {
 
         return (
             <div>
+                {/*<div className="events-container">Current User : {this.state.firstName}</div>*/}
                 {myEvents.length > 0 ? this.renderEvents("My Events", myEvents) : this.renderNoEvents()}
                 {allEvents.length > 0 ? this.renderEvents("All Events", allEvents) : this.renderNoEvents()}
             </div>
