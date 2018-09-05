@@ -3,3 +3,11 @@ nav {
     display: flex;
     align-items: center;
 }
+
+ul.navbar-nav {
+    float: right;
+}
+
+.navbar-buttons .btn {
+    margin-right: 10px;
+}

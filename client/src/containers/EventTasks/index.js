@@ -76,7 +76,7 @@ class EventTasks extends Component {
     }
 
     selectMenu(item) {
-        if (item != this.state.selectedMenu) {
+        if (item !== this.state.selectedMenu) {
             this.setState({
                 selectedMenu: item,
                 selectedTask: null
@@ -97,7 +97,7 @@ class EventTasks extends Component {
     }
 
     selectTask(task) {
-        if (task != this.state.selectedTask) {
+        if (task !== this.state.selectedTask) {
             this.setState({
                 selectedTask: task
             });
