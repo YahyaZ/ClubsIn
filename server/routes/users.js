@@ -109,9 +109,7 @@ router.post('/login', function (req, res, next) {
         req.body.password){
             User.authenticate(req.body.email, req.body.password, function (error, user) {
                 if (error || !user) {
-                  var err = new Error('Wrong email or password.');
-                  err.status = 401;
-                  return next(err);
+                  res.status(400).json({"error":"Wrong email or password"})
                 } else {
                   let token = jsonwebtoken.sign({id: user._id, email: user.email, firstName: user.firstName}, 'supersecret', {
                     expiresIn: 86400 // expires in 24 hours
