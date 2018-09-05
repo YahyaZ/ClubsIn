@@ -38,8 +38,6 @@ app.use(session({
   }));
 
 
-
-
 app.use(cors());
 app.use(logger('dev'));
 

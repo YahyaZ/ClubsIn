@@ -1,6 +1,8 @@
 import express from 'express';
 import database from '../database-handler';
 import { User } from '../model/users';
+import { findUser } from '../services/users';
+import { requiresLogin } from './auth'
 import jsonwebtoken from 'jsonwebtoken';
 
 
@@ -114,6 +116,7 @@ router.post('/login', function (req, res, next) {
                   let token = jsonwebtoken.sign({id: user._id, email: user.email, firstName: user.firstName}, 'supersecret', {
                     expiresIn: 86400 // expires in 24 hours
                   });
+                  console.log(user.email + " logged in")
                   req.session.userId = user._id;
                   return res.status(200).json({token: token});
                 }
@@ -125,5 +128,15 @@ router.post('/login', function (req, res, next) {
             }
         }
   );
+
+
+  router.get('/profile', requiresLogin, function(req,res){
+    
+    findUser(req,res);
+})
+
+  router.use(function(err, req, res, next) {
+    res.status(err.status).json({ error:err.message })
+  });
 
 module.exports = router;
