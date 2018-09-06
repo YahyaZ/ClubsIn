@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Redirect } from 'react-router-dom';
 import Event from '../../components/Events';
 import './Club.css'
 
@@ -9,18 +10,37 @@ class Club extends Component {
         super();
         this.getEvents = this.getEvents.bind(this);
         this.getMyEvents = this.getMyEvents.bind(this);
+        this.state = {
+            authorised: true,
+        }
+
+        this.setRedirect = this.setRedirect.bind(this);
+        this.renderRedirect = this.renderRedirect.bind(this);
     
         }
+
+        setRedirect = () => {
+            this.setState({
+                authorised: false
+            })
+          }
+          renderRedirect = () => {
+            if (!this.state.authorised) {
+              return <Redirect to='/login' />
+            }
+          }
     
 
     componentDidMount(){
+        let self = this;
         fetch(profileAPI,{
             method: 'GET',
             mode:"cors",
         })
         .then(function(response){
             if(response.status == 401){
-                alert('Unauthorised');
+                console.log("User is unauthorised");
+                self.setRedirect();
             }
             return response.json();
         }).then(data => this.setState({ data }))
@@ -111,6 +131,7 @@ class Club extends Component {
 
         return (
             <div>
+                {this.renderRedirect()}
                 {/*<div className="events-container">Current User : {this.state.firstName}</div>*/}
                 {myEvents.length > 0 ? this.renderEvents("My Events", myEvents) : this.renderNoEvents()}
                 {allEvents.length > 0 ? this.renderEvents("All Events", allEvents) : this.renderNoEvents()}
