@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import Event from '../../components/Events';
 import './Club.css'
 
-const profileAPI = "http://localhost:4000/api/user/profile"
+const profileAPI = "/api/user/profile"
 
 class Club extends Component {
     constructor() {
@@ -17,10 +17,13 @@ class Club extends Component {
         fetch(profileAPI,{
             method: 'GET',
             mode:"cors",
-            credentials:"include"
         })
-        .then(response => response.json())
-        .then(data => this.setState({ data }));
+        .then(function(response){
+            if(response.status == 401){
+                alert('Unauthorised');
+            }
+            return response.json();
+        }).then(data => this.setState({ data }))
     }
 
 

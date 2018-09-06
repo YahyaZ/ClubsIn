@@ -5,7 +5,7 @@ import { FormGroup, FormControl, InputGroup, Checkbox } from "react-bootstrap";
 import { Link } from 'react-router-dom';
 
 
-const loginApi = "http://localhost:4000/api/user/login";
+const loginApi = "/api/user/login";
 class LoginForm extends Component{
     constructor(props){
         super(props);
