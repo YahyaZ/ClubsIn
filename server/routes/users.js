@@ -1,142 +1,65 @@
+/**
+ * Router for user functions
+ * @module UserRouter
+ */
 import express from 'express';
-import database from '../database-handler';
-import { User } from '../model/users';
-import { findUser } from '../services/users';
+import UserService from '../services/users';
 import { requiresLogin } from './auth'
-import jsonwebtoken from 'jsonwebtoken';
-
-
 
 let router = express.Router();
 
 /**
- * localhost:3001/api/login
- * call's finduser based on provided parameters
- * MOCK DATA FOR NOW 
- 
-=============================================================================
-router.post('/login', (req, res) =>{
-    database.findUser(function(result){
-        try {
-            res.status(200).json(result);
-        }catch(err){
-            res.send(`Authentication failed: incorrect details`);
-        }
-    }, "yahyaZ@hotmail.com", "ilovemalek");
-});
-=============================================================================
-*/
+ * TODO: Delete This before submission
+ * Route to get all Users
+ * Path: /api/user/
+ * Method: GET
+ * Response:
+ *  - 200 - Returns Array of User Data
+ */
+router.get('/', UserService.getAllUsers)
 
 /**
- * localhost:3001/api/signup
- * Registers a user based on provided parameters
- * MOCK DATA
+ * Route to signup users
+ * Path: /api/user/signup
+ * Method: Post
+ *  parameters:
+ *  - email: Email of the User
+ *  - firstName: First Name of the User
+ *  - lastName: Last Name of the User
+ *  - password: Password of the User
+ *  - passwordConf: Password Confirmation
+ * Response:
+ *  - 200 - Returns JSON of user data
+ *  - 400 - User Already Exists
+ *  - 400 - Fields are missing
+ *  - 400 - Password does not match with password confirmation
  */
-
- // =========================================================================
-/*router.post('/signup', (req, res) =>{
-    var user = req.headers;
-    //console.log(JSON.stringify(req.body));
-    database.registerUser(function(result){
-        res.json(result);
-    }, req.body.name, req.body.lastName, req.body.email, req.body.password);
-});*/
- // =========================================================================
-
+router.post('/signup', UserService.signUp);
 
 /**
- * Homepage GET function
- * Returns array of all users for now
- * TODO: Modify functionality to suit homepage
+ * Route to login a User
+ * Path: /api/user/login
+ * Method: Post
+ *  parameters:
+ *  - email: Email of the User
+ *  - password: Password of the User
+ * Response:
+ *  - 200 - Returns JWT token of logged in User
+ *  - 400 - Fields are missing
+ *  - 400 - Details are incorrect
  */
-router.get('/', (req, res) => {
-    database.getUsers(function(result){
-        //get callback then display
-        res.send(result);
-    })
-});
+router.post('/login', UserService.login);
 
+/**
+ * Route to get user profile details
+ * User needs to be logged in
+ * Path: /api/user/profile
+ * Method: Get
+ * Response:
+ *  - 200 - User Details
+ *  - 401 - Unauthorised to get details
+ */
+router.get('/profile', requiresLogin, UserService.findUser);
 
-//POST route for updating data
-router.post('/signup', function (req, res, next) {
-    // confirm that user typed same password twice
-    if (req.body.password !== req.body.passwordConf) {
-      var err = new Error('Passwords do not match.');
-      err.status = 400;
-      res.json({"error":"passwords dont match"});
-      return next(err);
-    }
-  
-    if (req.body.email &&
-      req.body.firstName &&
-      req.body.lastName &&
-      req.body.password &&
-      req.body.passwordConf) {
-  
-      var userData = {
-        email: req.body.email,
-        firstName: req.body.firstName,
-        lastName: req.body.lastName,
-        password: req.body.password,
-        passwordConf: req.body.passwordConf,
-      }
-
-      User.findOne({email: req.body.email}, function(err, user){
-        if(err) {
-          console.log(err);
-        }
-        if(user) {
-          res.status(400).json({"error":"User Already Exists"})
-        } else {
-           console.log('Creating User');
-           User.create(userData, function (error, user) {
-            if (error) {
-              return next(error);
-            } else {
-              req.session.userId = user._id;
-              return res.json(userData)
-            }
-          });
-        }
-    });
-    } else {
-      res.status(400).json({"error":"All fields required."})
-    }
-  });
-
-
-  // GET route after registering
-router.post('/login', function (req, res, next) {
-    if (req.body.email &&
-        req.body.password){
-            User.authenticate(req.body.email, req.body.password, function (error, user) {
-                if (error || !user) {
-                  res.status(400).json({"error":"Wrong email or password"})
-                } else {
-                  let token = jsonwebtoken.sign({id: user._id, email: user.email, firstName: user.firstName}, 'supersecret', {
-                    expiresIn: 86400 // expires in 24 hours
-                  });
-                  console.log(user.email + " logged in")
-                  req.session.userId = user._id;
-                  return res.status(200).json({token: token});
-                }
-              });
-            } else {
-              var err = new Error('All fields required.');
-              err.status = 400;
-              return next(err);
-            }
-        }
-  );
-
-
-  router.get('/profile', requiresLogin, function(req,res){
-    
-    findUser(req,res);
-})
-
-  router.use(function(err, req, res, next) {
-    res.status(err.status).json({ error:err.message })
-  });
 
 module.exports = router;
