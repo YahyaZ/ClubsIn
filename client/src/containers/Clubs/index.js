@@ -38,7 +38,7 @@ class Club extends Component {
             mode:"cors",
         })
         .then(function(response){
-            if(response.status == 401){
+            if(response.status === 401){
                 console.log("User is unauthorised");
                 self.setRedirect();
             }
