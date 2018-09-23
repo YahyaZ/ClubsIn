@@ -1,5 +1,6 @@
 import express from 'express';
 import database from '../database-handler';
+import clubService from '../services/clubs'
 
 
 let router = express.Router();
@@ -18,11 +19,7 @@ router.get('/', (req, res) =>{
  * Creates a club in the database
  * TODO: Add authentication on creating a club. NO DUPLICATES
  */
-router.post('/create', (req, res)=> {
-    database.createClub(function(result){
-        res.send(result);
-    }, req.body.name, req.body.type, req.body.university);
-})
+router.post('/create', clubService.createClub);
 
 /**
  * Finds a single club instance in the collection using
