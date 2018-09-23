@@ -53,19 +53,30 @@ function findTasksForEvent(req, res){
  * @param {*} res 
  */
 function deleteTask(req,res){
-    Tasks.findOneAndDelete({})
+    Tasks.findOneAndDelete({_id: req.params.id}, (err) =>{
+        if(err) return console.error(err);
+        res.status(204);
+    })
 }
 
 /**
  * Find task and update it
+ * TODO: update the actual task
  * @param {*} req 
  * @param {*} res 
  */
-function updateTask(req,res) {
-    Tasks.findOne({})
+function updateTask(req,res, next) {
+    Tasks.findOne({ _id: req.body.id }, (err, task) => {
+        if(err) {
+            err.status = 404;
+            next(err);
+        } 
+        res.send(task);
+    })
 }
 
 module.exports = {
     addTask: addTask,
-    findTasksForEvent: findTasksForEvent
+    findTasksForEvent: findTasksForEvent,
+    deleteTask: deleteTask
 }
