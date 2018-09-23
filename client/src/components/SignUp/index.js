@@ -13,14 +13,59 @@ class SignUp extends Component {
         super(props);
         this.state = {
             page: 'start',
+            input:{
+                email: '',
+                firstName: '',
+                lastName: '',
+                password: '',
+                passwordConf: '',
+                club: {
+                    name :'',
+                    type: '',
+                    university:'',
+                },
+            },
         }
 
         this.goToPage = this.goToPage.bind(this);
         this.renderSwitch = this.renderSwitch.bind(this);
+        this.handleInputChange = this.handleInputChange.bind(this);
+        this.handleInputClubChange = this.handleInputClubChange.bind(this);
+        this.updateUser = this.updateUser.bind(this);
+        this.submitForm = this.submitForm.bind(this);
     }
 
     componentDidMount(){
         document.title = "Sign Up - club'in"
+    }
+
+    handleInputChange(newPartialInput) {
+        this.setState(state => ({
+            ...state,
+            input:{
+                ...state.input,
+                ...newPartialInput
+            }
+                
+        }))
+    }
+
+    handleInputClubChange(newPartialInput) {
+        this.setState(state => ({
+            ...state,
+            input:{
+                ...state.input,
+                club:{
+                    ...state.input.club,
+                    ...newPartialInput
+                }
+            }
+                
+        }))
+    }
+
+    updateUser(){
+        this.goToPage('chooseClubType');
     }
 
     
@@ -31,16 +76,40 @@ class SignUp extends Component {
         }) 
     }
 
+    submitForm(e){
+        e.preventDefault();
+        e.stopPropagation();
+        fetch('/api/user/signup',{
+            method:"POST",
+            mode:"cors",
+            credentials:"same-origin",
+            headers:{
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(this.state.input),
+        }).then(response => {return response.json()})
+        .then(function(data){
+            console.log(data);
+           
+        });
+
+        
+    }
+
 
     renderSwitch(){
         switch(this.state.page){
             case 'start':
                 return (
-                    <Form   formBody={<SignUpFormStart buttonClick={() => this.goToPage('chooseClubType')} />} 
+                    <Form   formBody={<SignUpFormStart  buttonClick={this.updateUser}
+                                                        handleInputChange={this.handleInputChange} 
+                                                        />} 
                             tagline="Start Managing your club today!" 
                             footerText="Already have an account"
                             footerLinkText="Log in here"
-                            footerLink="/login" />
+                            footerLink="/login"
+                            
+                             />
                 );
             case 'chooseClubType':
                 return (
@@ -52,7 +121,8 @@ class SignUp extends Component {
                 );
             case 'existingClub':
                 return(
-                    <Form   formBody={<SignUpFormExistingClub buttonClick={() => this.goToPage('start')}/>} 
+                    <Form   formBody={<SignUpFormExistingClub   buttonClick={() => this.goToPage('start')}
+                                                                handleInputChange={this.handleInputClubChange}/>} 
                             tagline="Find your Club!"
                             footerText="Haven't registered your club yet?"
                             footerLinkText="Create one here"
@@ -61,7 +131,8 @@ class SignUp extends Component {
                 );
             case 'newClub':
                 return(
-                    <Form   formBody={<SignUpFormNewClub buttonClick={() => this.goToPage('start')} />} 
+                    <Form   formBody={<SignUpFormNewClub    buttonClick={this.submitForm} 
+                                                            handleInputChange={this.handleInputClubChange}/>} 
                             tagline="Register your Club Now!"
                             footerText="Already registered your club yet?"
                             footerLinkText="Find it here"

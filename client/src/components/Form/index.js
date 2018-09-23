@@ -11,7 +11,7 @@ const Header = (props) => (
     );
 
 const Footer = (props) => (
-        <div className="form-footer">{props.text} 
+        <div className="form-footer">{props.text}  
             <span className="link">
                 {!props.linkClick  
                      ? <Link to={`${props.link}`}> {props.linkText} </Link>

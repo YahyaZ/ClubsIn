@@ -138,10 +138,10 @@ class LoginForm extends Component {
                     <div className="form-body-footer" >
                         <Checkbox name="rememberMe">
                             Remember Me
-                    </Checkbox>
+                        </Checkbox>
                         <Link to="/forgotten" className="form-bottom-left link">
                             Forgot Password?
-                    </Link>
+                        </Link>
                     </div>
                     <button type="submit" className="form-button">Log In</button>
                 </form>

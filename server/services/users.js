@@ -2,7 +2,9 @@
  * Module providing User Services
  * @module UserServices
  */
-import { User } from '../model/users';
+import User from '../model/users';
+import mongoose from 'mongoose';
+import Club from '../model/clubs';
 import jsonwebtoken from 'jsonwebtoken';
 
 /**
@@ -65,7 +67,8 @@ function signUp(req, res, next) {
     req.body.firstName &&
     req.body.lastName &&
     req.body.password &&
-    req.body.passwordConf) {
+    req.body.passwordConf &&
+    req.body.club) {
 
     var userData = {
       email: req.body.email,
@@ -74,6 +77,10 @@ function signUp(req, res, next) {
       password: req.body.password,
       passwordConf: req.body.passwordConf,
     }
+
+    var clubData = req.body.club
+
+    console.log(clubData);
 
     // Checks if the user is existing or not, if it doesnt, add it
     User.findOne({ email: req.body.email }, function (err, user) {
@@ -85,14 +92,21 @@ function signUp(req, res, next) {
         res.status(400).json({ "error": "User Already Exists" })
       } else {
         // No user is found, so create it
-        User.create(userData, function (error, user) {
-          if (error) {
-            return next(error);
-          } else {
-            req.session.userId = user._id;
-            return res.json(userData)
-          }
-        });
+      
+        let newUser = new User(userData);
+        let newClub = new Club(clubData);
+        newUser.clubs.push(newClub._id);
+        newClub.users.push(newUser._id);
+
+        newUser.save(function(err){
+          if(err) {console.log(err); return next(err);}
+          newClub.save(function(err){
+            if(err) {console.log(err); return next(err);}
+          })
+          req.session.userId = newUser._id;
+          res.send(newUser);
+         
+        })
       }
     });
   } else {
