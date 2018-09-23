@@ -19,3 +19,6 @@ let taskSchema = new mongoose.Schema({
     completed: Boolean,
     assignee: [{type: Schema.Types.ObjectId, ref: 'users'}]
 })
+
+var Tasks = mongoose.model('Tasks', taskSchema, 'tasks');
+module.exports.Tasks = Tasks;
