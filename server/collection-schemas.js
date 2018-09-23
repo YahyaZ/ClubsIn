@@ -2,7 +2,8 @@ import mongoose, { Model, Schema  } from "mongoose";
 
 module.exports.getUserSchema = getUserSchema;
 module.exports.getClubSchema = getClubSchema;
-module.exports.
+module.exports.getEventSchema = getEventSchema;
+module.exports.getTaskSchema = getEventSchema;
 /**
  * Create a schema for users when connecting to our mongo database
  */
