@@ -6,14 +6,10 @@ import clubService from '../services/clubs'
 let router = express.Router();
 
 /**
- * localhost:3001/api/clubs
+ * localhost:<>/api/club/
  * retrieves all currently existing clubs
  */
-router.get('/', (req, res) =>{
-    database.getClubs(function(result){
-        res.send(result);
-    })
-})
+router.get('/', clubService.getClubs);
 
 /**
  * Creates a club in the database
@@ -25,12 +21,22 @@ router.post('/create', clubService.createClub);
  * Finds a single club instance in the collection using
  * name and university strings and returns result (error or club details)
  */
-router.post('/', (req, res) => {
-    database.findClub(function(result){
-        try{
-            res.send(`${result.name} ${result.university}`);
-        } catch(err){res.send(`Club not found`);}
-    }, req.body.name, req.body.university);
-})
+router.post('/find', clubService.findClub);
+
+
+
+/**
+ * return a single club based on id
+ * api/club/:clubId
+ * 
+ *  parameters:
+ *   id: id of the requested club
+ * 
+ *  responses:
+ *   404: no club of such id was found
+ *   json: JSON format of requested club
+ */
+router.get('/:clubId', clubService.findClubById);
+
 
 module.exports = router;

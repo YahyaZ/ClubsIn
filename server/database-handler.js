@@ -12,6 +12,8 @@ module.exports.findUser = findUser;
 module.exports.getClubs = getClubs;
 module.exports.createClub = createClub;
 module.exports.findClub = findClub;
+module.exports.updateClubEvents = updateClubEvents;
+module.exports.findClubByID = findClubByID;
 
 //DB Schema types and models
 let userSchema = collectionSchemas.getUserSchema();
@@ -29,18 +31,43 @@ function getClubs(callback){
 }
 
 function createClub(callback, name, type, university){
-    new clubs({name: name, type: type, university: university})
+    new clubs({id: generateID(), name: name, type: type, university: university, events:[] })
     .save(function(err){
         if(err) console.error(err);
         callback(`Club '${name}' created at ${university}`);
     });
 }
 
+/**
+ * This function is mainly used when trying to find a club to join for newly registered users
+ * @param {callback} callback 
+ * @param {String} name 
+ * @param {String} university 
+ */
 function findClub(callback, name, university){
     clubs.findOne({name: name, university: university}, function(err, doc){
         if(err) callback(err);
         callback(doc);
     });
+}
+
+function findClubByID(callback, id){
+    clubs.findOne({id:id}, (err, club)=>{
+        if(err) callback(err);
+        callback(club);   
+    })
+}
+
+function updateClubEvents(callback, id, events){
+    clubs.findOne({id: id}, (err, club)=>{
+        if(err) callback(err);
+        
+        club.events = JSON.parse(events);
+        club.save((err, updatedClub) => {
+            if(err) callback(err);
+            callback(updatedClub);
+        })
+    })
 }
 
 /**
@@ -89,3 +116,7 @@ function findUser(callback, email, password){
         callback(doc);
     })
 };
+
+function generateID(){
+    return Math.random().toString(36).substr(2, 9);
+}
