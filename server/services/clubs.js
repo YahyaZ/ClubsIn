@@ -19,7 +19,12 @@ function findClub(res,req){
     });
 }
 
-//UpdateOne
+function findClubById(res,req, next){
+    clubs.findOne({_id: req.params.id},(err, doc) => {
+        if(err) next(err)
+        res.json(doc);
+    });
+}
 
 //Create
 function createClub(req, res){
@@ -33,5 +38,6 @@ function createClub(req, res){
 module.exports = {
     getClubs = getClubs,
     findClub = findClub,
-    createClub = createClub
+    createClub = createClub,
+    findClubById = findClubById
 }

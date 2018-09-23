@@ -23,26 +23,20 @@ router.post('/create', ClubService.createClub);
  */
 router.post('/find', ClubService.findClub);
 
-/**
- * Post function handles all event/task updates
- * Pass through id and events array
- */
-router.post('/update', (req, res) => {
-    database.updateClubEvents( (result)=>{
-        try{
-            res.send(result);
-        } catch(err){res.send(`Update failed`);}
-    }, req.body.id, req.body.events )
-})
+
 
 /**
  * return a single club based on id
  * api/club/:clubId
+ * 
+ *  parameters:
+ *   id: id of the requested club
+ * 
+ *  responses:
+ *   404: no club of such id was found
+ *   json: JSON format of requested club
  */
-router.get('/:clubId', (req, res) => {
-    database.findClubByID( (result)=>{
-        try{res.send(result);} catch(err){res.send(`No Club found with the provided id ${req.params.clubId}`)}
-    }, req.params.clubId)
-    // res.send(req.params.clubId);
-})
+router.get('/:clubId', ClubService.findClubById);
+
+
 module.exports = router;
