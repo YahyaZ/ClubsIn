@@ -6,3 +6,6 @@ let clubSchema = new mongoose.Schema({
     university: String,
     members: []
 });
+
+let Clubs = mongoose.model('Clubs', clubSchema, 'clubs');
+module.exports.clubs = Clubs;

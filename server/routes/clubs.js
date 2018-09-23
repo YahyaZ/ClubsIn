@@ -1,6 +1,7 @@
 import express from 'express';
 import database from '../database-handler';
-
+import ClubService from '../services/clubs';
+import Club from '../../client/src/containers/Clubs';
 
 let router = express.Router();
 
@@ -8,33 +9,19 @@ let router = express.Router();
  * localhost:<>/api/club/
  * retrieves all currently existing clubs
  */
-router.get('/', (req, res) =>{
-    database.getClubs(function(result){
-        res.send(result);
-    })
-})
+router.get('/', ClubService.getClubs);
 
 /**
  * Creates a club in the database
  * TODO: Add authentication on creating a club. NO DUPLICATES
  */
-router.post('/create', (req, res)=> {
-    database.createClub(function(result){
-        res.send(result);
-    }, req.body.name, req.body.type, req.body.university);
-})
+router.post('/create', ClubService.createClub);
 
 /**
  * Finds a single club instance in the collection using
  * name and university strings and returns result (error or club details)
  */
-router.post('/', (req, res) => {
-    database.findClub(function(result){
-        try{
-            res.send(result);
-        } catch(err){res.send(`Club not found`);}
-    }, req.body.name, req.body.university);
-})
+router.post('/find', ClubService.findClub);
 
 /**
  * Post function handles all event/task updates
