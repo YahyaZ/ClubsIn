@@ -6,11 +6,13 @@ import express from 'express';
 import users from './users';
 import clubs from './clubs';
 import events from './events';
+import tasks from './tasks';
 
 let router = express.Router();
 router.use('/user', users);
 router.use('/club', clubs);
 router.use('/event', events);
+router.use('/task', tasks)
 
 
 
