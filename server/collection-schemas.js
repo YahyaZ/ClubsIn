@@ -17,9 +17,11 @@ let userSchema = new mongoose.Schema({
  * Club schema
  */
 let clubSchema = new mongoose.Schema({
+    id: String,
     name: String,
     type: String,
-    university: String
+    university: String,
+    events: [] 
 });
 
 
