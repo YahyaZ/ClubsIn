@@ -40,7 +40,7 @@ function addTask(req, res) {
  * @param {*} res 
  */
 function findTasksForEvent(req, res){
-    Tasks.find({event_id: req.body.event_id}, (err, tasks)=>{
+    Tasks.find({event_id: req.params.id}, (err, tasks)=>{
         if(err) return console.error(err);
         res.json(tasks);
     })
@@ -63,4 +63,9 @@ function deleteTask(req,res){
  */
 function updateTask(req,res) {
     Tasks.findOne({})
+}
+
+module.exports = {
+    addTask: addTask,
+    findTasksForEvent: findTasksForEvent
 }
