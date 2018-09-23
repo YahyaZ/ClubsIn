@@ -31,12 +31,27 @@ function addEvent(req, res) {
 }
 
 //TODO
-function findEvent(req, res) {
-    Events.findOne({})
+function findEvent(req, res, next) {
+    Events.findOne({_id: req.params.id}, (err, event) => {
+        if(err) {
+            err.status = 404;
+            next(err);
+        } else { 
+            res.json(event);
+        }
+    })
 }
 
+function deleteEvent(req, res, next) {
+    Events.findOneAndDelete({_id: req.params.id}, (err) => {
+        if(err) next(err);
+        res.status(204);
+    })
+}
 
 module.exports = {
     getAllEvents: getAllEvents,
-    addEvent: addEvent
+    addEvent: addEvent,
+    findEvent: findEvent,
+    deleteEvent: deleteEvent
 }
