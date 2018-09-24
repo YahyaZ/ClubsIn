@@ -1,11 +1,20 @@
 import mongoose from "mongoose";
+import User from './users'
 
-let clubSchema = new mongoose.Schema({
+let ClubSchema = new mongoose.Schema({
     name: String,
     type: String,
     university: String,
-    members: []
+    users:[{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User'
+      }],
+    created: {
+        type: Date,
+        default: Date.now, 
+      },
 });
 
-let Clubs = mongoose.model('Clubs', clubSchema, 'clubs');
-module.exports.clubs = Clubs;
+let Clubs = mongoose.model('Club',ClubSchema);
+
+module.exports = Clubs;

@@ -1,7 +1,7 @@
 import express from 'express';
 import database from '../database-handler';
-import ClubService from '../services/clubs';
-import Club from '../../client/src/containers/Clubs';
+import clubService from '../services/clubs'
+
 
 let router = express.Router();
 
@@ -9,19 +9,19 @@ let router = express.Router();
  * localhost:<>/api/club/
  * retrieves all currently existing clubs
  */
-router.get('/', ClubService.getClubs);
+router.get('/', clubService.getClubs);
 
 /**
  * Creates a club in the database
  * TODO: Add authentication on creating a club. NO DUPLICATES
  */
-router.post('/create', ClubService.createClub);
+router.post('/create', clubService.createClub);
 
 /**
  * Finds a single club instance in the collection using
  * name and university strings and returns result (error or club details)
  */
-router.post('/find', ClubService.findClub);
+router.post('/find', clubService.findClub);
 
 
 
@@ -36,7 +36,7 @@ router.post('/find', ClubService.findClub);
  *   404: no club of such id was found
  *   json: JSON format of requested club
  */
-router.get('/:clubId', ClubService.findClubById);
+router.get('/:clubId', clubService.findClubById);
 
 
 module.exports = router;

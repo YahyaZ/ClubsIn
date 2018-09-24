@@ -7,35 +7,12 @@ const signUpApi = "http://localhost:4000/api/user/signup";
 class SignUpFormStart extends Component{
     constructor(props){
         super(props);
-        this.state ={
-            message:"",
-            input:{
-                email:'',
-                password:'',
-                passwordConf:'',
-                firstName:'',
-                lastName:'',
-            }
-        }
-
-        this.handleInputChange = this.handleInputChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
     }
 
    
-    handleInputChange(newPartialInput) {
-        this.setState(state => ({
-            ...state,
-            input:{
-                ...state.input,
-                ...newPartialInput
-            }
-                
-        }))
-    }
-
     handleSubmit(e){
-        let self = this;
+        /*let self = this;
         e.preventDefault();
         console.log(this.state);
 
@@ -60,21 +37,21 @@ class SignUpFormStart extends Component{
             }
         }
             
-        )
+        )*/
     }
 
     render(){
         return (
             <div>
-                {this.state.message}
-                <form className="form-body" onSubmit={this.handleSubmit}>
+                {this.props.message}
+                <form className="form-body" onSubmit={this.props.buttonClick}>
                     <FormGroup>
                         <InputGroup>
                             <InputGroup.Addon><FaUser/></InputGroup.Addon>
                             <FormControl    type="text" 
                                             placeholder="First Name" 
                                             name="firstName" 
-                                            onChange={e => this.handleInputChange({firstName: e.target.value})}
+                                            onChange={e => this.props.handleInputChange({firstName: e.target.value})}
                                             />
                         </InputGroup>
                     </FormGroup>
@@ -84,7 +61,7 @@ class SignUpFormStart extends Component{
                             <FormControl    type="text" 
                                             placeholder="Last Name" 
                                             name="lastName"
-                                            onChange={e => this.handleInputChange({lastName: e.target.value})}
+                                            onChange={e => this.props.handleInputChange({lastName: e.target.value})}
                                             />
                         </InputGroup>
                     </FormGroup>
@@ -94,7 +71,7 @@ class SignUpFormStart extends Component{
                             <FormControl    type="email" 
                                             placeholder="Email Address" 
                                             name="email"
-                                            onChange={e => this.handleInputChange({email: e.target.value})}
+                                            onChange={e => this.props.handleInputChange({email: e.target.value})}
                                             />
                         </InputGroup>
                     </FormGroup>
@@ -104,7 +81,7 @@ class SignUpFormStart extends Component{
                             <FormControl    type="password" 
                                             placeholder="Password" 
                                             name="password"
-                                            onChange={e => this.handleInputChange({password: e.target.value})}/>
+                                            onChange={e => this.props.handleInputChange({password: e.target.value})}/>
                         </InputGroup>
                     </FormGroup>
                     <FormGroup>
@@ -113,7 +90,7 @@ class SignUpFormStart extends Component{
                             <FormControl    type="password" 
                                             placeholder="Confirm Password" 
                                             name="confirmPassword"  
-                                            onChange={e => this.handleInputChange({passwordConf: e.target.value})}/>
+                                            onChange={e => this.props.handleInputChange({passwordConf: e.target.value})}/>
                         </InputGroup>
                     </FormGroup>
                     <div className="form-body-footer" >

@@ -5,19 +5,48 @@
 
 import mongoose from "mongoose";
 import bcrypt from 'bcrypt';
+import Club from './clubs';
 
 /**
  * Creates the User schema
  */
 let UserSchema = new mongoose.Schema({
-    firstName: String,
-    lastName: String,
+    firstName: {
+      type: String,
+      required:[true, 'First Name can not be blank'],
+      trim: true,
+    },
+    lastName: {
+      type: String,
+      required:[true, 'Last Name can not be blank'],
+      trim: true,
+    },
     email: {
       type: String,
       lowercase:true,
+      required:[true, 'Email Can not be blank'],
+      trim: true,
+      unique: true, 
+      match: [/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/, 'Please fill a valid email address']
     },
-    password: String
+    password: {
+      type: String,
+      required: true,
+    },
+    clubs:[{
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Club'
+    }],
+    created: {
+      type: Date,
+      default: Date.now, 
+    }
 });
+
+let validateEmail = function(email) {
+  var re = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+  return re.test(email)
+};
 
 /**
  * Authenticates the Inputted details against the database
@@ -66,4 +95,4 @@ UserSchema.statics.authenticate = function (email, password, callback) {
 
   
 var User = mongoose.model('User', UserSchema);
-module.exports.User = User;
+module.exports = User;
