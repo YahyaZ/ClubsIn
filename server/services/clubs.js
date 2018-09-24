@@ -66,10 +66,26 @@ function createClub(req, res){
     });
 }
 
+function updateClub(req,res,next) {
+    Clubs.findOneAndUpdate({_id: req.body._id}, {
+        name: req.body.name,
+        type: req.body.type,
+        university: req.body.university,
+        users: JSON.parse(req.body.events)
+    }, (err, club) =>{
+        if(err){
+            err.status = 404;
+            next(err);
+        }
+        res.status(200).json(club);
+    })
+}
+
 module.exports = {
     getClubs = getClubs,
     findClub = findClub,
     createClub = createClub,
     findClubById = findClubById,
     createClub: createClub,
+    updateClub: updateClub
 }

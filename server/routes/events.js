@@ -5,14 +5,28 @@ let router = express.Router();
 
 
 /**
- * Get All Events
+ * GET METHOD - Get All Events
+ *  parameters: 
+ *      -
+ *  outputs:
+ *      - 200: All events in a JSON format
+ *      - 404: No events found
  */
 router.get('/', EventService.getAllEvents)
 
 /**
- * Add Event
+ * POST METHOD - Add Event
+ *  parameters:
+ *     - club_id: id of the club this event is related to
+ *     - name: Name of event
+ *     - description: description of event
+ *     - date: Date of event
+ *  outputs:
+ *     - 400: Fields missing
+ *     - 404: Event not found in database
+ *     - 200: Event data, success
  */
-router.post('/addEvent', EventService.addEvent);
+router.post('/', EventService.addEvent);
 
 /**
  * GET METHOD
@@ -22,7 +36,7 @@ router.post('/addEvent', EventService.addEvent);
  *    - 404: No event of such id was found
  *    - json: Event in json format
  */
-router.get(':id', EventService.findEvent);
+router.get('/:id', EventService.findEvent);
 
 /**
  * DELETE METHOD
@@ -34,7 +48,21 @@ router.get(':id', EventService.findEvent);
  *  - 404: no event of such id was found
  *  - 204: event was deleted
  */
-router.delete(':id', EventService.deleteEvent);
+router.delete('/:id', EventService.deleteEvent);
+
+/**
+ * PUT METHOD - Updates an events details
+ *  parameters:
+ *     - club_id: id of the club this event is related to
+ *     - name: Name of event
+ *     - description: description of event
+ *     - date: Date of event
+ *     - last_modified: last date this event was modified
+ *  outputs:
+ *     - 404: Event not found in database
+ *     - 200: Event data, success
+ */
+router.put('/', EventService.updateEvent);
 
 
 module.exports = router;

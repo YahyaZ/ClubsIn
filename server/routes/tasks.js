@@ -43,7 +43,24 @@ router.get('/:id', TaskService.findTasksForEvent)
  *    - 204: returned when task deleted
  *    - 404: returned when task could not be found
  */
-router.delete('/tasks/:id', TaskService.deleteTask);
+router.delete('/:id', TaskService.deleteTask);
+
+
+/**
+ * /api/tasks/
+ * METHOD: PUT
+ *  parameters:
+ *     - _id: id of the task that is to be updated
+ *     - due_date: date inputted of when this task is to be completed
+ *     - name: name of task
+ *     - description: small body of text describing task
+ *     - completed: boolean value which signals if task is in progress or complete
+ *     - assignee: the id of the user/s assigned to this task
+ *  outputs:
+ *     - 404: Task not found
+ *     - 200: JSON format of updated task
+ */
+router.put('/', TaskService.updateTask);
 
 
 module.exports = router;

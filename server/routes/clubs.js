@@ -21,7 +21,7 @@ router.post('/create', clubService.createClub);
  * Finds a single club instance in the collection using
  * name and university strings and returns result (error or club details)
  */
-router.post('/find', clubService.findClub);
+router.post('/', clubService.findClub);
 
 
 
@@ -38,5 +38,8 @@ router.post('/find', clubService.findClub);
  */
 router.get('/:clubId', clubService.findClubById);
 
-
+/**
+ * TODO: COMMENTING
+ */
+router.put('/', clubService.updateClub)
 module.exports = router;

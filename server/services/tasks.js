@@ -70,17 +70,24 @@ function deleteTask(req,res){
  * @param {*} res 
  */
 function updateTask(req,res, next) {
-    Tasks.findOne({ _id: req.body.id }, (err, task) => {
+    Tasks.findOneAndUpdate({ _id: req.body.id },{
+        due_date: req.body.due_date,
+        name: req.body.name,
+        description: req.body.description,
+        completed: req.body.completed,
+        assignee: req.body.assignee
+    },(err, task) => {
         if(err) {
             err.status = 404;
             next(err);
         } 
-        res.send(task);
+        res.status(200).json(task);
     })
 }
 
 module.exports = {
     addTask: addTask,
     findTasksForEvent: findTasksForEvent,
-    deleteTask: deleteTask
+    deleteTask: deleteTask,
+    updateTask: updateTask
 }
