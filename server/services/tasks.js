@@ -3,7 +3,7 @@ import {Tasks} from '../model/tasks';
 /**
  * Adds a task
  */
-function addTask(req, res) {
+function addTask(req, res, next) {
     let event_id = req.body.event_id;
     let created_date = req.body.created_date;
     let created_by = req.body.created_by;
@@ -25,8 +25,8 @@ function addTask(req, res) {
             assignee: assignee
         };
 
-        Tasks.create(taskData, (err, task) => {
-            if(err) console.error(err);
+        Tasks.create(taskData, (err) => {
+            if(err) next(err);
             else { return res.json(taskData);}
         })
     } else {
@@ -39,9 +39,13 @@ function addTask(req, res) {
  * @param {} req 
  * @param {*} res 
  */
-function findTasksForEvent(req, res){
+function findTasksForEvent(req, res, next){
     Tasks.find({event_id: req.params.id}, (err, tasks)=>{
-        if(err) return console.error(err);
+        if(err){
+            var error = new Error("No task found");
+            error.status = 404;
+            return next(error);
+        }
         res.json(tasks);
     })
 }
