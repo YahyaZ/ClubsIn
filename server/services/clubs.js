@@ -82,10 +82,10 @@ function updateClub(req,res,next) {
 }
 
 module.exports = {
-    getClubs = getClubs,
-    findClub = findClub,
-    createClub = createClub,
-    findClubById = findClubById,
+    getClubs : getClubs,
+    findClub : findClub,
+    createClub : createClub,
+    findClubById : findClubById,
     createClub: createClub,
     updateClub: updateClub
 }

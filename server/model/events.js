@@ -1,12 +1,12 @@
 import mongoose from "mongoose";
 
 let eventSchema = new mongoose.Schema({
-    club_id: {type: Schema.Types.ObjectId, ref:'clubs'},
+    club_id: {type: mongoose.Schema.Types.ObjectId, ref:'clubs'},
     name: String,
     description: String,
     date: Date,
     created_by: {
-        type: Schema.Types.ObjectId, 
+        type: mongoose.Schema.Types.ObjectId, 
         ref: 'users'
     },
     last_modified: Date
