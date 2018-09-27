@@ -1,18 +1,24 @@
-import React, { Component } from "react";
-import { FaEnvelope, FaLock, FaUser } from "react-icons/fa";
-import { FormGroup, FormControl, InputGroup, Checkbox } from 'react-bootstrap';
+import React, { Component } from 'react';
+import { FaEnvelope, FaLock, FaUser } from 'react-icons/fa';
+import {
+    FormGroup,
+    FormControl,
+    InputGroup,
+    Checkbox,
+} from 'react-bootstrap';
+import PropTypes from 'prop-types';
 
-const signUpApi = "http://localhost:4000/api/user/signup";
+// const signUpApi = 'http://localhost:4000/api/user/signup';
 
-class SignUpFormStart extends Component{
-    constructor(props){
+class SignUpFormStart extends Component {
+    constructor(props) {
         super(props);
         this.handleSubmit = this.handleSubmit.bind(this);
     }
 
-   
-    handleSubmit(e){
-        /*let self = this;
+    handleSubmit = (e) => {
+        e.preventDefault();
+        /* let self = this;
         e.preventDefault();
         console.log(this.state);
 
@@ -36,73 +42,86 @@ class SignUpFormStart extends Component{
                 self.props.buttonClick();
             }
         }
-            
-        )*/
+        ) */
     }
 
-    render(){
+    render() {
+        const { message, buttonClick, handleInputChange } = this.props;
         return (
             <div>
-                {this.props.message}
-                <form className="form-body" onSubmit={this.props.buttonClick}>
+                {message}
+                <form className="form-body" onSubmit={buttonClick}>
                     <FormGroup>
                         <InputGroup>
-                            <InputGroup.Addon><FaUser/></InputGroup.Addon>
-                            <FormControl    type="text" 
-                                            placeholder="First Name" 
-                                            name="firstName" 
-                                            onChange={e => this.props.handleInputChange({firstName: e.target.value})}
-                                            />
+                            <InputGroup.Addon><FaUser /></InputGroup.Addon>
+                            <FormControl
+                                type="text"
+                                placeholder="First Name"
+                                name="firstName"
+                                onChange={e => handleInputChange({ firstName: e.target.value })}
+                            />
                         </InputGroup>
                     </FormGroup>
                     <FormGroup>
                         <InputGroup>
-                            <InputGroup.Addon><FaUser/></InputGroup.Addon>
-                            <FormControl    type="text" 
-                                            placeholder="Last Name" 
-                                            name="lastName"
-                                            onChange={e => this.props.handleInputChange({lastName: e.target.value})}
-                                            />
+                            <InputGroup.Addon><FaUser /></InputGroup.Addon>
+                            <FormControl
+                                type="text"
+                                placeholder="Last Name"
+                                name="lastName"
+                                onChange={e => handleInputChange({ lastName: e.target.value })}
+                            />
                         </InputGroup>
                     </FormGroup>
                     <FormGroup>
                         <InputGroup>
-                            <InputGroup.Addon><FaEnvelope/></InputGroup.Addon>
-                            <FormControl    type="email" 
-                                            placeholder="Email Address" 
-                                            name="email"
-                                            onChange={e => this.props.handleInputChange({email: e.target.value})}
-                                            />
+                            <InputGroup.Addon><FaEnvelope /></InputGroup.Addon>
+                            <FormControl
+                                type="email"
+                                placeholder="Email Address"
+                                name="email"
+                                onChange={e => handleInputChange({ email: e.target.value })}
+                            />
                         </InputGroup>
                     </FormGroup>
                     <FormGroup>
                         <InputGroup>
-                            <InputGroup.Addon><FaLock/></InputGroup.Addon>
-                            <FormControl    type="password" 
-                                            placeholder="Password" 
-                                            name="password"
-                                            onChange={e => this.props.handleInputChange({password: e.target.value})}/>
+                            <InputGroup.Addon><FaLock /></InputGroup.Addon>
+                            <FormControl
+                                type="password"
+                                placeholder="Password"
+                                name="password"
+                                onChange={e => handleInputChange({ password: e.target.value })}
+                            />
                         </InputGroup>
                     </FormGroup>
                     <FormGroup>
                         <InputGroup>
-                            <InputGroup.Addon><FaLock/></InputGroup.Addon>
-                            <FormControl    type="password" 
-                                            placeholder="Confirm Password" 
-                                            name="confirmPassword"  
-                                            onChange={e => this.props.handleInputChange({passwordConf: e.target.value})}/>
+                            <InputGroup.Addon><FaLock /></InputGroup.Addon>
+                            <FormControl
+                                type="password"
+                                placeholder="Confirm Password"
+                                name="confirmPassword"
+                                onChange={e => handleInputChange({ passwordConf: e.target.value })}
+                            />
                         </InputGroup>
                     </FormGroup>
-                    <div className="form-body-footer" >
+                    <div className="form-body-footer">
                         <Checkbox name="agreedToTC">
                             I agree to the terms and conditions
                         </Checkbox>
                     </div>
-                    <button type="submit" className="form-button"  >Sign Up</button>
+                    <button type="submit" className="form-button">Sign Up</button>
                 </form>
             </div>
-        )
+        );
     }
 }
 
 export default SignUpFormStart;
+
+SignUpFormStart.propTypes = {
+    message: PropTypes.string.isRequired,
+    buttonClick: PropTypes.func.isRequired,
+    handleInputChange: PropTypes.func.isRequired,
+};

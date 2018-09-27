@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import Task from '../../components/Tasks';
 import TaskDetails from '../../components/Tasks/TaskDetails';
+import MenuItem from './MenuItem';
 import './EventTasks.css';
 
 class EventTasks extends Component {
@@ -9,136 +10,120 @@ class EventTasks extends Component {
         this.state = {
             selectedMenu: 'myTasks',
             tasks: [],
-            selectedTask: null
-        }
+            selectedTask: null,
+        };
     }
 
     componentDidMount() {
         const tasks = this.getMyTasks();
-        this.setState({
-            tasks: tasks
-        })
+        this.setState({ tasks });
     }
 
-    getMyTasks() {
-        return [
-            {
-                name: "Get refreshments",
-                date: "28th August",
-                description: "Get refreshments from woolies or something",
-                member: {
-                    name: "Yahya",
-                    color: "#FF7816"
-                }
-            },
-            {
-                name: "Get food",
-                date: "28th August",
-                description: "Secure food supplies from woolies or coles, SOMETHING",
-                member: {
-                    name: "Yahya",
-                    color: "#FF7816"
-                }
-            }
-        ]
-    }
-    
-    getAllTasks() {
-        return [
-            {
-                name: "Get refreshments",
-                date: "28th August",
-                description: "Get refreshments from woolies or something",
-                member: {
-                    name: "Yahya",
-                    color: "#FF7816"
-                }
-            },
-            {
-                name: "Contact sponsor",
-                date: "27th August",
-                description: "Contact sponsor to confirm placement. Sponsor contact: 123456789",
-                member: {
-                    name: "Malek",
-                    color: "#28DAA5"
-                }
-            },
-            {
-                name: "Get food",
-                date: "28th August",
-                description: "Secure food supplies from woolies or coles, SOMETHING",
-                member: {
-                    name: "Yahya",
-                    color: "#FF7816"
-                }
-            }
-        ];
+    getMyTasks = () => {
+        const tasks = [];
+        return tasks;
     }
 
-    selectMenu(item) {
-        if (item !== this.state.selectedMenu) {
+    getAllTasks = () => {
+        const tasks = [];
+        return tasks;
+    }
+
+    handleKeyPress = (event, action, value) => {
+        if (event.key === 'Enter') {
+            if (action === 'SELECT_MENU') {
+                this.selectMenu(value);
+            } else if (action === 'SELECT_TASK') {
+                this.selectTask(value);
+            }
+        }
+    }
+
+    isSelectedMenu = (item) => {
+        const { selectedMenu } = this.state;
+        return selectedMenu === item ? 'active' : '';
+    }
+
+    isSelectedTask = (task) => {
+        const { selectedTask } = this.state;
+        return selectedTask === task ? 'active' : '';
+    }
+
+    selectMenu = (item) => {
+        const { selectedMenu } = this.state;
+        if (item !== selectedMenu) {
             this.setState({
                 selectedMenu: item,
-                selectedTask: null
+                selectedTask: null,
             });
-    
+
             if (item === 'myTasks') {
                 const tasks = this.getMyTasks();
-                this.setState({
-                    tasks: tasks
-                });
+                this.setState({ tasks });
             } else if (item === 'allTasks') {
                 const tasks = this.getAllTasks();
-                this.setState({
-                    tasks: tasks
-                });
+                this.setState({ tasks });
             }
         }
     }
 
-    selectTask(task) {
-        if (task !== this.state.selectedTask) {
-            this.setState({
-                selectedTask: task
-            });
+    selectTask = (task) => {
+        const { selectedTask } = this.state;
+        if (task !== selectedTask) {
+            this.setState({ selectedTask: task });
         }
-    }
-
-    isSelectedMenu(item) {
-        return this.state.selectedMenu === item ? 'active' : '';
-    }
-
-    isSelectedTask(task) {
-        return this.state.selectedTask === task ? 'active' : '';
     }
 
     render() {
+        const { tasks, selectedTask } = this.state;
         return (
             <div className="event-tasks-container">
                 <div className="event-menu">
-                    <div className={'event-menu-item ' + this.isSelectedMenu('myTasks')} onClick={() => this.selectMenu('myTasks')}>
-                        <h2>My Tasks</h2>
-                    </div>
-                    <div className={'event-menu-item ' + this.isSelectedMenu('allTasks')} onClick={() => this.selectMenu('allTasks')}>
-                        <h2>All Tasks</h2>
-                    </div>
+                    <MenuItem
+                        itemName="My Tasks"
+                        itemType="myTasks"
+                        isSelectedMenu={this.isSelectedMenu}
+                        selectMenu={this.selectMenu}
+                        handleKeyPress={this.handleKeyPress}
+                    />
+                    <MenuItem
+                        itemName="All Tasks"
+                        itemType="allTasks"
+                        isSelectedMenu={this.isSelectedMenu}
+                        selectMenu={this.selectMenu}
+                        handleKeyPress={this.handleKeyPress}
+                    />
                 </div>
                 <div className="event-task-list">
-                    {this.state.tasks ? 
-                        this.state.tasks.map((task, i) =>
-                            <Task name={task.name} date={task.date} member={task.member} key={i} 
-                                onClick={() => this.selectTask(task)} active={this.isSelectedTask(task)}/>
-                        )
+                    {tasks
+                        ? tasks.map(task => (
+                            <Task
+                                name={task.name}
+                                date={task.date}
+                                active={this.isSelectedTask(task)}
+                                member={task.member}
+                                key={task.name}
+                                onClick={() => this.selectTask(task)}
+                                onKeyPress={e => this.handleKeyPress(e, 'SELECT_TASK', task)}
+                            />
+                        ))
                         : ''}
                 </div>
                 <div className="event-task-details">
-                    {this.state.selectedTask ? 
-                    <TaskDetails name={this.state.selectedTask.name} date={this.state.selectedTask.date} 
-                        description={this.state.selectedTask.description} member={this.state.selectedTask.member}/>
-                    : ''}
+                    {selectedTask
+                        ? (
+                            <TaskDetails
+                                name={selectedTask.name}
+                                date={selectedTask.date}
+                                description={selectedTask.description}
+                                member={selectedTask.member}
+                            />
+                        )
+                        : ''
+                    }
                 </div>
             </div>
-        )
+        );
     }
 }
 

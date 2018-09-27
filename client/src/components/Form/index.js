@@ -1,40 +1,48 @@
-import React, { Component } from "react";
+import React from 'react';
 import { Link } from 'react-router-dom';
-import Logo from '../../resources/LOGO/logo.png'
+import PropTypes from 'prop-types';
+import Logo from '../../resources/LOGO/logo.png';
 
-
-const Header = (props) => (   
+const Form = ({
+    tagline,
+    formBody,
+    footerText,
+    footerLinkText,
+    footerLink,
+    footerLinkClick,
+}) => (
+    <div>
         <div className="form-header">
-            <img className="logo" src = {Logo} alt="logo" />
-            <div className="tagline">{props.tagline}</div>
+            <img className="logo" src={Logo} alt="logo" />
+            <div className="tagline">{tagline}</div>
         </div>
-    );
-
-const Footer = (props) => (
-        <div className="form-footer">{props.text}  
+        {formBody}
+        <div className="form-footer">
+            {footerText}
             <span className="link">
-                {!props.linkClick  
-                     ? <Link to={`${props.link}`}> {props.linkText} </Link>
-                     : <span onClick={props.linkClick}>{props.linkText}</span>}
+                {!footerLinkClick
+                    ? <Link to={`${footerLink}`}> {footerLinkText} </Link>
+                    : (
+                        <span
+                            role="link"
+                            tabIndex="0"
+                            onClick={footerLinkClick}
+                            onKeyPress={(e) => { if (e.key === 'ENTER') footerLinkClick(); }}
+                        >
+                            {footerLinkText}
+                        </span>)}
             </span>
-                        
         </div>
-     )
-
-
-class Form extends Component {
-    render() {
-        return(
-            <div>
-                <Header tagline={this.props.tagline}/>
-                {this.props.formBody}
-                <Footer text={this.props.footerText} 
-                        linkText ={this.props.footerLinkText} 
-                        link={this.props.footerLink}
-                        linkClick={this.props.footerLinkClick}/> 
-            </div>
-        )
-    }
-}
+    </div>
+);
 
 export default Form;
+
+Form.propTypes = {
+    tagline: PropTypes.string.isRequired,
+    formBody: PropTypes.element.isRequired,
+    footerText: PropTypes.string.isRequired,
+    footerLinkText: PropTypes.string.isRequired,
+    footerLink: PropTypes.string.isRequired,
+    footerLinkClick: PropTypes.func.isRequired,
+};

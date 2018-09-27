@@ -1,15 +1,21 @@
-import React, { Component } from "react";
-import Login from "../../components/Login"
-import SignUp from "../../components/SignUp"
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import Login from '../../components/Login';
+import SignUp from '../../components/SignUp';
 
 class Authentication extends Component {
     render() {
-        return(
+        const { type } = this.props;
+        return (
             <div className="form-container">
-                {this.props.type === 'Sign Up' ? <SignUp /> : <Login /> } 
+                {type === 'Sign Up' ? <SignUp /> : <Login />}
             </div>
-        )
+        );
     }
 }
 
 export default Authentication;
+
+Authentication.propTypes = {
+    type: PropTypes.string.isRequired,
+};
