@@ -89,7 +89,7 @@ function updateTask(req,res, next) {
             res.status(200).json(task);
         })
     } else {
-        res.status(400).json({"error": "All fields required for upting"});
+        res.status(400).json({"error": "All fields required for updating"});
     }
 
 }
