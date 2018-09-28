@@ -45,19 +45,24 @@ function addEvent(req, res) {
  * @param {Object} next 
  */
 function updateEvent(req,res,next){
-    Events.findOneAndUpdate({_id: res.body._id}, {
-        name: req.body.name,
-        description: req.body.description,
-        date: req.body.date,
-        last_modified: Date.now
-    }, (err) => {
-        if(err){
-            var error = new Error("Event not found");
-            error.status = 404;
-            return next(error);
-        }
-        return res.status(200).json({"message": "Event updated"});
-    })
+    if(res.body._id && res.body.name && res.body.description && res.body.date){
+        Events.findOneAndUpdate({_id: res.body._id}, {
+            name: req.body.name,
+            description: req.body.description,
+            date: req.body.date,
+            last_modified: Date.now
+        }, (err) => {
+            if(err){
+                var error = new Error("Event not found");
+                error.status = 404;
+                return next(error);
+            }
+            return res.status(200).json({"message": "Event updated"});
+        })
+    } else {
+        res.status(400).json({"error": "All fields required"})
+    }
+
 }
 
 /**
