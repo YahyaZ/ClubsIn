@@ -1,5 +1,12 @@
 import Club from '../model/clubs';
 
+/**
+ * Function communicates to create a new club file in db
+ * based on body parameters in by a POST request
+ * @param {Object} req 
+ * @param {Object} res 
+ * @param {Object} next 
+ */
 function createClub(req, res, next) {
     if(req.body.clubName && req.body.clubType && req.body.university){
         var clubData = {
@@ -35,22 +42,30 @@ function createClub(req, res, next) {
 }
 
 
-//Findall
-function getClubs(res){
+/**
+ * Function simply queries to return all found club files in db
+ * Called by a GET request
+ * @param {Object} res 
+ */
+function getClubs(res, next){
     clubs.find(function(err, clubs){
-        if(err) return console.error(err);
+        if(err) next(err);
         res.json(clubs);
     })
 }
 
 /**
- * This function is mainly used when trying to find a club to join for newly registered users
+ * This function is mainly used when trying to find a club to join for 
+ * newly registered users
+ * Called by a POST request
+ * @param {Object} res 
+ * @param {Object} req 
  */
-function findClub(res,req){
+function findClub(res,req, next){
     if(req.body.name && req.body.university){
         clubs.findOne({name: req.body.name, university: req.body.university},
             (err, doc) => {
-            if(err) console.error(err);
+            if(err) next(err);
             res.json(doc);
         });
     } else {
@@ -58,7 +73,13 @@ function findClub(res,req){
     }
 }
 
-
+/**
+ * Tries to find a single club file based on a provided _id object
+ * GET method
+ * @param {Object} res 
+ * @param {Object} req 
+ * @param {Object} next 
+ */
 function findClubById(res,req, next){
     if(req.body.id){
         clubs.findOne({_id: req.params.id},(err, doc) => {
@@ -70,19 +91,26 @@ function findClubById(res,req, next){
     }
 }
 
-//Create
-function createClub(req, res, next){
-    if(req.body.name && req,body.type && req.body.university && req.body.events){
-        new clubs({name: req.body.name, type: req.body.type, university: req.body.university, events: req.body.events })
-        .save(function(err){
-            if(err) console.error(err);
-            res.json(`Success`);
-        });
-    } else {
-        res.status(400).json({"error": "All fields required"})
-    }
-}
+// Create
+// function createClub(req, res, next){
+//     if(req.body.name && req,body.type && req.body.university && req.body.events){
+//         new clubs({name: req.body.name, type: req.body.type, university: req.body.university, events: req.body.events })
+//         .save(function(err){
+//             if(err) console.error(err);
+//             res.json(`Success`);
+//         });
+//     } else {
+//         res.status(400).json({"error": "All fields required"})
+//     }
+// }
 
+/**
+ * Retrieves a club by _id and updates it's contents based on parameters
+ * POST method
+ * @param {Object} req 
+ * @param {Object} res 
+ * @param {Object} next 
+ */
 function updateClub(req,res,next) {
     if(req.body.id){
         Clubs.findOneAndUpdate({_id: req.body._id}, {
@@ -107,6 +135,6 @@ module.exports = {
     findClub : findClub,
     createClub : createClub,
     findClubById : findClubById,
-    createClub: createClub,
+    // createClub: createClub,
     updateClub: updateClub
 }
