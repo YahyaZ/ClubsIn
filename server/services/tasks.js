@@ -1,7 +1,11 @@
 import {Tasks} from '../model/tasks';
 
 /**
- * Adds a task
+ * Adds a new task file to the database based on provided parameters
+ * POST method      
+ * @param {Object} req 
+ * @param {Object} res 
+ * @param {Object} next 
  */
 function addTask(req, res, next) {
     let event_id = req.body.event_id;
@@ -24,7 +28,6 @@ function addTask(req, res, next) {
             completed: completed,
             assignee: assignee
         };
-
         Tasks.create(taskData, (err) => {
             if(err) next(err);
             else { return res.json(taskData);}
@@ -36,8 +39,9 @@ function addTask(req, res, next) {
 
 /**
  * Finds all tasks for a specific event and returns it
- * @param {} req 
- * @param {*} res 
+ * @param {Object} req 
+ * @param {Object} res 
+ * @param {Object} next
  */
 function findTasksForEvent(req, res, next){
     Tasks.find({event_id: req.params.id}, (err, tasks)=>{
@@ -64,25 +68,30 @@ function deleteTask(req,res){
 }
 
 /**
- * Find task and update it
- * TODO: update the actual task
- * @param {*} req 
- * @param {*} res 
+ * Find task by id and update it according to provided parameters
+ * @param {Object} req 
+ * @param {Object} res
+ * @param {Object} next 
  */
 function updateTask(req,res, next) {
-    Tasks.findOneAndUpdate({ _id: req.body.id },{
-        due_date: req.body.due_date,
-        name: req.body.name,
-        description: req.body.description,
-        completed: req.body.completed,
-        assignee: req.body.assignee
-    },(err, task) => {
-        if(err) {
-            err.status = 404;
-            next(err);
-        } 
-        res.status(200).json(task);
-    })
+    if(req.body.id && req.body.due_date && req.body.name && req.body.description && req.body.completed && req.body.assignee ){
+        Tasks.findOneAndUpdate({ _id: req.body.id },{
+            due_date: req.body.due_date,
+            name: req.body.name,
+            description: req.body.description,
+            completed: req.body.completed,
+            assignee: req.body.assignee
+        },(err, task) => {
+            if(err) {
+                err.status = 404;
+                next(err);
+            } 
+            res.status(200).json(task);
+        })
+    } else {
+        res.status(400).json({"error": "All fields required for upting"});
+    }
+
 }
 
 module.exports = {
