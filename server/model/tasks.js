@@ -2,6 +2,7 @@ import mongoose from "mongoose";
 
 let taskSchema = new mongoose.Schema({
     event_id: {
+        required: [true, "Event id for this task cannot be blank"],
         type: mongoose.Schema.Types.ObjectId, 
         ref:'events'
     },
@@ -14,8 +15,16 @@ let taskSchema = new mongoose.Schema({
         ref: 'users'
     },
     due_date: Date,
-    name: String,
-    description: String,
+    name: {
+        type: String,
+        required: [true, "Task name cannot be blank"],
+        trim: true
+    },
+    description: {
+        type: String,
+        required: [true, "Description cannot be blank"],
+        trim: true
+    },
     completed: Boolean,
     assignee: [{type: mongoose.Schema.Types.ObjectId, ref: 'users'}]
 })

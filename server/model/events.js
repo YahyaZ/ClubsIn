@@ -2,12 +2,24 @@ import mongoose from "mongoose";
 
 let eventSchema = new mongoose.Schema({
     club_id: {type: mongoose.Schema.Types.ObjectId, ref:'clubs'},
-    name: String,
-    description: String,
-    date: Date,
+    name: {
+        type: String,
+        required: [true, "Event name cannot be blank"],
+        trim: true
+    },
+    description: {
+        type: String,
+        required: [true, 'University type cannot be blank'],
+        trime: true
+    },
+    date: {
+        type: Date,
+        required: [true, "Date for event cannot be blank"]
+    },
     created_by: {
         type: mongoose.Schema.Types.ObjectId, 
-        ref: 'users'
+        ref: 'users',
+        required: [true, "Created by field cannot be blank"]
     },
     last_modified: Date
 });
