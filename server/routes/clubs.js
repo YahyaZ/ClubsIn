@@ -1,6 +1,7 @@
 import express from 'express';
 import database from '../database-handler';
-import clubService from '../services/clubs'
+import clubService from '../services/clubs';
+import eventService from '../services/events';
 
 
 let router = express.Router();
@@ -37,6 +38,19 @@ router.post('/', clubService.findClub);
  *   json: JSON format of requested club
  */
 router.get('/:clubId', clubService.findClubById);
+
+/**
+ * return events with the clubId
+ * api/club/:id/events
+ * 
+ * parameters:
+ *  id: id of the requested club
+ * 
+ * responses:
+ *  404: no club of such id was found
+ *  JSON: JSON of all club events
+ */
+router.get('/:id/events', eventService.getEventsByClubId);
 
 /**
  * TODO: COMMENTING

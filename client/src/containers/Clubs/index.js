@@ -5,8 +5,24 @@ import './Club.css';
 class Club extends Component {
     constructor() {
         super();
+
+        this.state = {
+            myEvents: [],
+            allEvents: [],
+        };
+
         this.getEvents = this.getEvents.bind(this);
         this.getMyEvents = this.getMyEvents.bind(this);
+    }
+
+    componentDidMount() {
+        const myEvents = this.getMyEvents();
+        const allEvents = this.getEvents();
+
+        this.setState({
+            myEvents,
+            allEvents,
+        });
     }
 
     getEvents = () => []
@@ -39,8 +55,7 @@ class Club extends Component {
     )
 
     render() {
-        const myEvents = this.getMyEvents();
-        const allEvents = this.getEvents();
+        const { myEvents, allEvents } = this.state;
 
         return (
             <div>

@@ -4,11 +4,11 @@ import PropTypes from 'prop-types';
 
 /* Routes where you can only access if you are authenticated */
 
-const AuthenticatedRoute = ({ component, props: childProps, ...rest }) => (
+const AuthenticatedRoute = ({ component: C, props: childProps, ...rest }) => (
     <Route
         {...rest}
         render={props => childProps.isAuthenticated
-            ? <component {...props} {...childProps} />
+            ? <C {...props} {...childProps} />
             : (
                 <Redirect
                     to="/login"

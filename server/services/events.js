@@ -13,20 +13,34 @@ function getAllEvents(req, res) {
 }
 
 /**
+ * Get events with Club ID
+ * @param {Object} req
+ * @param {Object} res
+ */
+function getEventsByClubId(req, res) {
+    Events.find({club_id: req.params.id}, function(err, events) {
+        if (err) return next(err);
+        res.json(events);
+    })
+}
+
+/**
  * Adds a new event object into the DB
  * @param {Object} req 
  * @param {Object} res 
  */
-function addEvent(req, res) {
+function addEvent(req, res, next) {
     if(req.body.clubId && 
     req.body.name && 
     req.body.description && 
-    req.body.date){
+    req.body.date &&
+    req.body.createdBy){
         var eventData = {
             club_id: req.body.clubId,
             name: req.body.name,
             description: req.body.description,
-            date: req.body.date
+            date: req.body.date,
+            created_by: req.body.createdBy,
         }
 
         Events.create(eventData, (err, event) =>{
@@ -97,6 +111,7 @@ function deleteEvent(req, res, next) {
 
 module.exports = {
     getAllEvents: getAllEvents,
+    getEventsByClubId: getEventsByClubId,
     addEvent: addEvent,
     findEvent: findEvent,
     deleteEvent: deleteEvent,

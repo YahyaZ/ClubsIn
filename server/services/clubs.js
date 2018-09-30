@@ -1,4 +1,4 @@
-import Club from '../model/clubs';
+import Clubs from '../model/clubs';
 
 /**
  * Function communicates to create a new club file in db
@@ -16,7 +16,7 @@ function createClub(req, res, next) {
         }
     
         // Checks if the club is existing or not, if it doesnt, add it
-        Club.findOne({ name: clubData.name, university: clubData.university }, function (err, club) {
+        Clubs.findOne({ name: clubData.name, university: clubData.university }, function (err, club) {
             if (err) {
                 console.log(err);
             }
@@ -47,8 +47,8 @@ function createClub(req, res, next) {
  * Called by a GET request
  * @param {Object} res 
  */
-function getClubs(res, next){
-    clubs.find(function(err, clubs){
+function getClubs(req, res, next){
+    Clubs.find(function(err, clubs){
         if(err) next(err);
         res.json(clubs);
     })
@@ -63,7 +63,7 @@ function getClubs(res, next){
  */
 function findClub(res,req, next){
     if(req.body.name && req.body.university){
-        clubs.findOne({name: req.body.name, university: req.body.university},
+        Clubs.findOne({name: req.body.name, university: req.body.university},
             (err, doc) => {
             if(err) next(err);
             res.json(doc);
@@ -82,7 +82,7 @@ function findClub(res,req, next){
  */
 function findClubById(res,req, next){
     if(req.body.id){
-        clubs.findOne({_id: req.params.id},(err, doc) => {
+        Clubs.findOne({_id: req.params.id},(err, doc) => {
             if(err) next(err)
             res.status(200).json(doc);
         });
@@ -135,6 +135,5 @@ module.exports = {
     findClub : findClub,
     createClub : createClub,
     findClubById : findClubById,
-    // createClub: createClub,
     updateClub: updateClub
 }
