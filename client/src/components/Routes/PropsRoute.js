@@ -3,24 +3,21 @@ import { Route } from 'react-router-dom';
 import PropTypes from 'prop-types';
 /* With props route, you can pass in props to a Route */
 
-// Create a react element with specified props
-const renderMergedProps = (component, ...rest) => {
-    const finalProps = Object.assign({}, ...rest);
-    return (
-        React.createElement(component, finalProps)
-    );
-};
-
 // return a Route with passed in props
-const PropsRoute = ({ component, ...rest }) => (
+const PropsRoute = ({ component: C, props: childProps, ...rest }) => (
     <Route
         {...rest}
-        render={routeProps => renderMergedProps(component, routeProps, rest)}
+        render={props => <C {...props} {...childProps} />}
     />
 );
 
 export default PropsRoute;
 
+PropsRoute.defaultProps = {
+    props: {},
+};
+
 PropsRoute.propTypes = {
-    component: PropTypes.element.isRequired,
+    component: PropTypes.func.isRequired,
+    props: PropTypes.shape({}),
 };

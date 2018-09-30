@@ -1,53 +1,17 @@
 import React, { Component } from 'react';
-import { Redirect } from 'react-router-dom';
 import Event from '../../components/Events';
 import './Club.css';
-
-const profileAPI = '/api/user/profile';
 
 class Club extends Component {
     constructor() {
         super();
         this.getEvents = this.getEvents.bind(this);
         this.getMyEvents = this.getMyEvents.bind(this);
-        this.state = {
-            authorised: true,
-        };
-
-        this.setRedirect = this.setRedirect.bind(this);
-        this.renderRedirect = this.renderRedirect.bind(this);
-    }
-
-    componentDidMount() {
-        const self = this;
-        fetch(profileAPI, {
-            method: 'GET',
-            mode: 'cors',
-        }).then((response) => {
-            if (response.status === 401) {
-                self.setRedirect();
-            }
-            return response.json();
-        });// .then(data => this.setState({ data }));
     }
 
     getEvents = () => []
 
     getMyEvents = () => []
-
-    setRedirect = () => {
-        this.setState({
-            authorised: false,
-        });
-    }
-
-    renderRedirect = () => {
-        const { authorised } = this.state;
-        if (!authorised) {
-            return <Redirect to="/login" />;
-        }
-        return '';
-    }
 
     renderEvents = (eventType, events) => (
         <div className="events-container">
@@ -76,11 +40,10 @@ class Club extends Component {
 
     render() {
         const myEvents = this.getMyEvents();
-        const allEvents = this.getEvents(); // []; //for no events
+        const allEvents = this.getEvents();
 
         return (
             <div>
-                {this.renderRedirect()}
                 {
                     /*
                      * <div className="events-container">Current User : {this.state.firstName}</div>

@@ -38,11 +38,18 @@ const Form = ({
 
 export default Form;
 
+Form.defaultProps = {
+    footerLinkClick: undefined,
+    footerText: '',
+    footerLinkText: '',
+    footerLink: '',
+};
+
 Form.propTypes = {
     tagline: PropTypes.string.isRequired,
     formBody: PropTypes.element.isRequired,
-    footerText: PropTypes.string.isRequired,
-    footerLinkText: PropTypes.string.isRequired,
-    footerLink: PropTypes.string.isRequired,
-    footerLinkClick: PropTypes.func.isRequired,
+    footerText: PropTypes.string,
+    footerLinkText: PropTypes.string,
+    footerLink: PropTypes.string,
+    footerLinkClick: PropTypes.func,
 };

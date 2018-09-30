@@ -120,8 +120,12 @@ class SignUpFormStart extends Component {
 
 export default SignUpFormStart;
 
+SignUpFormStart.defaultProps = {
+    message: '',
+};
+
 SignUpFormStart.propTypes = {
-    message: PropTypes.string.isRequired,
+    message: PropTypes.string,
     buttonClick: PropTypes.func.isRequired,
     handleInputChange: PropTypes.func.isRequired,
 };
