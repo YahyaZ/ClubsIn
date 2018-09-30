@@ -1,14 +1,10 @@
 import React from 'react';
-import PropTypes from 'prop-types';
+import Routes from './Routes';
 
-const App = ({ children }) => (
+const App = () => (
     <main>
-        {children}
+        <Routes />
     </main>
 );
 
 export default App;
-
-App.propTypes = {
-    children: PropTypes.element.isRequired,
-};
