@@ -13,8 +13,7 @@
 
 body {
   font-family: var(--font), sans-serif;
-  /*background-color: var(--light-blue);*/
-  background-color: #ff0;
+  background-color: var(--light-blue);
   color: black;
   font-size: 24px;
 
