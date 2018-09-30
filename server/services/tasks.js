@@ -1,4 +1,4 @@
-import {Tasks} from '../model/tasks';
+import Tasks from '../model/tasks';
 
 /**
  * Adds a new task file to the database based on provided parameters
@@ -8,25 +8,22 @@ import {Tasks} from '../model/tasks';
  * @param {Object} next 
  */
 function addTask(req, res, next) {
-    let event_id = req.body.event_id;
-    let created_date = req.body.created_date;
-    let created_by = req.body.created_by;
-    let due_date = req.body.due_date;
-    let name = req.body.name;
-    let description = req.body.description;
-    let completed = req.body.completed;
-    let assignee = req.body.assignee;
-    if(event_id && created_by && created_date && due_date && name && description
-    && completed && assignee) {
+    const {
+        event_id,
+        created_by,
+        due_date,
+        name,
+        description,
+        assignee,
+    } = req.body;
+    if(event_id && created_by && due_date && name && description && assignee) {
         var taskData = {
             event_id: event_id,
-            created_date: created_date,
             created_by: created_by,
             due_date: due_date,
             name: name,
             description: description,
-            completed: completed,
-            assignee: assignee
+            assignee: [assignee],
         };
         Tasks.create(taskData, (err) => {
             if(err) next(err);

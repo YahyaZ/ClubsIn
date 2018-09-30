@@ -37,7 +37,7 @@ router.post('/', clubService.findClub);
  *   404: no club of such id was found
  *   json: JSON format of requested club
  */
-router.get('/:clubId', clubService.findClubById);
+router.get('/:id', clubService.findClubById);
 
 /**
  * return events with the clubId
@@ -51,6 +51,11 @@ router.get('/:clubId', clubService.findClubById);
  *  JSON: JSON of all club events
  */
 router.get('/:id/events', eventService.getEventsByClubId);
+
+/**
+ * return club events that user has tasks in
+ */
+router.get('/:clubId/events/:userId', eventService.getUserEventsByClubId);
 
 /**
  * TODO: COMMENTING

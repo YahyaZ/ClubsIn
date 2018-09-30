@@ -25,9 +25,12 @@ let taskSchema = new mongoose.Schema({
         required: [true, "Description cannot be blank"],
         trim: true
     },
-    completed: Boolean,
+    completed: {
+        type: Boolean,
+        default: false
+    },
     assignee: [{type: mongoose.Schema.Types.ObjectId, ref: 'users'}]
 })
 
 var Tasks = mongoose.model('Tasks', taskSchema, 'tasks');
-module.exports.Tasks = Tasks;
+module.exports = Tasks;

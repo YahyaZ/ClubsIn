@@ -80,8 +80,8 @@ function findClub(res,req, next){
  * @param {Object} req 
  * @param {Object} next 
  */
-function findClubById(res,req, next){
-    if(req.body.id){
+function findClubById(req, res, next){
+    if(req.params.id){
         Clubs.findOne({_id: req.params.id},(err, doc) => {
             if(err) next(err)
             res.status(200).json(doc);
