@@ -15,7 +15,7 @@ body {
   font-family: var(--font), sans-serif;
   background-color: var(--light-blue);
   color: black;
-  font-size: 24px;
+  font-size: 18px;
 
 }
 
@@ -125,6 +125,11 @@ body {
 .active {
   background-color: #0085FF;
   color: #fff;
+}
+
+.well-normal {
+  background-color: #f8f8f8;
+  border-color: #e7e7e7;
 }
 
 main > div {

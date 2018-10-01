@@ -93,6 +93,11 @@ UserSchema.statics.authenticate = function (email, password, callback) {
     })
   });
 
+  UserSchema.methods.toJSON = function() {
+    var obj = this.toObject();
+    delete obj.password;
+    return obj;
+   }
   
 var User = mongoose.model('User', UserSchema);
 module.exports = User;
