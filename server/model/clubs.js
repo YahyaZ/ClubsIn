@@ -21,6 +21,9 @@ let ClubSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User'
       }],
+    inviteLink: {
+      type: String,
+    },
     created: {
         type: Date,
         default: Date.now, 
