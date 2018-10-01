@@ -53,11 +53,6 @@ router.get('/:id', clubService.findClubById);
 router.get('/:id/events', eventService.getEventsByClubId);
 
 /**
- * return club events that user has tasks in
- */
-router.get('/:clubId/events/:userId', eventService.getUserEventsByClubId);
-
-/**
  * TODO: COMMENTING
  */
 router.put('/', clubService.updateClub)
