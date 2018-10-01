@@ -17,10 +17,12 @@ const Header = (props) => (
             </Link>
         </Navbar.Header>
         <Nav>
+        <div className="navbar-buttons">
             {!props.props.isAuthenticated && <Route exact path = "/" component={LandingButtons} /> }
             {props.props.isAuthenticated && <PropsRoute path = "/" component={LogOutButton} props={props}/>}
             <Route path="/club" component={ClubButtons} />
             <Route path="/event" component={EventButtons} />
+            </div>
         </Nav>
     </Navbar>
 );

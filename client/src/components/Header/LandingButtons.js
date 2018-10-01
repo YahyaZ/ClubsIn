@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import './Header.css';
 
 const LandingButtons = () => (
-    <div className="navbar-buttons">
+    <div >
         <Link to="/login"><Button bsStyle="primary">Log In</Button></Link>
         <Link to="/signup"><Button bsStyle="primary">Sign Up</Button></Link>
     </div>
