@@ -2,12 +2,13 @@ import React from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import Header from './components/Header';
 import Landing from './components/Landing';
-import Authentication from './containers/Authentication';
+import Authentication from './containers/authentication';
 import PropsRoute from './components/Routes/PropsRoute';
 import AuthenticatedRoute from './components/Routes/AuthenticatedRoute';
 import Club from './containers/Clubs';
 import EventTasks from './containers/EventTasks';
 import NotFound from './components/NotFound';
+import Dashboard from './components/Dashboard';
 
 /* Routes for application */
 
@@ -15,9 +16,11 @@ import NotFound from './components/NotFound';
 export default ({ childProps }) => ( // eslint-disable-line react/prop-types
     <Router>
         <div>
-            <Header />
+            <Header props={childProps}/>
             <Switch>
-                <Route exact path="/" component={Landing} />
+                <PropsRoute exact path="/" 
+                            component={Landing} 
+                            props={childProps} />
                 <PropsRoute
                     path="/login"
                     component={Authentication}

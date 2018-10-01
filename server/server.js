@@ -34,8 +34,6 @@ let MongoStore = connectMongo(session);
 app.use(cookieParser());
 app.use(session({
   secret: 'work hard',
-  resave: true,
-  saveUninitialized: false,
   store: new MongoStore({
     mongooseConnection: db
   })
