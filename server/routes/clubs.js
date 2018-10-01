@@ -24,8 +24,6 @@ router.post('/create', clubService.createClub);
  */
 router.post('/', clubService.findClub);
 
-
-
 /**
  * return a single club based on id
  * api/club/:clubId
