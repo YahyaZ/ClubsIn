@@ -13,11 +13,17 @@
     text-decoration: none;
 }
 
-
-
 .events-list {
     display: flex;
     flex-wrap: wrap;
+    justify-content: space-between;
+}
+
+/* Little hack to keep evenly spaced but left aligned */
+.events-list:after {
+    content: "";
+    flex: 0 1 200px;
+    margin: 5px;
 }
 
 .no-events {
