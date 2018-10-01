@@ -6,12 +6,14 @@ import './Club.css';
 const clubId = '5ba6df946695553b38e2098d';
 const userId = '5bb0639c99ec5216f478c17f';
 class Club extends Component {
-    constructor() {
-        super();
+    constructor(props) {
+        super(props);
 
         this.state = {
             myEvents: [],
             allEvents: [],
+            userId: JSON.parse(localStorage.getItem('User'))._id,
+            clubId: props.match.params.clubId,
         };
 
         this.getEvents = this.getEvents.bind(this);
