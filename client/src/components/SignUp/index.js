@@ -16,11 +16,6 @@ class SignUp extends Component {
                 lastName: '',
                 password: '',
                 passwordConf: '',
-                club: {
-                    name: '',
-                    type: '',
-                    university: '',
-                },
             },
         };
 
@@ -155,7 +150,18 @@ class SignUp extends Component {
     render() {
         return (
             <div>
-                {this.renderSwitch()}
+                 <Form
+                    formBody={(
+                        <SignUpFormStart
+                            buttonClick={this.submitForm}
+                            handleInputChange={this.handleInputChange}
+                        />
+                    )}
+                    tagline="Start Managing your club today!"
+                    footerText="Already have an account"
+                    footerLinkText="Log in here"
+                    footerLink="/login"
+                />
             </div>
         );
     }

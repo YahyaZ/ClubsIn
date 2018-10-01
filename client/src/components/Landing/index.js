@@ -1,8 +1,10 @@
 import React from 'react';
+import Dashboard from '../Dashboard';
+import Welcome from '../Welcome';
 
-const Landing = () => (
+const Landing = (props) => (
     <div>
-        Welcome to ClubsIn!
+        {props.isAuthenticated?<Dashboard /> : <Welcome />}
     </div>
 );
 

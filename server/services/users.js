@@ -67,8 +67,8 @@ function signUp(req, res, next) {
     req.body.firstName &&
     req.body.lastName &&
     req.body.password &&
-    req.body.passwordConf &&
-    req.body.club) {
+    req.body.passwordConf
+  ) {
 
     var userData = {
       email: req.body.email,
@@ -77,10 +77,6 @@ function signUp(req, res, next) {
       password: req.body.password,
       passwordConf: req.body.passwordConf,
     }
-
-    var clubData = req.body.club
-
-    console.log(clubData);
 
     // Checks if the user is existing or not, if it doesnt, add it
     User.findOne({ email: req.body.email }, function (err, user) {
@@ -92,20 +88,13 @@ function signUp(req, res, next) {
         res.status(400).json({ "error": "User Already Exists" })
       } else {
         // No user is found, so create it
-      
-        let newUser = new User(userData);
-        let newClub = new Club(clubData);
-        newUser.clubs.push(newClub._id);
-        newClub.users.push(newUser._id);
 
-        newUser.save(function(err){
-          if(err) {console.log(err); return next(err);}
-          newClub.save(function(err){
-            if(err) {console.log(err); return next(err);}
-          })
+        let newUser = new User(userData);
+        newUser.save(function (err) {
+          if (err) { console.log(err); return next(err); }
           req.session.userId = newUser._id;
           res.send(newUser);
-         
+
         })
       }
     });
@@ -135,7 +124,7 @@ function login(req, res, next) {
         console.log(user.email + " logged in")
         // Sets the Session Usedid
         req.session.userId = user._id;
-        return res.status(200).json({ token: token });
+        res.status(200).json({ token: token });
       }
     });
   } else {
@@ -143,7 +132,26 @@ function login(req, res, next) {
     err.status = 400;
     return next(err);
   }
+}
 
+
+function logout(req, res, next) {
+  if (req.session) {
+    req.session.destroy(function (err) {
+      if (err) {
+        return next(err);
+      } else {
+        res.status(204).send();
+        
+      
+      }
+    }
+    )
+  } else {
+    var err = new Error ('Session not found');
+    err.status = 404;
+    return next(err);
+  }
 }
 
 module.exports = {
@@ -151,4 +159,5 @@ module.exports = {
   getAllUsers: getAllUsers,
   signUp: signUp,
   login: login,
+  logout: logout,
 }
