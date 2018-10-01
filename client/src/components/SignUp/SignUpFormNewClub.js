@@ -2,14 +2,23 @@ import React, { Component } from 'react';
 import { FaUniversity } from 'react-icons/fa';
 import { FormGroup, InputGroup, FormControl } from 'react-bootstrap';
 import PropTypes from 'prop-types';
+import Form from '../../components/Form'
+import { Redirect } from 'react-router-dom';
 
 class SignUpFormNewClub extends Component {
     constructor(props) {
         super(props);
         this.state = {
             universities: [],
+            input:{
+                university:'',
+                name:'',
+                type:'',
+            },
             fetched: false,
         };
+
+        this.submitForm = this.submitForm.bind(this);
     }
 
     componentDidMount() {
@@ -24,25 +33,65 @@ class SignUpFormNewClub extends Component {
             });
     }
 
-    render() {
-        const { buttonClick, handleInputChange } = this.props;
-        const { fetched, universities } = this.state;
+    handleInputChange(newPartialInput) {
+        this.setState(state => ({
+            ...state,
+            input: {
+                ...state.input,
+                ...newPartialInput,
+            },
+        }));
+    }
+
+    submitForm(e) {
+        let self = this;
+        e.preventDefault();
+        e.stopPropagation();
+        const { input } = self.state;
+        fetch('/api/club/create', {
+            method: 'POST',
+            mode: 'cors',
+            credentials: 'same-origin',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(input),
+        }).then(function(response){
+            // Some sort of error in the User field
+            if (response.status === 400) {
+                response.json().then((data) => {
+                    self.setState({ message: data.error });
+                });
+            } else if (response.status === 200) {
+                response.json().then(data => {
+                    let existingUser = JSON.parse(localStorage.getItem('User'));
+                    existingUser.clubs.push(data._id);
+                    localStorage.setItem('User', JSON.stringify(existingUser));
+                    self.setState({ redirect: true });
+                })
+               
+            }
+        })
+    }
+
+    renderForm() {
+        if(this.state.redirect){
+            return <Redirect push to="/" />
+        }
         return (
-            <form className="form-body" onSubmit={buttonClick}>
+            <form className="form-body" onSubmit={this.submitForm}>
                 <FormGroup controlId="universityControlsSelect">
                     <InputGroup>
                         <InputGroup.Addon><FaUniversity /></InputGroup.Addon>
-                        {fetched
+                        {this.state.fetched
                             ? (
                                 <FormControl
                                     componentClass="select"
                                     placeholder="University/College"
                                     onChange={e => (
-                                        handleInputChange({ university: e.target.value })
+                                        this.handleInputChange({ university: e.target.value })
                                     )}
                                 >
-                                    <option readOnly disabled key={-1}>Select a University</option>
-                                    {universities.map(uni => (
+                                    <option disabled selected key={-1} value="">Select a University</option>
+                                    {this.state.universities.map(uni => (
                                         <option key={uni._id} value={uni._id}>{uni.name}</option>
                                     ))}
                                 </FormControl>
@@ -58,7 +107,7 @@ class SignUpFormNewClub extends Component {
                             type="text"
                             placeholder="Club Name"
                             name="clubName"
-                            onChange={e => handleInputChange({ name: e.target.value })}
+                            onChange={e => this.handleInputChange({ name: e.target.value })}
                         />
                     </InputGroup>
                 </FormGroup>
@@ -69,8 +118,9 @@ class SignUpFormNewClub extends Component {
                             componentClass="select"
                             placeholder="Club Type"
                             name="clubType"
-                            onChange={e => handleInputChange({ type: e.target.value })}
+                            onChange={e => this.handleInputChange({ type: e.target.value })}
                         >
+                            <option disabled selected key={-1} value="">Choose a type</option>
                             <option value="Religious">Religious </option>
                             <option value="Faculty">Faculty </option>
                             <option value="Culture">Culture </option>
@@ -86,11 +136,23 @@ class SignUpFormNewClub extends Component {
             </form>
         );
     }
+
+    render(){
+        return(
+            <div className="form-container">
+            <Form
+                    formBody={(
+                        this.renderForm()
+                    )}
+                    tagline="Register your Club Now!"
+                    footerText="Already registered your club yet?"
+                    footerLinkText="Find it here"
+                    footerLinkClick={() => this.goToPage('existingClub')}
+                />
+                </div>
+        )
+    }
 }
 
 export default SignUpFormNewClub;
 
-SignUpFormNewClub.propTypes = {
-    buttonClick: PropTypes.func.isRequired,
-    handleInputChange: PropTypes.func.isRequired,
-};

@@ -1,5 +1,4 @@
 import express from 'express';
-import database from '../database-handler';
 import clubService from '../services/clubs';
 import eventService from '../services/events';
 

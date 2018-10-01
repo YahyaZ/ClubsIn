@@ -3,9 +3,6 @@
  * @module UserServices
  */
 import User from '../model/users';
-import mongoose from 'mongoose';
-import Club from '../model/clubs';
-import jsonwebtoken from 'jsonwebtoken';
 
 /**
  * Find the user based on the current session
@@ -117,14 +114,11 @@ function login(req, res, next) {
       if (error || !user) {
         res.status(400).json({ "error": "Wrong email or password" })
       } else {
-        // User is found, provide jwt to be used for authentication
-        let token = jsonwebtoken.sign({ id: user._id, email: user.email, firstName: user.firstName }, 'supersecret', {
-          expiresIn: 86400 // expires in 24 hours
-        });
         console.log(user.email + " logged in")
         // Sets the Session Usedid
         req.session.userId = user._id;
-        res.status(200).json({ token: token });
+        delete user.password;
+        res.status(200).json(user);
       }
     });
   } else {
@@ -142,16 +136,28 @@ function logout(req, res, next) {
         return next(err);
       } else {
         res.status(204).send();
-        
-      
+
+
       }
     }
     )
   } else {
-    var err = new Error ('Session not found');
+    var err = new Error('Session not found');
     err.status = 404;
     return next(err);
   }
+}
+
+function addUserToClub(userId, clubId) {
+  if (userId && clubId) {
+    User.findOneAndUpdate(
+      { _id: userId },
+      { $push: { clubs: clubId }}, (err,user)=>{
+          return err;
+      });
+      return true;
+  }
+  return false;
 }
 
 module.exports = {
@@ -160,4 +166,5 @@ module.exports = {
   signUp: signUp,
   login: login,
   logout: logout,
+  addUserToClub: addUserToClub,
 }

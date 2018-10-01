@@ -8,6 +8,7 @@ import AuthenticatedRoute from './components/Routes/AuthenticatedRoute';
 import Club from './containers/Clubs';
 import EventTasks from './containers/EventTasks';
 import NotFound from './components/NotFound';
+import SignUpNewClub from './components/SignUp/SignUpFormNewClub'
 import Dashboard from './components/Dashboard';
 
 /* Routes for application */
@@ -38,6 +39,7 @@ export default ({ childProps }) => ( // eslint-disable-line react/prop-types
                     }}
                 />
                 <AuthenticatedRoute path="/club" component={Club} props={childProps} />
+                <AuthenticatedRoute path="/newClub" component={SignUpNewClub} props={childProps} />
                 <Route path="/event" component={EventTasks} />
                 {/* Unmatched routes */}
                 <Route component={NotFound} />
