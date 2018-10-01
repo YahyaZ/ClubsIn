@@ -7,11 +7,12 @@ class Login extends Component {
         return (
             // Renders the Form
             <Form
-                formBody={<LoginForm />}
+                formBody={<LoginForm authenticate={this.props.childProps.authenticate} />}
                 tagline="Log in to manage your club"
                 footerText="Don't have an account yet?"
                 footerLinkText="Sign up here"
                 footerLink="/signup"
+                
             />
         );
     }

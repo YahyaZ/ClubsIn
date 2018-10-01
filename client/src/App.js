@@ -9,27 +9,37 @@ class App extends Component {
             isAuthenticated: false,
             isAuthenticating: true,
         };
+        this.authenticate = this.authenticate.bind(this);
     }
 
     async componentDidMount() {
-        const self = this;
+        this.authenticate();
 
-        fetch('/api/user/profile', {
-            method: 'GET',
-            mode: 'cors',
-        }).then((response) => {
-            if (response.status === 401) {
-                self.setState({ isAuthenticating: false });
-            } else {
-                self.setState({ isAuthenticated: true, isAuthenticating: false });
-            }
-        });
+    }
+
+    authenticate = (isLoggedIn) => {
+        let self = this;
+        if (typeof isLoggedIn !== 'undefined') {
+            self.setState({ isAuthenticating: false, isAuthenticated: isLoggedIn })
+        } else {
+            fetch('/api/user/profile', {
+                method: 'GET',
+                mode: 'cors',
+            }).then((response) => {
+                if (response.status === 401) {
+                    self.setState({ isAuthenticating: false, isAuthenticated: false });
+                } else {
+                    self.setState({ isAuthenticated: true, isAuthenticating: false });
+                }
+            });
+        }
     }
 
     render() {
         const { isAuthenticated, isAuthenticating } = this.state;
         const childProps = {
             isAuthenticated,
+            authenticate: this.authenticate,
         };
         return (
             !isAuthenticating

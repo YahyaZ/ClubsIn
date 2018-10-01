@@ -74,6 +74,7 @@ class LoginForm extends Component {
             } else if (response.status === 200) {
                 // User is logged in
                 // console.log('User logged in');
+                self.props.authenticate(true);
                 self.setState({ redirect: true });
             }
         });
@@ -110,7 +111,7 @@ class LoginForm extends Component {
         const { redirect, message, type } = this.state;
         // If Redirect is true, redirect the page to the club page
         if (redirect) {
-            return <Redirect to="/club" />;
+            return <Redirect to="/" />;
         }
         return (
             <div>

@@ -59,6 +59,9 @@ router.post('/login', UserService.login);
  *  - 200 - User Details
  *  - 401 - Unauthorised to get details
  */
+
+router.get('/logout', UserService.logout);
+
 router.get('/profile', requiresLogin, UserService.findUser);
 
 

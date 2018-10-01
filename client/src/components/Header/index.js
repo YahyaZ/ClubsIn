@@ -6,8 +6,10 @@ import './Header.css';
 import LandingButtons from './LandingButtons';
 import ClubButtons from './ClubButtons';
 import EventButtons from './EventButtons';
+import LogOutButton from './LogOutButton';
+import PropsRoute from '../../components/Routes/PropsRoute';
 
-const Header = () => (
+const Header = (props) => (
     <Navbar fixedTop>
         <Navbar.Header>
             <Link to="/">
@@ -15,7 +17,8 @@ const Header = () => (
             </Link>
         </Navbar.Header>
         <Nav>
-            <Route exact path="/" component={LandingButtons} />
+            {!props.props.isAuthenticated && <Route exact path = "/" component={LandingButtons} /> }
+            {props.props.isAuthenticated && <PropsRoute path = "/" component={LogOutButton} props={props}/>}
             <Route path="/club" component={ClubButtons} />
             <Route path="/event" component={EventButtons} />
         </Nav>
