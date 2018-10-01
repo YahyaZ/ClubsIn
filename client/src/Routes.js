@@ -2,7 +2,7 @@ import React from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import Header from './components/Header';
 import Landing from './components/Landing';
-import Authentication from './containers/authentication';
+import Authentication from './containers/Authentication';
 import PropsRoute from './components/Routes/PropsRoute';
 import AuthenticatedRoute from './components/Routes/AuthenticatedRoute';
 import Club from './containers/Clubs';
@@ -17,11 +17,14 @@ import Dashboard from './components/Dashboard';
 export default ({ childProps }) => ( // eslint-disable-line react/prop-types
     <Router>
         <div>
-            <Header props={childProps}/>
+            <Header props={childProps} />
             <Switch>
-                <PropsRoute exact path="/" 
-                            component={Landing} 
-                            props={childProps} />
+                <PropsRoute
+                    exact
+                    path="/"
+                    component={Landing}
+                    props={childProps}
+                />
                 <PropsRoute
                     path="/login"
                     component={Authentication}

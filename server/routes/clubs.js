@@ -23,8 +23,6 @@ router.post('/create', clubService.createClub);
  */
 router.post('/', clubService.findClub);
 
-
-
 /**
  * return a single club based on id
  * api/club/:clubId
@@ -50,11 +48,6 @@ router.get('/:id', clubService.findClubById);
  *  JSON: JSON of all club events
  */
 router.get('/:id/events', eventService.getEventsByClubId);
-
-/**
- * return club events that user has tasks in
- */
-router.get('/:clubId/events/:userId', eventService.getUserEventsByClubId);
 
 /**
  * TODO: COMMENTING

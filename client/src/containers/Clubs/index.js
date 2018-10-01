@@ -2,6 +2,9 @@ import React, { Component } from 'react';
 import Event from '../../components/Events';
 import './Club.css';
 
+// TODO: Actually get ID's from session
+const clubId = '5ba6df946695553b38e2098d';
+const userId = '5bb0639c99ec5216f478c17f';
 class Club extends Component {
     constructor() {
         super();
@@ -16,18 +19,40 @@ class Club extends Component {
     }
 
     componentDidMount() {
-        const myEvents = this.getMyEvents();
-        const allEvents = this.getEvents();
+        this.getEvents();
+    }
 
-        this.setState({
-            myEvents,
-            allEvents,
+    getEvents = () => {
+        const self = this;
+        fetch(`/api/club/${clubId}/events`, {
+            method: 'GET',
+            mode: 'cors',
+        }).then((response) => {
+            if (response.status === 401) {
+                return [];
+            }
+            return response.json();
+        }).then((allEvents) => {
+            self.setState({ allEvents });
+            this.getMyEvents(allEvents);
         });
     }
 
-    getEvents = () => []
+    getMyEvents = (events) => {
+        const myEvents = events.reduce((result, event) => {
+            event.tasks.forEach((task) => {
+                task.assignee.forEach((assigneeId) => {
+                    if (assigneeId === userId
+                        && !result.find(ev => event._id === ev._id)) {
+                        result.push(event);
+                    }
+                });
+            });
+            return result;
+        }, []);
 
-    getMyEvents = () => []
+        this.setState({ myEvents });
+    }
 
     renderEvents = (eventType, events) => (
         <div className="events-container">
@@ -39,9 +64,9 @@ class Club extends Component {
                     <Event
                         date={e.date}
                         name={e.name}
-                        link={e.link}
-                        members={e.members}
-                        key={e.name}
+                        members={e.users}
+                        link={e._id}
+                        key={e._id}
                     />
                 ))}
             </div>

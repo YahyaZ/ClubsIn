@@ -7,19 +7,19 @@ import './Event.css';
 const Event = ({
     date,
     name,
-    link,
     members,
+    link,
 }) => (
-    <Link to={{ pathname: link }}>
+    <Link to={{ pathname: `/event/${link}` }}>
         <div className="event-container">
             <div className="event-date">
-                <h3>{date}</h3>
+                <h3>{new Date(date).toDateString()}</h3>
             </div>
             <div className="event-details">
                 <h4>{name}</h4>
                 <div className="member-list">
                     {members.map(member => (
-                        <Member name={member.name} color={member.color} key={member.name} />
+                        <Member name={member.firstName} key={member._id} />
                     ))}
                 </div>
             </div>
@@ -32,6 +32,6 @@ export default Event;
 Event.propTypes = {
     date: PropTypes.string.isRequired,
     name: PropTypes.string.isRequired,
+    members: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
     link: PropTypes.string.isRequired,
-    members: PropTypes.string.isRequired,
 };

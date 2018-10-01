@@ -1,6 +1,6 @@
-import Events from '../model/events';
 import mongoose from 'mongoose';
-import Tasks from '../model/tasks';
+import Events from '../model/events';
+import Users from '../model/users';
 
 /**
  * Returns all events
@@ -20,50 +20,50 @@ function getAllEvents(req, res) {
  * @param {Object} res
  */
 function getEventsByClubId(req, res, next) {
-    Events.find({club_id: req.params.id}, function(err, events) {
-        if (err) return next(err);
-        res.json(events);
-    })
-}
-
-/**
- * Get events with Club ID that the user has tasks in
- */
-function getUserEventsByClubId(req, res, next) {
-    const { clubId, userId } = req.params;
-    // Find all events with club id, and return it with an extra property
-    // 'event_tasks' which contains the events tasks
+    // match event with club id,
+    // then join tasks that have event_id into new property 'tasks'
     Events.aggregate([
-        { $match: { club_id: mongoose.Types.ObjectId(clubId) } },
+        { $match: { club_id: mongoose.Types.ObjectId(req.params.id) } },
         {
             $lookup: {
                 from: 'tasks',
                 localField: '_id',
                 foreignField: 'event_id',
-                as: 'event_tasks'
+                as: 'tasks'
             }
         }
-    ]).then((events) => {
-        // loop over the tasks to find if a task contains the current user
-        const userEvents = events.reduce((result, event) => {
-            // event has tasks
-            if (event.event_tasks) {
-                event.event_tasks.forEach(task => {
-                    task.assignee.forEach(user => {
-                        // user has a task and the event hasn't already been added
-                        if (user._id.equals(userId)
-                        && !result.find(e => e._id === event._id)) {
-                            result.push(event);
-                        }
-                    });
-                });
-            }
-            return result;
-        }, []);
+    ], async (err, events) => {
+        if (err) next(err);
+        const userEvents = await getUserEvents(events, next);
         res.json(userEvents);
-    }).catch(err => {
-        next(err);
     });
+}
+
+/**
+ * Async call to mongoose to get users
+ * that have tasks within an event
+ */
+async function getUserEvents(events, next) {
+    try {
+        await Promise.all(events.map(async (event) => {
+            let users = [];
+            for (const taskIndex in event.tasks) {
+                for (const userIndex in event.tasks[taskIndex].assignee) {
+                    const userDetails = await Users.findOne({_id: event.tasks[taskIndex].assignee[userIndex] }).exec();
+                    if (userDetails 
+                        && !users.find(user => user._id.equals(userDetails._id))) {
+                        users.push(userDetails);
+                    }
+                }
+            }
+            console.log(users);
+            event.users = users;
+        }));
+    } catch(err) {
+        next(err)
+    }
+    
+    return events;
 }
 
 /**
@@ -154,7 +154,6 @@ function deleteEvent(req, res, next) {
 module.exports = {
     getAllEvents: getAllEvents,
     getEventsByClubId: getEventsByClubId,
-    getUserEventsByClubId: getUserEventsByClubId,
     addEvent: addEvent,
     findEvent: findEvent,
     deleteEvent: deleteEvent,
