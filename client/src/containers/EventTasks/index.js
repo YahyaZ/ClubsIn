@@ -9,24 +9,53 @@ class EventTasks extends Component {
         super();
         this.state = {
             selectedMenu: 'myTasks',
-            tasks: [],
+            selectedTasks: [],
             selectedTask: null,
+            userId: JSON.parse(localStorage.getItem('User'))._id,
         };
     }
 
     componentDidMount() {
-        const tasks = this.getMyTasks();
-        this.setState({ tasks });
+        this.getMyTasks();
     }
 
     getMyTasks = () => {
-        const tasks = [];
-        return tasks;
+        const { selectedTasks, userId } = this.state;
+        const myTasks = selectedTasks.reduce((result, task) => {
+            task.assignee.forEach((assigneeId) => {
+                if (assigneeId === userId
+                    && !result.find(t => t._id === task._id)) {
+                    result.push(task);
+                }
+            });
+            return result;
+        }, []);
+
+        this.setState({ selectedTasks: myTasks });
     }
 
     getAllTasks = () => {
-        const tasks = [];
-        return tasks;
+        const { tasks } = this.state;
+        this.setState({ selectedTask: tasks });
+    }
+
+    getTasks = () => {
+        const self = this;
+        const { match } = this.props; // eslint-disable-line
+        fetch(`/api/tasks/${match.params.eventId}`, {
+            method: 'GET',
+            mode: 'cors',
+        }).then((response) => {
+            if (response.status === 401) {
+                return [];
+            }
+            return response.json();
+        }).then((allTasks) => {
+            self.setState({
+                tasks: allTasks,
+                selectedTasks: allTasks,
+            });
+        });
     }
 
     handleKeyPress = (event, action, value) => {

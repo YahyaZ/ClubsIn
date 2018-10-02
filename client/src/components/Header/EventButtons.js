@@ -1,8 +1,8 @@
 import React from 'react';
-import { Button } from 'react-bootstrap';
+import { Button, NavItem } from 'react-bootstrap';
 
 const EventButtons = () => (
-    <Button bsStyle="primary">Add Task</Button>
+    <NavItem><Button bsStyle="primary">Add Task</Button></NavItem>
 );
 
 export default EventButtons;
