@@ -5,10 +5,11 @@ import Landing from './components/Landing';
 import Authentication from './containers/Authentication';
 import PropsRoute from './components/Routes/PropsRoute';
 import AuthenticatedRoute from './components/Routes/AuthenticatedRoute';
+import AddEvent from './components/Events/AddEvent';
 import Club from './containers/Clubs';
 import EventTasks from './containers/EventTasks';
 import NotFound from './components/NotFound';
-import SignUpNewClub from './components/SignUp/SignUpFormNewClub'
+import SignUpNewClub from './components/SignUp/SignUpFormNewClub';
 
 /* Routes for application */
 
@@ -40,9 +41,10 @@ export default ({ childProps }) => ( // eslint-disable-line react/prop-types
                         type: 'Sign Up',
                     }}
                 />
-                <AuthenticatedRoute path="/club/:clubId" component={Club} props={childProps} />
+                <AuthenticatedRoute exact path="/club/:clubId" component={Club} props={childProps} />
                 <AuthenticatedRoute path="/newClub" component={SignUpNewClub} props={childProps} />
-                <Route path="/event" component={EventTasks} />
+                <AuthenticatedRoute exact path="/club/:clubId/event" component={AddEvent} props={childProps} />
+                <AuthenticatedRoute exact path="/club/:clubId/event/:id" component={EventTasks} props={childProps} />
                 {/* Unmatched routes */}
                 <Route component={NotFound} />
             </Switch>

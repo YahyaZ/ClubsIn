@@ -10,7 +10,7 @@ const Event = ({
     members,
     link,
 }) => (
-    <Link to={{ pathname: `/event/${link}` }}>
+    <Link to={link}>
         <div className="event-container">
             <div className="event-date">
                 <h3>{new Date(date).toDateString()}</h3>

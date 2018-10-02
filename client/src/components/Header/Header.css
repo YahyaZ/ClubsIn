@@ -4,6 +4,10 @@ nav {
     align-items: center;
 }
 
+.navbar-header {
+    margin-top: 10px;
+}
+
 ul.navbar-nav {
     float: right;
 }

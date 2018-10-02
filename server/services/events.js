@@ -72,17 +72,25 @@ async function getUserEvents(events, next) {
  * @param {Object} res 
  */
 function addEvent(req, res, next) {
-    if(req.body.clubId && 
-    req.body.name && 
-    req.body.description && 
-    req.body.date &&
-    req.body.createdBy){
+    const {
+        clubId,
+        name,
+        description,
+        date,
+        createdBy,
+    } = req.body;
+    console.log(req.body);
+    if(clubId
+        && name 
+        && description
+        && date
+        && createdBy) {
         var eventData = {
-            club_id: req.body.clubId,
-            name: req.body.name,
-            description: req.body.description,
-            date: req.body.date,
-            created_by: req.body.createdBy,
+            club_id: clubId,
+            name: name,
+            description: description,
+            date: date,
+            created_by: createdBy,
         }
 
         Events.create(eventData, (err, event) =>{
