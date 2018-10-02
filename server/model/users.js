@@ -5,7 +5,6 @@
 
 import mongoose from "mongoose";
 import bcrypt from 'bcrypt';
-import Club from './clubs';
 
 /**
  * Creates the User schema
