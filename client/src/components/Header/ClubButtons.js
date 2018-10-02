@@ -1,8 +1,8 @@
 import React, { Component, Fragment } from 'react';
-import { Button } from 'react-bootstrap';
-import { Link } from 'react-router-dom';
+import { Button, NavItem } from 'react-bootstrap';
 import './Header.css';
 import InviteClub from '../InviteClub';
+import MenuLink from './MenuLink';
 
 class ClubButtons extends Component {
     constructor() {
@@ -29,11 +29,13 @@ class ClubButtons extends Component {
         const { match } = this.props; // eslint-disable-line
         return (
             <Fragment>
-                <Link to={{ pathname: `/club/${match.params.clubId}/event` }}>
+                <MenuLink to={{ pathname: `/club/${match.params.clubId}/event` }}>
                     <Button bsStyle="primary">Add Event</Button>
-                </Link>
-                <Button bsStyle="success" onClick={this.handleShow}>Invite Execs</Button>
-                <InviteClub show={show} hide={this.handleClose} />
+                </MenuLink>
+                <NavItem>
+                    <Button bsStyle="success" onClick={this.handleShow}>Invite Execs</Button>
+                    <InviteClub show={show} hide={this.handleClose} />
+                </NavItem>
             </Fragment>
         );
     }

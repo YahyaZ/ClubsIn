@@ -1,5 +1,5 @@
 import React from 'react';
-import { Navbar, Nav } from 'react-bootstrap';
+import { Navbar, Nav, NavItem } from 'react-bootstrap';
 import { Route, Link } from 'react-router-dom';
 import LOGO from '../../resources/LOGO/logo.png';
 import './Header.css';
@@ -17,15 +17,13 @@ const Header = props => (
             </Link>
         </Navbar.Header>
         <Nav>
-            <div className="navbar-buttons">
-                { // ignore lint as this is messed up lol
-                    props.props.isAuthenticated // eslint-disable-line
-                        ? <PropsRoute path="/" component={LogOutButton} props={props} />
-                        : <Route exact path="/" component={LandingButtons} />
-                }
-                <Route exact path="/club/:clubId" component={ClubButtons} />
-                <Route exact path="/club/:clubId/event/:eventId" component={EventButtons} />
-            </div>
+            <Route exact path="/club/:clubId" component={ClubButtons} />
+            <Route exact path="/club/:clubId/event/:eventId" component={EventButtons} />
+            { // ignore lint as this is messed up lol
+                props.props.isAuthenticated // eslint-disable-line
+                    ? <PropsRoute path="/" component={LogOutButton} props={props} />
+                    : <Route exact path="/" component={LandingButtons} />
+            }
         </Nav>
     </Navbar>
 );
