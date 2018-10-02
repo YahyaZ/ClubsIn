@@ -51,9 +51,13 @@ function createClub(req, res, next) {
  * @param {Object} res 
  */
 function getClubs(req, res, next){
-    Clubs.find(function(err, clubs){
+    var options = req.query.q || null;
+    UserService.getUser(req.session.userId, function(err, currUser){
         if(err) next(err);
-        res.json(clubs);
+        Clubs.find({_id:{$in: currUser.clubs}},options,function(err, clubs){
+            if(err) next(err);
+            res.json(clubs);
+        })
     })
 }
 

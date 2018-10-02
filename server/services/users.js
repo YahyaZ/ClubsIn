@@ -13,7 +13,7 @@ function findUser(req, res) {
   let id = req.session.userId;
 
   // Gets the User based on the id provided by the session
-  return User.findOne({ _id: id },
+  getUser(id,
     function (err, user) {
       if (err) {
         return res.status(404).json({
@@ -29,6 +29,10 @@ function findUser(req, res) {
       }
       return res.json(user);
     });
+}
+
+function getUser(id, callback){
+  return User.findOne({_id: id}, callback)
 }
 
 /**
@@ -182,6 +186,7 @@ function addUserToClub(userId, clubId) {
 
 module.exports = {
   findUser: findUser,
+  getUser: getUser,
   getAllUsers: getAllUsers,
   signUp: signUp,
   login: login,
