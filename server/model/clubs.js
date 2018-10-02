@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import User from './users'
+import bcrypt from 'bcrypt';
 
 let ClubSchema = new mongoose.Schema({
     name: {
@@ -28,6 +28,20 @@ let ClubSchema = new mongoose.Schema({
         type: Date,
         default: Date.now, 
       },
+    link: {
+      type: String,
+    }
+});
+
+ClubSchema.pre('save', function (next) {
+  var club = this;
+  bcrypt.hash(club._id.toString(), 3, function (err, hash) {
+    if (err) {
+      return next(err);
+    }
+    club.link = hash.substring(3, 10);
+    next();
+  })
 });
 
 let Clubs = mongoose.model('Club',ClubSchema);

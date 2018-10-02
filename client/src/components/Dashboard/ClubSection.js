@@ -3,9 +3,33 @@ import { FaFrown } from 'react-icons/fa';
 import React, { Component } from 'react';
 import SignUpFormChooseClubType from '../SignUp/signUpFormChooseClubType'
 import { Link } from 'react-router-dom'
+import { Button } from 'react-bootstrap';
 
+const ClubBox = (props) => (
+   <Button bsStyle="primary box">{props.club.name}</Button>
+)
 
 class ClubSection extends Component {
+
+    state = {
+        clubs : []
+    }
+
+
+    componentDidMount(){
+        let self = this;
+        fetch('/api/club?q=name', {
+            method: 'GET',
+            mode: 'cors',
+        }).then((response) => {
+            if (response.status === 401) {
+                return [];
+            }
+            return response.json();
+        }).then((clubs) => {
+            self.setState({ clubs });
+        });
+    }
 
     renderNoClubs() {
         return (
@@ -30,9 +54,11 @@ class ClubSection extends Component {
         return (
             <div>
                 Go to a club page:
-                {this.props.clubs.map(function(club){
-                   return <ul><Link to="/">{club}</Link></ul>
+                <div className="club-container">
+                {this.state.clubs.map(function(club){
+                   return <ClubBox club={club} />
                 })}
+                </div>
             {this.renderNewClubs()}
             </div>
         );
