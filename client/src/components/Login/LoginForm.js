@@ -75,11 +75,10 @@ class LoginForm extends Component {
                 // User is logged in
                 // console.log('User logged in');
                 self.props.authenticate(true);
-                response.json().then(data => {
+                response.json().then((data) => {
                     localStorage.setItem('User', JSON.stringify(data));
                     self.setState({ redirect: true });
-                })
-               
+                });
             }
         });
     }
