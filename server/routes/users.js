@@ -64,5 +64,6 @@ router.get('/logout', UserService.logout);
 
 router.get('/profile', requiresLogin, UserService.findUser);
 
+router.put('/update', UserService.updatePassword);
 
 module.exports = router;

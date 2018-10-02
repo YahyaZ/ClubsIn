@@ -3,6 +3,7 @@ import { Grid, Row, Col, Well } from 'react-bootstrap';
 import ClubSection from './ClubSection';
 import UserManagement from './UserManagment';
 import './dashboard.css'
+import Update from '../ChangePassword'
 
 const DashboardSection = (props) => {
     return (
@@ -32,6 +33,7 @@ class Dashboard extends Component {
                     <DashboardSection title="Clubs" component={<ClubSection clubs={this.state.user.clubs} />}/>
                     <DashboardSection title="Upcoming Events" component={<div>This is where they can find upcoming events</div>} />
                     <DashboardSection title="Assigned Tasks" component={<div>This is where they can get assigned tasks</div>} />
+                    <DashboardSection title="Settings" component={ <Update/>} />
                 </Grid>
             </div>
         )

@@ -2,7 +2,7 @@ import React from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import Header from './components/Header';
 import Landing from './components/Landing';
-import Authentication from './containers/Authentication';
+import Authentication from './containers/authentication';
 import PropsRoute from './components/Routes/PropsRoute';
 import AuthenticatedRoute from './components/Routes/AuthenticatedRoute';
 import Club from './containers/Clubs';

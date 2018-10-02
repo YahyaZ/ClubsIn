@@ -128,6 +128,26 @@ function login(req, res, next) {
   }
 }
 
+function updatePassword(req, res, next){
+  if(req.body.newPassword && req.body.email && req.body.password){
+    User.authenticate(req.body.email, req.body.password, function (error, user) {
+      if (error || !user) {
+        res.status(400).json({ "error": "Wrong email or password" })
+      } else {
+        user.password = req.body.newPassword;
+        user.save((err, updateUser) => {
+          if(err) return next(err);
+          res.status(200).json(updateUser);
+        });
+      }
+    });
+  } else if(req.body.newPassword != req.body.confirmPassword){
+    return res.status(400).json({"error" : "Please confirm new password is correct in both fields"});
+  } else{
+    return res.status(400).json({"error" : "Please fill out all fields"});
+  }
+}
+
 
 function logout(req, res, next) {
   if (req.session) {
@@ -167,4 +187,5 @@ module.exports = {
   login: login,
   logout: logout,
   addUserToClub: addUserToClub,
+  updatePassword: updatePassword
 }
