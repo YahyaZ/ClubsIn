@@ -9,6 +9,9 @@ import {
     FormControl,
     InputGroup,
     Checkbox,
+    PageHeader,
+    Button,
+    ButtonGroup
 } from 'react-bootstrap';
 import { Link, Redirect } from 'react-router-dom';
 
@@ -18,11 +21,13 @@ const updateApi = '/api/user/update';
 class ChangePasswordForm extends Component {
     constructor(props) {
         super(props);
+        let user = JSON.parse(localStorage.getItem('User'));
         this.state = {
+            user,
             type: 'password',
             message: '',
             input: {
-                email: '',
+                email: user.email,
                 password: '',
                 newPassword: '',
                 confirmPassword: ''
@@ -104,24 +109,18 @@ class ChangePasswordForm extends Component {
         // If Redirect is true, redirect the page to the club page
         return (
             <div>
+                <PageHeader>
+                    <small bsStyle="default">Change Password</small>
+                </PageHeader>
                 <label className="form-header" >{message} </label>
                 <form className="form-body" onSubmit={this.update}>
-                    <FormGroup>
-                        <InputGroup>
-                            <FormControl
-                                type="email"
-                                placeholder="Email Address"
-                                name="email"
-                                onChange={e => this.handleInputChange({ email: e.target.value })}
-                            />
-                        </InputGroup>
-                    </FormGroup>
                     <FormGroup>
                         <InputGroup>
                             <FormControl
                                 type={type}
                                 placeholder="Password"
                                 name="password"
+                                required
                                 onChange={e => this.handleInputChange({ password: e.target.value })}
                             />
                             <InputGroup.Addon
@@ -139,6 +138,7 @@ class ChangePasswordForm extends Component {
                                 type={type}
                                 placeholder="New Password"
                                 name="newPassword"
+                                required
                                 onChange={e => this.handleInputChange({ newPassword: e.target.value })}
                             />
                             <InputGroup.Addon
@@ -156,6 +156,7 @@ class ChangePasswordForm extends Component {
                                 type={type}
                                 placeholder="Confirm Password"
                                 name="confirmPassword"
+                                required
                                 onChange={e => this.handleInputChange({ confirmPassword: e.target.value })}
                             />
                             <InputGroup.Addon
@@ -165,7 +166,9 @@ class ChangePasswordForm extends Component {
                             </InputGroup.Addon>
                         </InputGroup>
                     </FormGroup>
-                    <button  type="submit" className="form-button">Confirm</button>
+                    <ButtonGroup vertical block>
+                        <Button  type="submit"  bsStyle="primary" >Confirm</Button>
+                    </ButtonGroup>
                 </form>
             </div>
         )
