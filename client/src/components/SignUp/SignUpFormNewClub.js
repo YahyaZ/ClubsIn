@@ -1,19 +1,18 @@
 import React, { Component } from 'react';
 import { FaUniversity } from 'react-icons/fa';
 import { FormGroup, InputGroup, FormControl } from 'react-bootstrap';
-import PropTypes from 'prop-types';
-import Form from '../../components/Form'
 import { Redirect } from 'react-router-dom';
+import Form from '../Form';
 
 class SignUpFormNewClub extends Component {
     constructor(props) {
         super(props);
         this.state = {
             universities: [],
-            input:{
-                university:'',
-                name:'',
-                type:'',
+            input: {
+                university: '',
+                name: '',
+                type: '',
             },
             fetched: false,
         };
@@ -44,44 +43,44 @@ class SignUpFormNewClub extends Component {
     }
 
     submitForm(e) {
-        let self = this;
+        const self = this;
         e.preventDefault();
         e.stopPropagation();
-        const { input } = self.state;
+        const { input } = this.state;
         fetch('/api/club/create', {
             method: 'POST',
             mode: 'cors',
             credentials: 'same-origin',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(input),
-        }).then(function(response){
+        }).then((response) => {
             // Some sort of error in the User field
             if (response.status === 400) {
                 response.json().then((data) => {
                     self.setState({ message: data.error });
                 });
             } else if (response.status === 200) {
-                response.json().then(data => {
-                    let existingUser = JSON.parse(localStorage.getItem('User'));
+                response.json().then((data) => {
+                    const existingUser = JSON.parse(localStorage.getItem('User'));
                     existingUser.clubs.push(data._id);
                     localStorage.setItem('User', JSON.stringify(existingUser));
                     self.setState({ redirect: true });
-                })
-               
+                });
             }
-        })
+        });
     }
 
     renderForm() {
-        if(this.state.redirect){
-            return <Redirect push to="/" />
+        const { redirect, fetched, universities } = this.state;
+        if (redirect) {
+            return <Redirect push to="/" />;
         }
         return (
             <form className="form-body" onSubmit={this.submitForm}>
                 <FormGroup controlId="universityControlsSelect">
                     <InputGroup>
                         <InputGroup.Addon><FaUniversity /></InputGroup.Addon>
-                        {this.state.fetched
+                        {fetched
                             ? (
                                 <FormControl
                                     componentClass="select"
@@ -91,7 +90,7 @@ class SignUpFormNewClub extends Component {
                                     )}
                                 >
                                     <option disabled selected key={-1} value="">Select a University</option>
-                                    {this.state.universities.map(uni => (
+                                    {universities.map(uni => (
                                         <option key={uni._id} value={uni._id}>{uni.name}</option>
                                     ))}
                                 </FormControl>
@@ -137,22 +136,19 @@ class SignUpFormNewClub extends Component {
         );
     }
 
-    render(){
-        return(
+    render() {
+        return (
             <div className="form-container">
-            <Form
-                    formBody={(
-                        this.renderForm()
-                    )}
+                <Form
+                    formBody={(this.renderForm())}
                     tagline="Register your Club Now!"
                     footerText="Already registered your club yet?"
                     footerLinkText="Find it here"
                     footerLinkClick={() => this.goToPage('existingClub')}
                 />
-                </div>
-        )
+            </div>
+        );
     }
 }
 
 export default SignUpFormNewClub;
-

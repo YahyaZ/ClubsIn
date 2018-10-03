@@ -1,20 +1,23 @@
 import React from 'react';
-import { Button } from 'react-bootstrap';
+import { Button, NavItem } from 'react-bootstrap';
 
-const LogOutButton = (props) => (
-        <Button bsStyle="primary"
-                onClick={function(){
-                    fetch('/api/user/logout',{
-                        mode: 'cors',
-                    })
-                    .then(function(response){
-                        if(response.status == 204){
-                            props.props.authenticate(false);
-                            localStorage.removeItem('User');
-                        }
-                    });
-                }}>Log Out</Button>
-    
-);
+const LogOutButton = (props) => {
+    const logout = () => {
+        fetch('/api/user/logout', {
+            mode: 'cors',
+        }).then((response) => {
+            if (response.status === 204) {
+                props.props.authenticate(false); // eslint-disable-line
+                localStorage.removeItem('User');
+            }
+        });
+    };
+
+    return (
+        <NavItem>
+            <Button bsStyle="danger" onClick={logout}>Log Out</Button>
+        </NavItem>
+    );
+};
 
 export default LogOutButton;

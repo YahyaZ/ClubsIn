@@ -7,9 +7,9 @@ import LandingButtons from './LandingButtons';
 import ClubButtons from './ClubButtons';
 import EventButtons from './EventButtons';
 import LogOutButton from './LogOutButton';
-import PropsRoute from '../../components/Routes/PropsRoute';
+import PropsRoute from '../Routes/PropsRoute';
 
-const Header = (props) => (
+const Header = props => (
     <Navbar fixedTop>
         <Navbar.Header>
             <Link to="/">
@@ -17,12 +17,13 @@ const Header = (props) => (
             </Link>
         </Navbar.Header>
         <Nav>
-        <div className="navbar-buttons">
-            {!props.props.isAuthenticated && <Route exact path = "/" component={LandingButtons} /> }
-            {props.props.isAuthenticated && <PropsRoute path = "/" component={LogOutButton} props={props}/>}
-            <Route path="/club" component={ClubButtons} />
-            <Route path="/event" component={EventButtons} />
-            </div>
+            <Route exact path="/club/:clubId" component={ClubButtons} />
+            <Route exact path="/club/:clubId/event/:eventId" component={EventButtons} />
+            { // ignore lint as this is messed up lol
+                props.props.isAuthenticated // eslint-disable-line
+                    ? <PropsRoute path="/" component={LogOutButton} props={props} />
+                    : <Route exact path="/" component={LandingButtons} />
+            }
         </Nav>
     </Navbar>
 );
