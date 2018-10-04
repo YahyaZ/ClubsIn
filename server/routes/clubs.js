@@ -49,8 +49,11 @@ router.get('/:id', clubService.findClubById);
  */
 router.get('/:id/events', eventService.getEventsByClubId);
 
+router.post('/invite', clubService.addUserToClub)
+
 /**
  * TODO: COMMENTING
  */
+
 router.put('/', clubService.updateClub)
 module.exports = router;

@@ -1,6 +1,7 @@
 import mongoose from 'mongoose';
 import Events from '../model/events';
 import Users from '../model/users';
+import ClubService from './clubs';
 
 /**
  * Returns all events
@@ -159,11 +160,26 @@ function deleteEvent(req, res, next) {
     })
 }
 
+
+function getUpcomingEvents(req, res, next){
+    let userId = req.session.userId;
+    ClubService.getClubsByUserId(userId,"",function(clubs){
+        let clubArray = clubs.map(function(club){
+            return club._id;
+        })
+        Events.find({club_id: {$in: clubArray}}, function(err, events){
+            if(err) next (err);
+            res.json(events);
+        })
+    })
+
+}
 module.exports = {
     getAllEvents: getAllEvents,
     getEventsByClubId: getEventsByClubId,
     addEvent: addEvent,
     findEvent: findEvent,
     deleteEvent: deleteEvent,
-    updateEvent: updateEvent
+    updateEvent: updateEvent,
+    getUpcomingEvents: getUpcomingEvents,
 }

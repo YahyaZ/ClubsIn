@@ -46,17 +46,55 @@ function createClub(req, res, next) {
 
 
 /**
+ * Adds a user to a club
+ * @param {Object} req 
+ * @param {Object} res 
+ * @param {Object} next 
+ */
+function addUserToClub(req, res, next) {
+    if(req.body.inviteCode){
+        console.log(req.body.inviteCode, req.session.userId);
+        // Checks if the club is existing or not, if it doesnt, add it
+        Clubs.findOneAndUpdate({$and: [{link: req.body.inviteCode},{users: {$ne:req.session.userId}}]},{
+            $push: {users: req.session.userId}
+        }, function (err, club) {
+            console.log('Added');
+            if (err) {
+                console.log(err);
+            }
+            // Club Exists, so return Club Already exists
+            if (club) {
+                UserService.addUserToClub(req.session.userId, club._id)
+                req.session.clubId = club._id;
+                return res.json(club)
+            } else {
+                // No club is found, Invalid Link
+                res.status(404).json({"error": "Invite Link Invalid"})
+            }
+        });
+    } else {
+        res.status(400).json({"error": "All Fields required"})
+    }
+}
+
+/**
  * Function simply queries to return all found club files in db
  * Called by a GET request
  * @param {Object} res 
  */
 function getClubs(req, res, next){
     var options = req.query.q || null;
-    UserService.getUser(req.session.userId, function(err, currUser){
+    getClubsByUserId(req.session.userId, options, function(clubs){
+        res.json(clubs);
+    })
+}
+
+function getClubsByUserId(userId, options, callback){
+    UserService.getUser(userId, function(err, currUser){
         if(err) next(err);
         Clubs.find({_id:{$in: currUser.clubs}},options,function(err, clubs){
             if(err) next(err);
-            res.json(clubs);
+            callback(clubs);
         })
     })
 }
@@ -129,5 +167,7 @@ module.exports = {
     findClub : findClub,
     createClub : createClub,
     findClubById : findClubById,
-    updateClub: updateClub
+    updateClub: updateClub,
+    addUserToClub: addUserToClub,
+    getClubsByUserId: getClubsByUserId
 }

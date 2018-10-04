@@ -29,6 +29,17 @@ router.get('/', EventService.getAllEvents)
 router.post('/', EventService.addEvent);
 
 /**
+ * GET METHOD - Get All Events
+ *  parameters: 
+ *      -
+ *  outputs:
+ *      - 200: All events in a JSON format
+ *      - 404: No events found
+ */
+router.get('/upcoming', EventService.getUpcomingEvents)
+
+
+/**
  * GET METHOD
  *  parameters:
  *    - id: id of the event that is requested
@@ -36,7 +47,10 @@ router.post('/', EventService.addEvent);
  *    - 404: No event of such id was found
  *    - json: Event in json format
  */
+
 router.get('/:id', EventService.findEvent);
+
+
 
 /**
  * DELETE METHOD
