@@ -10,13 +10,34 @@
     font-size: 1em;
     white-space: normal;
     word-wrap: break-word;
-    display: block;
-    padding: 5px;
+    display: flex; 
+    background-color: var(--logo-blue);
+    
 }
+
+.box:hover {
+    background-color: var(--green);
+    cursor: pointer;
+}
+
+a:hover {
+    text-decoration: none;
+}
+
+.box p {
+    margin: auto;
+    color: white;
+    
+}
+
+
+
 
 .club-container {
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
     justify-content: space-evenly;
+    align-items: center;
+  
 }

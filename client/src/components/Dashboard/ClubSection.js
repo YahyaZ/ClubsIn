@@ -6,17 +6,23 @@ import { Link } from 'react-router-dom'
 import { Button } from 'react-bootstrap';
 
 const ClubBox = (props) => (
-   <Button bsStyle="primary box">{props.club.name}</Button>
+
+    <Link to={`/club/${props.club._id}`} >
+        <div className="box"> 
+            <p>{props.club.name}</p>
+        </div>
+    </Link>
+
 )
 
 class ClubSection extends Component {
 
     state = {
-        clubs : []
+        clubs: []
     }
 
 
-    componentDidMount(){
+    componentDidMount() {
         let self = this;
         fetch('/api/club?q=name', {
             method: 'GET',
@@ -55,11 +61,11 @@ class ClubSection extends Component {
             <div>
                 Go to a club page:
                 <div className="club-container">
-                {this.state.clubs.map(function(club){
-                   return <ClubBox club={club} />
-                })}
+                    {this.state.clubs.map(function (club) {
+                        return <ClubBox key={club._id} club={club} />
+                    })}
                 </div>
-            {this.renderNewClubs()}
+                {this.renderNewClubs()}
             </div>
         );
 
