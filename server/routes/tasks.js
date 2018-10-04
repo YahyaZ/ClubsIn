@@ -22,6 +22,8 @@ let router = express.Router();
  */
 router.post('/', TaskService.addTask)
 
+router.get('/assigned', TaskService.assignedTask);
+
 /**
  * /api/tasks/:id
  * GET - RETURNS ALL  TASKS FOR AN EVENT
@@ -31,7 +33,10 @@ router.post('/', TaskService.addTask)
  *  - 200: returns JSON format of all found tasks
  *  - 404: No tasks with such event_id is found
  */
+
 router.get('/:id', TaskService.findTasksForEvent)
+
+
 
 
 /**

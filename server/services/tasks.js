@@ -91,9 +91,18 @@ function updateTask(req,res, next) {
 
 }
 
+function assignedTask(req,res,next){
+    let userId = req.session.userId;
+    Tasks.find({assignee : userId}, function(err, tasks){
+        if(err) next(err);
+        res.json(tasks);
+    })
+}
+
 module.exports = {
     addTask: addTask,
     findTasksForEvent: findTasksForEvent,
     deleteTask: deleteTask,
-    updateTask: updateTask
+    updateTask: updateTask,
+    assignedTask: assignedTask,
 }
