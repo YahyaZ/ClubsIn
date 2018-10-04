@@ -2,6 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import Logo from '../../resources/LOGO/logo.png';
+import { Alert } from 'react-bootstrap'
 
 const Form = ({
     tagline,
@@ -10,11 +11,13 @@ const Form = ({
     footerLinkText,
     footerLink,
     footerLinkClick,
+    errorMessage
 }) => (
     <div>
         <div className="form-header">
             <img className="logo" src={Logo} alt="logo" />
             <div className="tagline">{tagline}</div>
+            {errorMessage && <Alert bsStyle="warning">{errorMessage}</Alert>}
         </div>
         {formBody}
         <div className="form-footer">
