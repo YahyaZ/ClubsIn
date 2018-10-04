@@ -57,9 +57,12 @@ app.use('/api', router);
 
 
 // If there is no Page give error of 404
-app.use(function (req, res, next) {
-  var err = new Error('File Not Found');
-  err.status = 404;
+app.use(function (err, req, res, next) {
+  if(!err){
+    var err = new Error('File Not Found');
+    err.status = 404;
+  }
+  
   next(err);
 });
 
