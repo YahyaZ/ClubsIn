@@ -10,6 +10,7 @@ class SignUp extends Component {
         super(props);
         this.state = {
             page: 'start',
+            errorMessage: '',
             input: {
                 email: '',
                 firstName: '',
@@ -20,7 +21,6 @@ class SignUp extends Component {
         };
 
         this.goToPage = this.goToPage.bind(this);
-        this.renderSwitch = this.renderSwitch.bind(this);
         this.handleInputChange = this.handleInputChange.bind(this);
         this.handleInputClubChange = this.handleInputClubChange.bind(this);
         this.updateUser = this.updateUser.bind(this);
@@ -67,6 +67,7 @@ class SignUp extends Component {
     submitForm(e) {
         e.preventDefault();
         e.stopPropagation();
+        let self = this;
         const { input } = this.state;
         fetch('/api/user/signup', {
             method: 'POST',
@@ -74,78 +75,16 @@ class SignUp extends Component {
             credentials: 'same-origin',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(input),
-        }).then(response => response.json());
-        /* .then((data) => {
-            console.log(data);
-        }); */
-    }
+        }).then(function(response){
+            if(response.status == 400){
+                response.json().then(
+                   data => self.setState({errorMessage: data.error})
+                );
+                
+                }
+            })
+        };
 
-    renderSwitch() {
-        const { page } = this.state;
-        switch (page) {
-        case 'start':
-            return (
-                <Form
-                    formBody={(
-                        <SignUpFormStart
-                            buttonClick={this.updateUser}
-                            handleInputChange={this.handleInputChange}
-                        />
-                    )}
-                    tagline="Start Managing your club today!"
-                    footerText="Already have an account"
-                    footerLinkText="Log in here"
-                    footerLink="/login"
-                />
-            );
-        case 'chooseClubType':
-            return (
-                <Form
-                    formBody={(
-                        <SignUpFormChooseClubType
-                            existingClubButtonClick={() => this.goToPage('existingClub')}
-                            newClubButtonClick={() => this.goToPage('newClub')}
-                        />
-                    )}
-                    tagline="Are you joining an existing club or registering a new club"
-                />
-            );
-        case 'existingClub':
-            return (
-                <Form
-                    formBody={(
-                        <SignUpFormExistingClub
-                            buttonClick={() => this.goToPage('start')}
-                            handleInputChange={this.handleInputClubChange}
-                        />
-                    )}
-                    tagline="Find your Club!"
-                    footerText="Haven't registered your club yet?"
-                    footerLinkText="Create one here"
-                    footerLinkClick={() => this.goToPage('newClub')}
-                />
-            );
-        case 'newClub':
-            return (
-                <Form
-                    formBody={(
-                        <SignUpFormNewClub
-                            buttonClick={this.submitForm}
-                            handleInputChange={this.handleInputClubChange}
-                        />
-                    )}
-                    tagline="Register your Club Now!"
-                    footerText="Already registered your club yet?"
-                    footerLinkText="Find it here"
-                    footerLinkClick={() => this.goToPage('existingClub')}
-                />
-            );
-        default:
-            return (
-                <p>404 - Page Not Found</p>
-            );
-        }
-    }
 
     render() {
         return (
@@ -161,6 +100,7 @@ class SignUp extends Component {
                     footerText="Already have an account"
                     footerLinkText="Log in here"
                     footerLink="/login"
+                    errorMessage={this.state.errorMessage}
                 />
             </div>
         );
