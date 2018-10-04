@@ -34,7 +34,7 @@ class ClubButtons extends Component {
                 </MenuLink>
                 <NavItem>
                     <Button bsStyle="success" onClick={this.handleShow}>Invite Execs</Button>
-                    <InviteClub show={show} hide={this.handleClose} />
+                    <InviteClub show={show} clubId={match.params.clubId} hide={this.handleClose} />
                 </NavItem>
             </Fragment>
         );

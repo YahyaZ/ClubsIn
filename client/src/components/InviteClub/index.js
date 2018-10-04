@@ -1,5 +1,5 @@
 import React, { Component, Fragment } from 'react';
-import { Modal, FormControl, Button, Form } from 'react-bootstrap';
+import { Modal, FormControl, Button, Form, Alert } from 'react-bootstrap';
 
 
 class InviteClub extends Component {
@@ -7,8 +7,28 @@ class InviteClub extends Component {
     constructor(props) {
         super(props);
 
-        this.state = { copySuccess: '',
-    value: 'AAWDawd23dwadawdawd3d' }
+        this.state = {
+            copySuccess: '',
+            value: 'Loading...',
+            club: {
+                link : '',
+            }
+        }
+    }
+
+    componentDidMount(){
+        let self = this;
+        fetch(`/api/club/${this.props.clubId}`, {
+            method: 'GET',
+            mode: 'cors',
+        }).then((response) => {
+            if (response.status === 401) {
+                return [];
+            }
+            return response.json();
+        }).then((club) => {
+            self.setState({ club });
+        });
     }
 
     copyToClipboard = (e) => {
@@ -27,12 +47,13 @@ class InviteClub extends Component {
                     <Modal.Title>Invite Execs to this Club</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
+                    {this.state.copySuccess && <Alert bsStyle="success">{this.state.copySuccess}</Alert>}
                     Please send the code below to invite another exec into the club
                     <Form inline>
                         <FormControl readOnly
-                            inputRef={(ref) => {this.input = ref}}
+                            inputRef={(ref) => { this.input = ref }}
                             type="text"
-                            value={this.state.value}
+                            value={this.state.club.link || this.state.value}
                             placeholder="Enter text"
                         />
                         <Button onClick={this.copyToClipboard}>Copy</Button>
@@ -45,4 +66,3 @@ class InviteClub extends Component {
 }
 
 export default InviteClub;
-
