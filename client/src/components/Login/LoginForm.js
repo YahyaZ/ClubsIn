@@ -151,14 +151,6 @@ class LoginForm extends Component {
                             </InputGroup.Addon>
                         </InputGroup>
                     </FormGroup>
-                    <div className="form-body-footer">
-                        <Checkbox name="rememberMe">
-                            Remember Me
-                        </Checkbox>
-                        <Link to="/forgotten" className="form-bottom-left link">
-                            Forgot Password?
-                        </Link>
-                    </div>
                     <button type="submit" className="form-button">Log In</button>
                 </form>
             </div>
