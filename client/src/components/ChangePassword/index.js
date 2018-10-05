@@ -5,11 +5,12 @@ import {
     FaEyeSlash,
 } from 'react-icons/fa';
 import {
+    Form,
     FormGroup,
     FormControl,
     InputGroup,
     Modal,
-    PageHeader,
+    Col,
     Button,
     ButtonGroup
 } from 'react-bootstrap';
@@ -130,6 +131,9 @@ class ChangePasswordForm extends Component {
     render() {
         const { message, type } = this.state;
         // If Redirect is true, redirect the page to the club page
+        let style = { 
+            width: "100%"
+        };
         return (
             <div>
                 <br/>
@@ -142,9 +146,9 @@ class ChangePasswordForm extends Component {
                     </Modal.Header>
                     <Modal.Body>
                         <label className="form-header" >{message} </label>
-                        <form className="form-body" onSubmit={this.update}>
-                            <FormGroup>
-                                <InputGroup>
+                        <Form horizontal className="form-body" width={style} onSubmit={this.update}>
+                            <FormGroup >
+                                <InputGroup  style={style}>
                                     <FormControl
                                         type={type}
                                         placeholder="Password"
@@ -152,17 +156,10 @@ class ChangePasswordForm extends Component {
                                         required
                                         onChange={e => this.handleInputChange({ password: e.target.value })}
                                     />
-                                    <InputGroup.Addon
-                                        onClick={this.showHidePassword}
-                                    >
-                                        {type === 'input' ? <FaEye /> : <FaEyeSlash />}
-                                    </InputGroup.Addon>
                                 </InputGroup>
                             </FormGroup>
-                            <FormGroup>
-                                <InputGroup>
-                                    <label name="newPasswordLbl">
-                                    </label>
+                            <FormGroup >
+                                <InputGroup style={style}>
                                     <FormControl
                                         type={type}
                                         placeholder="New Password"
@@ -170,17 +167,10 @@ class ChangePasswordForm extends Component {
                                         required
                                         onChange={e => this.handleInputChange({ newPassword: e.target.value })}
                                     />
-                                    <InputGroup.Addon
-                                        onClick={this.showHidePassword}
-                                    >
-                                        {type === 'input' ? <FaEye /> : <FaEyeSlash />}
-                                    </InputGroup.Addon>
                                 </InputGroup>
                             </FormGroup>
-                            <FormGroup>
-                                <InputGroup>
-                                    <label name="confimrPasswordLbl">
-                                    </label>
+                            <FormGroup >
+                                <InputGroup style={style}>
                                     <FormControl
                                         type={type}
                                         placeholder="Confirm Password"
@@ -188,17 +178,21 @@ class ChangePasswordForm extends Component {
                                         required
                                         onChange={e => this.handleInputChange({ confirmPassword: e.target.value })}
                                     />
-                                    <InputGroup.Addon
-                                        onClick={this.showHidePassword}
-                                    >
-                                        {type === 'input' ? <FaEye /> : <FaEyeSlash />}
-                                    </InputGroup.Addon>
+                                   <ButtonGroup vertical block>
+                                        <Button  bsSize="small" bsStyle="link" onClick={this.showHidePassword}>
+                                            {type === 'input' ? ("Hide Password") 
+                                            : ("Show Password"  )}
+                                        </Button>
+                                    </ButtonGroup>
                                 </InputGroup>
+
                             </FormGroup>
+
+                            <br/>
                             <ButtonGroup vertical block>
-                                <Button  type="submit"  bsStyle="primary" >Confirm</Button>
+                                <Button  style={style} type="submit"  bsStyle="primary" >Confirm</Button>
                             </ButtonGroup>
-                        </form>
+                        </Form>
                     </Modal.Body>
                 </Modal>
             </div>
