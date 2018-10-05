@@ -8,7 +8,7 @@ import {
     FormGroup,
     FormControl,
     InputGroup,
-    Checkbox,
+    Modal,
     PageHeader,
     Button,
     ButtonGroup
@@ -32,8 +32,12 @@ class ChangePasswordForm extends Component {
                 newPassword: '',
                 confirmPassword: ''
             },
+            show: false,
             redirect: false,
         };
+        
+        this.handleShow = this.handleShow.bind(this);
+        this.handleClose = this.handleClose.bind(this);
 
         this.showHidePassword = this.showHidePassword.bind(this);
         this.update = this.update.bind(this);
@@ -74,12 +78,20 @@ class ChangePasswordForm extends Component {
                         this.setState((state) => {
                             return {message: "Password Updated!"};
                         })
+                        setTimeout(this.handleClose, 1000);
                     })
                 }
             });
         }
     }
 
+    handleClose() {
+        this.setState({ show: false });
+      }
+    
+      handleShow() {
+        this.setState({ show: true });
+      }
 
     /**
      * Updates any input change in the Form
@@ -93,6 +105,17 @@ class ChangePasswordForm extends Component {
                 ...newPartialInput,
             },
         }));
+    }
+    getInitialState(){
+        return { showModal: false };
+    }
+    
+    close(){
+       this.setState({ showModal: false });
+    }
+    
+    open(){
+       this.setState({ showModal: true });
     }
 
     showHidePassword(e) {
@@ -109,67 +132,75 @@ class ChangePasswordForm extends Component {
         // If Redirect is true, redirect the page to the club page
         return (
             <div>
-                <PageHeader>
-                    <small bsStyle="default">Change Password</small>
-                </PageHeader>
-                <label className="form-header" >{message} </label>
-                <form className="form-body" onSubmit={this.update}>
-                    <FormGroup>
-                        <InputGroup>
-                            <FormControl
-                                type={type}
-                                placeholder="Password"
-                                name="password"
-                                required
-                                onChange={e => this.handleInputChange({ password: e.target.value })}
-                            />
-                            <InputGroup.Addon
-                                onClick={this.showHidePassword}
-                            >
-                                {type === 'input' ? <FaEye /> : <FaEyeSlash />}
-                            </InputGroup.Addon>
-                        </InputGroup>
-                    </FormGroup>
-                    <FormGroup>
-                        <InputGroup>
-                            <label name="newPasswordLbl">
-                            </label>
-                            <FormControl
-                                type={type}
-                                placeholder="New Password"
-                                name="newPassword"
-                                required
-                                onChange={e => this.handleInputChange({ newPassword: e.target.value })}
-                            />
-                            <InputGroup.Addon
-                                onClick={this.showHidePassword}
-                            >
-                                {type === 'input' ? <FaEye /> : <FaEyeSlash />}
-                            </InputGroup.Addon>
-                        </InputGroup>
-                    </FormGroup>
-                    <FormGroup>
-                        <InputGroup>
-                            <label name="confimrPasswordLbl">
-                            </label>
-                            <FormControl
-                                type={type}
-                                placeholder="Confirm Password"
-                                name="confirmPassword"
-                                required
-                                onChange={e => this.handleInputChange({ confirmPassword: e.target.value })}
-                            />
-                            <InputGroup.Addon
-                                onClick={this.showHidePassword}
-                            >
-                                {type === 'input' ? <FaEye /> : <FaEyeSlash />}
-                            </InputGroup.Addon>
-                        </InputGroup>
-                    </FormGroup>
-                    <ButtonGroup vertical block>
-                        <Button  type="submit"  bsStyle="primary" >Confirm</Button>
-                    </ButtonGroup>
-                </form>
+                <br/>
+                <Button bsStyle="primary"  onClick={this.handleShow}>
+                    Change password
+                </Button>
+                <Modal show={this.state.show} onHide={this.handleClose}>
+                    <Modal.Header closeButton>
+                        <Modal.Title>Change Password</Modal.Title>
+                    </Modal.Header>
+                    <Modal.Body>
+                        <label className="form-header" >{message} </label>
+                        <form className="form-body" onSubmit={this.update}>
+                            <FormGroup>
+                                <InputGroup>
+                                    <FormControl
+                                        type={type}
+                                        placeholder="Password"
+                                        name="password"
+                                        required
+                                        onChange={e => this.handleInputChange({ password: e.target.value })}
+                                    />
+                                    <InputGroup.Addon
+                                        onClick={this.showHidePassword}
+                                    >
+                                        {type === 'input' ? <FaEye /> : <FaEyeSlash />}
+                                    </InputGroup.Addon>
+                                </InputGroup>
+                            </FormGroup>
+                            <FormGroup>
+                                <InputGroup>
+                                    <label name="newPasswordLbl">
+                                    </label>
+                                    <FormControl
+                                        type={type}
+                                        placeholder="New Password"
+                                        name="newPassword"
+                                        required
+                                        onChange={e => this.handleInputChange({ newPassword: e.target.value })}
+                                    />
+                                    <InputGroup.Addon
+                                        onClick={this.showHidePassword}
+                                    >
+                                        {type === 'input' ? <FaEye /> : <FaEyeSlash />}
+                                    </InputGroup.Addon>
+                                </InputGroup>
+                            </FormGroup>
+                            <FormGroup>
+                                <InputGroup>
+                                    <label name="confimrPasswordLbl">
+                                    </label>
+                                    <FormControl
+                                        type={type}
+                                        placeholder="Confirm Password"
+                                        name="confirmPassword"
+                                        required
+                                        onChange={e => this.handleInputChange({ confirmPassword: e.target.value })}
+                                    />
+                                    <InputGroup.Addon
+                                        onClick={this.showHidePassword}
+                                    >
+                                        {type === 'input' ? <FaEye /> : <FaEyeSlash />}
+                                    </InputGroup.Addon>
+                                </InputGroup>
+                            </FormGroup>
+                            <ButtonGroup vertical block>
+                                <Button  type="submit"  bsStyle="primary" >Confirm</Button>
+                            </ButtonGroup>
+                        </form>
+                    </Modal.Body>
+                </Modal>
             </div>
         )
     }
