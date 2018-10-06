@@ -17,15 +17,26 @@ const DashboardSection = (props) => {
     )
 }
 class Dashboard extends Component {
-    constructor() {
-        super();
-        let user = JSON.parse(localStorage.getItem('User'));
+    constructor(props) {
+        super(props);
         this.state = {
-            user,
+            user: {
+                clubs: [],
+            }
         }
     }
 
-       render() {
+    componentDidMount() {
+        const user = JSON.parse(localStorage.getItem('User'));
+        if (user) {
+            this.setState({
+                user,
+            });
+        }
+    }
+
+    render() {
+        const { user } = this.state;
         return (
             <div>
                 <Grid>
@@ -33,7 +44,7 @@ class Dashboard extends Component {
                     <DashboardSection title="Clubs" component={<ClubSection clubs={this.state.user.clubs} />}/>
                     <DashboardSection title="Upcoming Events" component={<div>This is where they can find upcoming events</div>} />
                     <DashboardSection title="Assigned Tasks" component={<div>This is where they can get assigned tasks</div>} />
-                    <DashboardSection title="Settings" component={ <Update/>} />
+                    <DashboardSection title="Settings" component={<Update user={user} />} />
                 </Grid>
             </div>
         )
