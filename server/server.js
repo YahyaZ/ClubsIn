@@ -11,18 +11,27 @@ import dotenv from 'dotenv';
 import cors from 'cors';
 import router from './routes'
 import connectMongo from 'connect-mongo';
+import path from 'path';
 
 
 
 // Sets up the environment configurations
-dotenv.config();
+if(process.env.NODE_ENV == 'test'){
+  dotenv.config({path:path.resolve() + "/server/.env"});
+} else {
+  dotenv.config();
+}
 
 // Connect to database
-mongoose.connect(process.env.DB_URL);
+let dbURL = process.env.NODE_ENV == 'test' ? process.env.DB_TEST_URL : process.env.DB_URL
+
+mongoose.connect(dbURL);
 let db = mongoose.connection;
 db.on('error', console.error.bind(console, 'Connection Error'));
 db.once('open', function () {
+  if(process.env.NODE_ENV != 'test'){
   console.log('Successful connection');
+  }
 })
 
 // Creates the express router application
@@ -34,6 +43,8 @@ let MongoStore = connectMongo(session);
 app.use(cookieParser());
 app.use(session({
   secret: 'work hard',
+  resave: true,
+  saveUninitialized: false,
   store: new MongoStore({
     mongooseConnection: db
   })
@@ -42,7 +53,10 @@ app.use(session({
 
 // Allows CORS in dev mode
 app.use(cors());
-app.use(logger('dev'));
+if(process.env.NODE_ENV != 'test'){
+  //Do not use logger in test mode
+  app.use(logger('dev'));
+}
 
 //Allows the application to parse the body of requests to access data
 app.use(bodyParser.urlencoded({
@@ -76,3 +90,5 @@ app.use(function (err, req, res, next) {
 
 // Start the server
 app.listen(API_PORT, () => console.log(`Listening on port ${API_PORT}`)); 
+
+export default app;
