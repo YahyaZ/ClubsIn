@@ -21,17 +21,14 @@ const updateApi = '/api/user/update';
 class ChangePasswordForm extends Component {
     constructor(props) {
         super(props);
-        let user = JSON.parse(localStorage.getItem('User'));
+        
         this.state = {
-            user,
             type: 'password',
             message: '',
-            input: {
-                email: user.email,
-                password: '',
-                newPassword: '',
-                confirmPassword: ''
-            },
+            email: '',
+            password: '',
+            newPassword: '',
+            confirmPassword: '',
             redirect: false,
         };
 
@@ -39,13 +36,26 @@ class ChangePasswordForm extends Component {
         this.update = this.update.bind(this);
         this.handleInputChange = this.handleInputChange.bind(this);
     }
-    componentDidMount(){
-        //document.title = 'Change Password - club\'in';
+
+    componentDidMount() {
+        const { user } = this.props;
+        if (user) {
+            this.setState({
+                user,
+                email: user.email,
+            });
+        }
     }
 
     update(e){
         const self = this;
-        const { input, message } = this.state;
+        const { email, password, newPassword, confirmPassword, message } = this.state;
+        const input = {
+            email,
+            password,
+            newPassword,
+            confirmPassword,
+        };
         e.preventDefault();
         const matches = input.newPassword === input.confirmPassword;
         const emailVal = input.email == '';
@@ -80,19 +90,10 @@ class ChangePasswordForm extends Component {
         }
     }
 
-
-    /**
-     * Updates any input change in the Form
-     * @param {Object} newPartialInput
-     */
-    handleInputChange(newPartialInput) {
-        this.setState(state => ({
-            ...state,
-            input: {
-                ...state.input,
-                ...newPartialInput,
-            },
-        }));
+    handleInputChange(e) {
+        this.setState({
+            [e.target.name]: e.target.value
+        });
     }
 
     showHidePassword(e) {
@@ -110,7 +111,7 @@ class ChangePasswordForm extends Component {
         return (
             <div>
                 <PageHeader>
-                    <small bsStyle="default">Change Password</small>
+                    <small className="default">Change Password</small>
                 </PageHeader>
                 <label className="form-header" >{message} </label>
                 <form className="form-body" onSubmit={this.update}>
@@ -121,7 +122,7 @@ class ChangePasswordForm extends Component {
                                 placeholder="Password"
                                 name="password"
                                 required
-                                onChange={e => this.handleInputChange({ password: e.target.value })}
+                                onChange={this.handleInputChange}
                             />
                             <InputGroup.Addon
                                 onClick={this.showHidePassword}
@@ -139,7 +140,7 @@ class ChangePasswordForm extends Component {
                                 placeholder="New Password"
                                 name="newPassword"
                                 required
-                                onChange={e => this.handleInputChange({ newPassword: e.target.value })}
+                                onChange={this.handleInputChange}
                             />
                             <InputGroup.Addon
                                 onClick={this.showHidePassword}
@@ -157,7 +158,7 @@ class ChangePasswordForm extends Component {
                                 placeholder="Confirm Password"
                                 name="confirmPassword"
                                 required
-                                onChange={e => this.handleInputChange({ confirmPassword: e.target.value })}
+                                onChange={this.handleInputChange}
                             />
                             <InputGroup.Addon
                                 onClick={this.showHidePassword}
