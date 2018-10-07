@@ -85,7 +85,7 @@ function addUserToClub(req, res, next) {
 function getClubs(req, res, next) {
     var options = req.query.q || null;
     getClubsByUserId(req.session.userId, options, function (clubs) {
-        Clubs.find({_id: clubs}, function(err, clubs){
+        Clubs.find({_id: clubs},options, function(err, clubs){
             if(err) return next(err);
             res.json(clubs);
         });
