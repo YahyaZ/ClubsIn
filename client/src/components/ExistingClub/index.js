@@ -28,7 +28,15 @@ class ExistingClub extends Component {
     handleSubmit(e){
         e.preventDefault();
         e.stopPropagation();
-        console.log(this.state.input);
+        let invite= this.state.input;
+        fetch('api/club/invite',{
+            method: 'POST',
+            mode: 'cors',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(invite),
+        }).then(
+            console.log('done!');
+        )
     }
 
 
