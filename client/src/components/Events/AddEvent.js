@@ -9,6 +9,8 @@ import DatePicker from 'react-datepicker';
 import { Link } from 'react-router-dom';
 import moment from 'moment';
 import 'react-datepicker/dist/react-datepicker.css';
+import RingLoader from 'react-spinners/RingLoader';
+
 
 class AddEvent extends Component {
     constructor(props) {
@@ -19,6 +21,7 @@ class AddEvent extends Component {
             description: '',
             date: moment(),
             message: '',
+            loading:false,
         };
 
         this.addEvent = this.addEvent.bind(this);
@@ -47,7 +50,7 @@ class AddEvent extends Component {
             date: moment(self.state.date).toISOString(), // we store dates as ISO format
             createdBy: userId,
         };
-
+        self.setState({loading: true})
         fetch('/api/event', {
             method: 'POST',
             mode: 'cors',
@@ -56,7 +59,7 @@ class AddEvent extends Component {
         }).then((response) => {
             if (response.status === 400) {
                 response.json().then((data) => {
-                    self.setState({ message: data.error });
+                    self.setState({ message: data.error, loading:false });
                 });
             } else if (response.status === 200) {
                 // disable lint as this.props.history is built in
@@ -100,7 +103,7 @@ class AddEvent extends Component {
                         onChange={this.handleChange}
                     />
                 </FormGroup>
-                <FormGroup controlId="formDate">
+                <FormGroup inline controlId="formDate">
                     <ControlLabel>Date:</ControlLabel>
                     <DatePicker
                         selected={date}
@@ -115,7 +118,8 @@ class AddEvent extends Component {
                 <Link to={{ pathname: `/club/${match.params.clubId}` }}>
                     <Button type="button">Cancel</Button>
                 </Link>
-                <Button type="button" onClick={this.addEvent}>Add event</Button>
+                <Button type="button" onClick={this.addEvent}>Add event</Button> <br/><br/>
+                <RingLoader loading={this.state.loading} color="#0B58B6" sizeUnit={"px"} size="60" inline/>
             </div>
         );
     }

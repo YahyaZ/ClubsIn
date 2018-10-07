@@ -1,6 +1,6 @@
 import React, { Component, Fragment } from 'react';
-import { Modal, FormControl, Button, Form, Alert } from 'react-bootstrap';
-
+import { Modal, FormControl, Button, Form, Alert, FormGroup } from 'react-bootstrap';
+import BounceLoader from 'react-spinners/BounceLoader';
 
 class ExistingClub extends Component {
 
@@ -9,6 +9,7 @@ class ExistingClub extends Component {
 
         this.state = {
             input: '',
+            loading: false
         }
 
         this.handleSubmit = this.handleSubmit.bind(this);
@@ -26,9 +27,13 @@ class ExistingClub extends Component {
     }
 
     handleSubmit(e){
+        const self = this;
         e.preventDefault();
         e.stopPropagation();
+        self.setState({loading:true})
         console.log(this.state.input);
+        /*TODO RAMU: loading:true is for the loading component
+         * make it show during api call and turn it off on response */
     }
 
 
@@ -48,7 +53,10 @@ class ExistingClub extends Component {
                             value={this.state.input}
                             placeholder="Enter Invite Code"
                         />
-                        <Button type="submit">Join</Button>
+                        <Button type="submit">Join</Button> {'              '}
+                        <FormGroup>
+                            <BounceLoader size="20" color={"#0B58B6"} loading={this.state.loading}/>
+                        </FormGroup>
                     </Form>
                 </Modal.Body>
             </Modal>
