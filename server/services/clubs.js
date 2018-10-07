@@ -9,14 +9,14 @@ import UserService from './users';
  * @param {Object} next 
  */
 function createClub(req, res, next) {
-    if(req.body.name && req.body.type && req.body.university){
+    if (req.body.name && req.body.type && req.body.university) {
         var clubData = {
             name: req.body.name,
             type: req.body.type,
             university: req.body.university,
             users: [req.session.userId],
         }
-    
+
         // Checks if the club is existing or not, if it doesnt, add it
         Clubs.findOne({ name: clubData.name, university: clubData.university }, function (err, club) {
             if (err) {
@@ -40,7 +40,7 @@ function createClub(req, res, next) {
             }
         });
     } else {
-        res.status(400).json({"error": "All Fields required"})
+        res.status(400).json({ "error": "All Fields required" })
     }
 }
 
@@ -52,11 +52,11 @@ function createClub(req, res, next) {
  * @param {Object} next 
  */
 function addUserToClub(req, res, next) {
-    if(req.body.inviteCode){
+    if (req.body.inviteCode) {
         console.log(req.body.inviteCode, req.session.userId);
         // Checks if the club is existing or not, if it doesnt, add it
-        Clubs.findOneAndUpdate({$and: [{link: req.body.inviteCode},{users: {$ne:req.session.userId}}]},{
-            $push: {users: req.session.userId}
+        Clubs.findOneAndUpdate({ $and: [{ link: req.body.inviteCode }, { users: { $ne: req.session.userId } }] }, {
+            $push: { users: req.session.userId }
         }, function (err, club) {
             console.log('Added');
             if (err) {
@@ -69,11 +69,11 @@ function addUserToClub(req, res, next) {
                 return res.json(club)
             } else {
                 // No club is found, Invalid Link
-                res.status(404).json({"error": "Invite Link Invalid"})
+                res.status(404).json({ "error": "Invite Link Invalid" })
             }
         });
     } else {
-        res.status(400).json({"error": "All Fields required"})
+        res.status(400).json({ "error": "All Fields required" })
     }
 }
 
@@ -82,40 +82,21 @@ function addUserToClub(req, res, next) {
  * Called by a GET request
  * @param {Object} res 
  */
-function getClubs(req, res, next){
+function getClubs(req, res, next) {
     var options = req.query.q || null;
-    getClubsByUserId(req.session.userId, options, function(clubs){
-        res.json(clubs);
-    })
-}
-
-function getClubsByUserId(userId, options, callback){
-    UserService.getUser(userId, function(err, currUser){
-        if(err) next(err);
-        Clubs.find({_id:{$in: currUser.clubs}},options,function(err, clubs){
-            if(err) next(err);
-            callback(clubs);
-        })
-    })
-}
-
-/**
- * This function is mainly used when trying to find a club to join for 
- * newly registered users
- * Called by a POST request
- * @param {Object} res 
- * @param {Object} req 
- */
-function findClub(res,req, next){
-    if(req.body.name && req.body.university){
-        Clubs.findOne({name: req.body.name, university: req.body.university},
-            (err, doc) => {
-            if(err) next(err);
-            res.json(doc);
+    getClubsByUserId(req.session.userId, options, function (clubs) {
+        Clubs.find({_id: clubs}, function(err, clubs){
+            if(err) return next(err);
+            res.json(clubs);
         });
-    } else {
-        res.status(200).json({"error": "Fields missing"})
-    }
+    });
+}
+
+function getClubsByUserId(userId, options, callback) {
+    UserService.getUser(userId, function (err, currUser) {
+        if (err) next(err);
+        callback(currUser.clubs);
+    });
 }
 
 /**
@@ -125,14 +106,14 @@ function findClub(res,req, next){
  * @param {Object} req 
  * @param {Object} next 
  */
-function findClubById(req, res, next){
-    if(req.params.id){
-        Clubs.findOne({_id: req.params.id},(err, doc) => {
-            if(err) next(err)
+function findClubById(req, res, next) {
+    if (req.params.id) {
+        Clubs.findOne({ _id: req.params.id }, (err, doc) => {
+            if (err) next(err)
             res.status(200).json(doc);
         });
     } else {
-        res.status(400).json({"error": "ID not provided"})
+        res.status(400).json({ "error": "ID not provided" })
     }
 }
 
@@ -142,7 +123,7 @@ function findClubById(req, res, next){
  */
 function getClubMembers(req, res, next) {
     if (req.params.id) {
-        Clubs.findOne({_id: req.params.id})
+        Clubs.findOne({ _id: req.params.id })
             .populate('users')
             .exec((err, doc) => {
                 if (err) next(err);
@@ -151,38 +132,11 @@ function getClubMembers(req, res, next) {
     }
 }
 
-/**
- * Retrieves a club by _id and updates it's contents based on parameters
- * POST method
- * @param {Object} req 
- * @param {Object} res 
- * @param {Object} next 
- */
-function updateClub(req,res,next) {
-    if(req.body.id){
-        Clubs.findOneAndUpdate({_id: req.body._id}, {
-            name: req.body.name,
-            type: req.body.type,
-            university: req.body.university,
-            users: JSON.parse(req.body.events)
-        }, (err, club) =>{
-            if(err){
-                err.status = 404;
-                next(err);
-            }
-            res.status(200).json(club);
-        })
-    } else {
-        res.status(400).json({"error":"ID not found"}) 
-    }
-}
 
 module.exports = {
-    getClubs : getClubs,
-    findClub : findClub,
-    createClub : createClub,
-    findClubById : findClubById,
-    updateClub: updateClub,
+    getClubs: getClubs,
+    createClub: createClub,
+    findClubById: findClubById,
     addUserToClub: addUserToClub,
     getClubsByUserId: getClubsByUserId,
     getClubMembers: getClubMembers,

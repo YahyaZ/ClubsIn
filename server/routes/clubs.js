@@ -1,6 +1,7 @@
 import express from 'express';
 import clubService from '../services/clubs';
 import eventService from '../services/events';
+import { requiresUserClub } from './auth';
 
 
 let router = express.Router();
@@ -18,12 +19,6 @@ router.get('/', clubService.getClubs);
 router.post('/create', clubService.createClub);
 
 /**
- * Finds a single club instance in the collection using
- * name and university strings and returns result (error or club details)
- */
-router.post('/', clubService.findClub);
-
-/**
  * return a single club based on id
  * api/club/:clubId
  * 
@@ -34,7 +29,7 @@ router.post('/', clubService.findClub);
  *   404: no club of such id was found
  *   json: JSON format of requested club
  */
-router.get('/:id', clubService.findClubById);
+router.get('/:id', requiresUserClub, clubService.findClubById);
 
 /**
  * return events with the clubId
@@ -47,15 +42,10 @@ router.get('/:id', clubService.findClubById);
  *  404: no club of such id was found
  *  JSON: JSON of all club events
  */
-router.get('/:id/events', eventService.getEventsByClubId);
+router.get('/:id/events',requiresUserClub,  eventService.getEventsByClubId);
 
 router.post('/invite', clubService.addUserToClub)
 
-router.get('/:id/users', clubService.getClubMembers);
+router.get('/:id/users',requiresUserClub, clubService.getClubMembers);
 
-/**
- * TODO: COMMENTING
- */
-
-router.put('/', clubService.updateClub)
 module.exports = router;
