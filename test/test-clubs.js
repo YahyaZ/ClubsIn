@@ -319,5 +319,17 @@ describe('Clubs', function () {
                     done();
                 });
         });
+        it('should get only the club id and param specified (if its there)', function (done) {
+            authenticatedUser.
+                get(`/api/club?q=name`)
+                .end(function (err, res) {
+                    res.should.have.status(200);
+                    res.body.should.be.a('array');
+                    res.body[0].should.have.property('_id').eql(club._id);
+                    res.body[0].should.have.property('name')
+                    res.body[0].should.not.have.property('university');
+                    done();
+                });
+        });
     });
 });
