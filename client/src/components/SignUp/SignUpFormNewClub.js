@@ -3,17 +3,19 @@ import { FaUniversity } from 'react-icons/fa';
 import { FormGroup, InputGroup, FormControl } from 'react-bootstrap';
 import { Redirect } from 'react-router-dom';
 import Form from '../Form';
-
+import BarLoader from 'react-spinners/BarLoader';
 class SignUpFormNewClub extends Component {
     constructor(props) {
         super(props);
         this.state = {
             universities: [],
+            message: "",
             input: {
                 university: '',
                 name: '',
                 type: '',
             },
+            loading: false,
             fetched: false,
         };
 
@@ -46,7 +48,7 @@ class SignUpFormNewClub extends Component {
         const self = this;
         e.preventDefault();
         e.stopPropagation();
-        const { input } = this.state;
+        const { input, message } = this.state;
         fetch('/api/club/create', {
             method: 'POST',
             mode: 'cors',
@@ -55,28 +57,32 @@ class SignUpFormNewClub extends Component {
             body: JSON.stringify(input),
         }).then((response) => {
             // Some sort of error in the User field
+            
+            self.setState({message: '', loading: true});
             if (response.status === 400) {
                 response.json().then((data) => {
-                    self.setState({ message: data.error });
+                    self.setState({ message: data.error, loading:false });
                 });
             } else if (response.status === 200) {
                 response.json().then((data) => {
                     const existingUser = JSON.parse(localStorage.getItem('User'));
                     existingUser.clubs.push(data._id);
                     localStorage.setItem('User', JSON.stringify(existingUser));
-                    self.setState({ redirect: true });
+                    self.setState({ redirect: true, loading:false });
                 });
             }
         });
     }
 
     renderForm() {
-        const { redirect, fetched, universities } = this.state;
+        const { redirect, fetched, universities, message} = this.state;
         if (redirect) {
             return <Redirect push to="/" />;
         }
-        return (
+        return(
+           
             <form className="form-body" onSubmit={this.submitForm}>
+             <label className="form-header" >{message} </label>
                 <FormGroup controlId="universityControlsSelect">
                     <InputGroup>
                         <InputGroup.Addon><FaUniversity /></InputGroup.Addon>
@@ -131,6 +137,13 @@ class SignUpFormNewClub extends Component {
                         </FormControl>
                     </InputGroup>
                 </FormGroup>
+                <BarLoader 
+                    loading={this.state.loading}
+                    width={'100%'}
+                    height="10"
+                    color={"#0B58B6"}
+                />
+                        <br/>
                 <button className="form-button" type="submit">Continue</button>
             </form>
         );

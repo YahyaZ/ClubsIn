@@ -9,6 +9,7 @@ import DatePicker from 'react-datepicker';
 import { Link } from 'react-router-dom';
 import moment from 'moment';
 import 'react-datepicker/dist/react-datepicker.css';
+import SelectMemberOption from './SelectMemberOption';
 
 class AddTask extends Component {
     constructor(props) {
@@ -18,7 +19,10 @@ class AddTask extends Component {
             date: moment(),
             name: '',
             description: '',
-            selectedAssignee: [],
+            selectedMembersToAdd: [],
+            memberToAdd: '',
+            selectedMembersToRemove: [],
+            clubMembers: [],
             assignee: [],
             message: '',
         };
@@ -27,6 +31,11 @@ class AddTask extends Component {
         this.addToTask = this.addToTask.bind(this);
         this.handleChange = this.handleChange.bind(this);
         this.handleDateChange = this.handleDateChange.bind(this);
+        this.handleSelectChange = this.handleSelectChange.bind(this);
+    }
+
+    componentDidMount() {
+        this.getClubMembers();
     }
 
     handleChange(e) {
@@ -37,9 +46,24 @@ class AddTask extends Component {
         this.setState({ date });
     }
 
+    handleSelectChange(e) {
+        const members = [...e.target.options].filter(o => o.selected).map(o => o);
+        this.setState({ [e.target.name]: members[0].value });
+    }
+
     addToTask() {
-        const { selectedAssignee } = this.state;
-        this.setState({ assignee: selectedAssignee });
+        const {
+            clubMembers,
+            memberToAdd,
+        } = this.state;
+
+        const newClubMembers = clubMembers.filter(cm => cm._id !== memberToAdd);
+        
+        this.setState((prevState) => ({
+            assignee: [...prevState.assignee, memberToAdd],
+            clubMembers: newClubMembers,
+            memberToAdd: '',
+        }));
     }
 
     addTask(e) {
@@ -73,6 +97,22 @@ class AddTask extends Component {
         });
     }
 
+    getClubMembers() {
+        const self = this;
+        const { match } = this.props;
+        fetch(`/api/club/${match.params.clubId}/users`, {
+            method: 'GET',
+            mode: 'cors',
+        }).then((response) => {
+            if (response.status === 400) {
+
+            }
+            return response.json();
+        }).then((users) => {
+            self.setState({ clubMembers: users });
+        });
+    }
+
     render() {
         const {
             name,
@@ -80,6 +120,9 @@ class AddTask extends Component {
             description,
             message,
             assignee,
+            clubMembers,
+            selectedMembersToAdd,
+            selectedMembersToRemove
         } = this.state;
 
         const { match } = this.props; // eslint-disable-line
@@ -123,14 +166,29 @@ class AddTask extends Component {
                 </FormGroup>
                 <FormGroup controlId="formAssign">
                     <ControlLabel>Assign: </ControlLabel>
-                    <FormControl componentClass="select" multiple>
-                        <option value="select">TODO ADD USERS</option>
-                        <option>Test</option>
+                    <FormControl
+                        name="memberToAdd"
+                        componentClass="select"
+                        value={selectedMembersToAdd}
+                        onChange={this.handleSelectChange}
+                        multiple
+                    >
+                        {clubMembers.map(member => {
+                            console.log(member);
+                            return (
+                                <SelectMemberOption
+                                    key={member._id}
+                                    memberId={member._id}
+                                    firstName={member.firstName}
+                                    lastName={member.lastName}
+                                />
+                            )
+                        })}
                     </FormControl>
                     <Button type="button" bsStyle="primary" onClick={this.addToTask}>Add to task</Button>
                 </FormGroup>
                 <p>Assigned Users: </p>
-                {assignee.map(assigned => <p>{assigned}</p>)}
+                {assignee.map(assigned => <p key={assigned}>{assigned}</p>)}
 
                 <Link to={{ pathname: `/club/${match.params.clubId}/event/${match.params.eventId}` }}>
                     <Button type="button">Cancel</Button>

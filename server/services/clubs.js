@@ -137,6 +137,21 @@ function findClubById(req, res, next){
 }
 
 /**
+ * Gets an array of club members
+ * GET method
+ */
+function getClubMembers(req, res, next) {
+    if (req.params.id) {
+        Clubs.findOne({_id: req.params.id})
+            .populate('users')
+            .exec((err, doc) => {
+                if (err) next(err);
+                res.json(doc.users);
+            })
+    }
+}
+
+/**
  * Retrieves a club by _id and updates it's contents based on parameters
  * POST method
  * @param {Object} req 
@@ -169,5 +184,6 @@ module.exports = {
     findClubById : findClubById,
     updateClub: updateClub,
     addUserToClub: addUserToClub,
-    getClubsByUserId: getClubsByUserId
+    getClubsByUserId: getClubsByUserId,
+    getClubMembers: getClubMembers,
 }

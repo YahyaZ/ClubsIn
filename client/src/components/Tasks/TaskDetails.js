@@ -17,8 +17,8 @@ const TaskDetails = ({
                 <p>Complete by: {date}</p>
             </div>
             <div className="task-details-member">
-                <Member name={member.name} color={member.color} />
-                <p>Assigned to {member.name}</p>
+                <Member name={member[0]} />
+                <p>Assigned to {member[0]}</p>
             </div>
         </div>
         <p>{description}</p>

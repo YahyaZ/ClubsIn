@@ -16,6 +16,7 @@ function addTask(req, res, next) {
         description,
         assignee,
     } = req.body;
+    console.log(event_id && created_by && due_date && name && description && assignee);
     if(event_id && created_by && due_date && name && description && assignee) {
         var taskData = {
             event_id: event_id,
