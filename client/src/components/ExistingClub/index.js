@@ -30,8 +30,18 @@ class ExistingClub extends Component {
         const self = this;
         e.preventDefault();
         e.stopPropagation();
-        self.setState({loading:true})
-        console.log(this.state.input);
+        let invite= this.state.input;
+        fetch('api/club/invite',{
+            method: 'POST',
+            mode: 'cors',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(invite),
+        }).then(res => {
+            console.log('done!');
+            self.setState({loading:true});
+        }
+        )
+        
         /*TODO RAMU: loading:true is for the loading component
          * make it show during api call and turn it off on response */
     }
