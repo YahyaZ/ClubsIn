@@ -51,6 +51,8 @@ router.get('/:id/events', eventService.getEventsByClubId);
 
 router.post('/invite', clubService.addUserToClub)
 
+router.get('/:id/users', clubService.getClubMembers);
+
 /**
  * TODO: COMMENTING
  */
