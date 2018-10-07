@@ -45,9 +45,11 @@ class Dashboard extends Component {
 
     render() {
         const { user } = this.state;
+
         return (
             <div>
                 <Grid>
+                    <br/>
                     <DashboardSection title="User Management" component={<UserManagement user={user} />} />
                     <DashboardSection title="Clubs" component={<ClubSection clubs={user.clubs} />} />
                     <DashboardSection title="Upcoming Events" component={<div>This is where they can find upcoming events</div>} />

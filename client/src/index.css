@@ -3,12 +3,13 @@
 :root{
   /* Declaring Variables */
   --logo-blue: rgba(0, 103, 191, 1);
-  --light-grey: rgba(198, 197, 185, 1);
-  --light-blue: rgb(153, 209, 223);
+  --light-grey: rgb(124, 196, 214);
+  --light-blue: rgb(21, 79, 165);
   --green: rgba(50, 147, 111, 1);
   --red: rgba(255, 22, 84, 1);
   --white: rgb(255, 255, 255);
   --font: 'Roboto'
+  
 }
 
 body {
@@ -127,8 +128,9 @@ body {
   color: #fff;
 }
 
+/** Container colour */
 .well-normal {
-  background-color: #f8f8f8;
+  background-color: #d5d9df;
   border-color: #e7e7e7;
 }
 

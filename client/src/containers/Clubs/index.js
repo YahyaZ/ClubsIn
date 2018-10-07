@@ -77,7 +77,7 @@ class Club extends Component {
 
     renderNoEvents = () => (
         <div className="events-container no-events">
-            <h1>Sorry no events! :(</h1>
+            <h1>No events found</h1>
         </div>
     )
 
@@ -86,8 +86,10 @@ class Club extends Component {
 
         return (
             <div>
+                <br/>
                 {myEvents.length > 0 ? this.renderEvents('My Events', myEvents) : this.renderNoEvents()}
                 {allEvents.length > 0 ? this.renderEvents('All Events', allEvents) : this.renderNoEvents()}
+                <br/>
             </div>
         );
     }

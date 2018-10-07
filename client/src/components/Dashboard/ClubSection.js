@@ -43,7 +43,7 @@ class ClubSection extends Component {
 
     renderNoClubs = () => (
         <div>
-            It doesn&apos;t seem you are currently in any clubs <FaFrown />
+            You are apart of no clubs <FaFrown />
         </div>
     );
 
@@ -65,7 +65,7 @@ class ClubSection extends Component {
             <div>
                 {clubs.length === 0 ? this.renderNoClubs() : this.renderClubs()}
                 <div>
-                    Join an existing one or create a new one!
+                    Join more clubs:
                     <br />
                     <SignUpFormChooseClubType />
                 </div>
