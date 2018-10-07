@@ -23,7 +23,7 @@ const Task = ({
             <p>Complete by: {date}</p>
         </div>
         <div className="task-member">
-            <Member name={member.name} color={member.color} />
+            <Member name={member[0]} />
         </div>
     </div>
 );

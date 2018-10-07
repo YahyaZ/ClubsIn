@@ -16,7 +16,7 @@ class EventTasks extends Component {
     }
 
     componentDidMount() {
-        this.getMyTasks();
+        this.getTasks();
     }
 
     getMyTasks = () => {
@@ -42,7 +42,7 @@ class EventTasks extends Component {
     getTasks = () => {
         const self = this;
         const { match } = this.props; // eslint-disable-line
-        fetch(`/api/tasks/${match.params.eventId}`, {
+        fetch(`/api/task/${match.params.eventId}`, {
             method: 'GET',
             mode: 'cors',
         }).then((response) => {
@@ -130,7 +130,7 @@ class EventTasks extends Component {
                                 name={task.name}
                                 date={task.date}
                                 active={this.isSelectedTask(task)}
-                                member={task.member}
+                                member={task.assignee}
                                 key={task.name}
                                 onClick={() => this.selectTask(task)}
                                 onKeyPress={e => this.handleKeyPress(e, 'SELECT_TASK', task)}
@@ -145,7 +145,7 @@ class EventTasks extends Component {
                                 name={selectedTask.name}
                                 date={selectedTask.date}
                                 description={selectedTask.description}
-                                member={selectedTask.member}
+                                member={selectedTask.assignee}
                             />
                         )
                         : ''
