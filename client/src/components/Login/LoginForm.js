@@ -8,9 +8,8 @@ import {
     FormGroup,
     FormControl,
     InputGroup,
-    Checkbox,
 } from 'react-bootstrap';
-import { Link, Redirect } from 'react-router-dom';
+import { Redirect } from 'react-router-dom';
 import BarLoader from 'react-spinners/BarLoader';
 /* API URL for logging on */
 const loginApi = '/api/user/login';
@@ -57,9 +56,9 @@ class LoginForm extends Component {
     login(e) {
         // Sets the variable of self so it is bound to the login object
         const self = this;
-        const { input} = this.state;
+        const { input } = this.state;
         e.preventDefault();
-        self.setState({loading: true})
+        self.setState({ loading: true });
         // Calls the login api with this details in the form
         fetch(loginApi, {
             method: 'POST',
@@ -68,10 +67,9 @@ class LoginForm extends Component {
             body: JSON.stringify(input),
         }).then((response) => {
             // Some sort of error in the User field
-            
             if (response.status === 400) {
                 response.json().then((data) => {
-                    self.setState({ message: data.error, loading:false });
+                    self.setState({ message: data.error, loading: false });
                 });
             } else if (response.status === 200) {
                 // User is logged in
@@ -79,7 +77,7 @@ class LoginForm extends Component {
                 self.props.authenticate(true);
                 response.json().then((data) => {
                     localStorage.setItem('User', JSON.stringify(data));
-                    self.setState({ redirect: true, loading:false });
+                    self.setState({ redirect: true, loading: false });
                 });
             }
         });
@@ -113,7 +111,12 @@ class LoginForm extends Component {
     }
 
     render() {
-        const { redirect, message, type } = this.state;
+        const {
+            redirect,
+            message,
+            type,
+            loading,
+        } = this.state;
         // If Redirect is true, redirect the page to the club page
         if (redirect) {
             return <Redirect to="/" />;
@@ -153,12 +156,13 @@ class LoginForm extends Component {
                             </InputGroup.Addon>
                         </InputGroup>
                     </FormGroup>
-                    <BarLoader 
-                            loading={this.state.loading}
-                            width={'100%'}
-                            height="10"
-                            color={"#0B58B6"}
-                    /> <br/> 
+                    <BarLoader
+                        loading={loading}
+                        width={100}
+                        widthUnit="%"
+                        height={10}
+                        color="#0B58B6"
+                    /> <br />
                     <button type="submit" className="form-button">Log In</button>
                 </form>
             </div>

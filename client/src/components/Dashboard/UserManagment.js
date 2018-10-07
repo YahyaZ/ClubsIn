@@ -1,14 +1,14 @@
-import React, { Component } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 
-class UserManagement extends Component {
- 
-    render(){
-        return(
-            <div>
-                Hello {this.props.user.firstName}
-            </div>
-        )
-    }
-};
+const UserManagement = ({ user }) => (
+    <div>
+        Hello {user.firstName}
+    </div>
+);
 
 export default UserManagement;
+
+UserManagement.propTypes = {
+    user: PropTypes.shape({}).isRequired,
+};
