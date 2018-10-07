@@ -1,24 +1,23 @@
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import { Grid, Col, Button, ButtonToolbar } from 'react-bootstrap';
+import { Button, ButtonToolbar } from 'react-bootstrap';
 import Redirect from 'react-router-dom/Redirect';
-import ExistingClub from '../ExistingClub'
+import ExistingClub from '../ExistingClub';
 
 class SignUpFormChooseClubType extends Component {
-
-    constructor(){
+    constructor() {
         super();
         this.state = {
             redirect: '',
-            show:false,
-        }
+            show: false,
+        };
 
         this.handleShow = this.handleShow.bind(this);
         this.handleClose = this.handleClose.bind(this);
-
     }
 
-   
+    handleOnClick = (page) => {
+        this.setState({ redirect: page });
+    }
 
     handleClose() {
         this.setState({ show: false });
@@ -28,18 +27,14 @@ class SignUpFormChooseClubType extends Component {
         this.setState({ show: true });
     }
 
-    handleOnClick = (page) => {
-        this.setState({ redirect: page });
-    }
-
-
     render() {
-        if (this.state.redirect) {
-            if (this.state.redirect == "existingClubRedirect") {
-                return <Redirect push to="/existingClubRedirect" />
+        const { redirect, show } = this.state;
+        if (redirect) {
+            if (redirect === 'existingClubRedirect') {
+                return <Redirect push to="/existingClubRedirect" />;
             }
-            if (this.state.redirect == "newClubRedirect") {
-                return <Redirect push to="/newClub" />
+            if (redirect === 'newClubRedirect') {
+                return <Redirect push to="/newClub" />;
             }
         }
         return (
@@ -48,11 +43,10 @@ class SignUpFormChooseClubType extends Component {
                     <Button bsStyle="primary" type="button" onClick={this.handleShow}>Existing Club</Button>
                     <Button bsStyle="primary" type="button" onClick={() => this.handleOnClick('newClubRedirect')}>Register Club</Button>
                 </ButtonToolbar>
-                <ExistingClub show={this.state.show} hide={this.handleClose}/>
+                <ExistingClub show={show} hide={this.handleClose} />
             </React.Fragment>
         );
     }
 }
 
 export default SignUpFormChooseClubType;
-

@@ -8,9 +8,9 @@ import {
 import DatePicker from 'react-datepicker';
 import { Link } from 'react-router-dom';
 import moment from 'moment';
+import RingLoader from 'react-spinners/RingLoader';
 import 'react-datepicker/dist/react-datepicker.css';
 import SelectMemberOption from './SelectMemberOption';
-import RingLoader from 'react-spinners/RingLoader';
 
 
 class AddTask extends Component {
@@ -23,11 +23,10 @@ class AddTask extends Component {
             description: '',
             selectedMembersToAdd: [],
             memberToAdd: '',
-            selectedMembersToRemove: [],
             clubMembers: [],
             assignee: [],
             message: '',
-            loading:false,
+            loading: false,
         };
 
         this.addTask = this.addTask.bind(this);
@@ -41,17 +40,23 @@ class AddTask extends Component {
         this.getClubMembers();
     }
 
-    handleChange(e) {
-        this.setState({ [e.target.name]: e.target.value });
-    }
-
-    handleDateChange(date) {
-        this.setState({ date });
-    }
-
-    handleSelectChange(e) {
-        const members = [...e.target.options].filter(o => o.selected).map(o => o);
-        this.setState({ [e.target.name]: members[0].value });
+    getClubMembers() {
+        const self = this;
+        const { match } = this.props; // eslint-disable-line
+        fetch(`/api/club/${match.params.clubId}/users`, {
+            method: 'GET',
+            mode: 'cors',
+        }).then((response) => {
+            if (response.status === 400) {
+                response.json().then((data) => {
+                    self.setState({ message: data.error, loading: false });
+                });
+            } else {
+                response.json().then((users) => {
+                    self.setState({ clubMembers: users });
+                });
+            }
+        });
     }
 
     addToTask() {
@@ -61,8 +66,8 @@ class AddTask extends Component {
         } = this.state;
 
         const newClubMembers = clubMembers.filter(cm => cm._id !== memberToAdd);
-        
-        this.setState((prevState) => ({
+
+        this.setState(prevState => ({
             assignee: [...prevState.assignee, memberToAdd],
             clubMembers: newClubMembers,
             memberToAdd: '',
@@ -83,7 +88,7 @@ class AddTask extends Component {
             description: self.state.description,
             assignee: self.state.assignee,
         };
-        self.setState({loading:true})
+        self.setState({ loading: true });
         fetch('/api/task', {
             method: 'POST',
             mode: 'cors',
@@ -92,7 +97,7 @@ class AddTask extends Component {
         }).then((response) => {
             if (response.status === 400) {
                 response.json().then((data) => {
-                    self.setState({ message: data.error, loading:false });
+                    self.setState({ message: data.error, loading: false });
                 });
             } else if (response.status === 200) {
                 this.props.history.push(`/club/${match.params.clubId}/event/${match.params.eventId}`); // eslint-disable-line
@@ -100,20 +105,17 @@ class AddTask extends Component {
         });
     }
 
-    getClubMembers() {
-        const self = this;
-        const { match } = this.props;
-        fetch(`/api/club/${match.params.clubId}/users`, {
-            method: 'GET',
-            mode: 'cors',
-        }).then((response) => {
-            if (response.status === 400) {
+    handleChange(e) {
+        this.setState({ [e.target.name]: e.target.value });
+    }
 
-            }
-            return response.json();
-        }).then((users) => {
-            self.setState({ clubMembers: users });
-        });
+    handleDateChange(date) {
+        this.setState({ date });
+    }
+
+    handleSelectChange(e) {
+        const members = [...e.target.options].filter(o => o.selected).map(o => o);
+        this.setState({ [e.target.name]: members[0].value });
     }
 
     render() {
@@ -125,7 +127,7 @@ class AddTask extends Component {
             assignee,
             clubMembers,
             selectedMembersToAdd,
-            selectedMembersToRemove
+            loading,
         } = this.state;
 
         const { match } = this.props; // eslint-disable-line
@@ -176,17 +178,14 @@ class AddTask extends Component {
                         onChange={this.handleSelectChange}
                         multiple
                     >
-                        {clubMembers.map(member => {
-                            console.log(member);
-                            return (
-                                <SelectMemberOption
-                                    key={member._id}
-                                    memberId={member._id}
-                                    firstName={member.firstName}
-                                    lastName={member.lastName}
-                                />
-                            )
-                        })}
+                        {clubMembers.map(member => (
+                            <SelectMemberOption
+                                key={member._id}
+                                memberId={member._id}
+                                firstName={member.firstName}
+                                lastName={member.lastName}
+                            />
+                        ))}
                     </FormControl>
                     <Button type="button" bsStyle="primary" onClick={this.addToTask}>Add to task</Button>
                 </FormGroup>
@@ -197,7 +196,7 @@ class AddTask extends Component {
                     <Button type="button">Cancel</Button>
                 </Link>
                 <Button type="button" onClick={this.addTask}>Add task</Button>
-                <RingLoader loading={this.state.loading} color="#0B58B6" sizeUnit={"px"} size="60" inline/>
+                <RingLoader loading={loading} color="#0B58B6" sizeUnit="px" size="60" inline />
             </div>
         );
     }

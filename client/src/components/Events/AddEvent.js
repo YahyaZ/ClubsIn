@@ -21,7 +21,7 @@ class AddEvent extends Component {
             description: '',
             date: moment(),
             message: '',
-            loading:false,
+            loading: false,
         };
 
         this.addEvent = this.addEvent.bind(this);
@@ -50,7 +50,7 @@ class AddEvent extends Component {
             date: moment(self.state.date).toISOString(), // we store dates as ISO format
             createdBy: userId,
         };
-        self.setState({loading: true})
+        self.setState({ loading: true });
         fetch('/api/event', {
             method: 'POST',
             mode: 'cors',
@@ -59,7 +59,7 @@ class AddEvent extends Component {
         }).then((response) => {
             if (response.status === 400) {
                 response.json().then((data) => {
-                    self.setState({ message: data.error, loading:false });
+                    self.setState({ message: data.error, loading: false });
                 });
             } else if (response.status === 200) {
                 // disable lint as this.props.history is built in
@@ -74,6 +74,7 @@ class AddEvent extends Component {
             description,
             date,
             message,
+            loading,
         } = this.state;
         // ignore as match in in-built prop
         const { match } = this.props; // eslint-disable-line
@@ -118,8 +119,8 @@ class AddEvent extends Component {
                 <Link to={{ pathname: `/club/${match.params.clubId}` }}>
                     <Button type="button">Cancel</Button>
                 </Link>
-                <Button type="button" onClick={this.addEvent}>Add event</Button> <br/><br/>
-                <RingLoader loading={this.state.loading} color="#0B58B6" sizeUnit={"px"} size="60" inline/>
+                <Button type="button" onClick={this.addEvent}>Add event</Button> <br /><br />
+                <RingLoader loading={loading} color="#0B58B6" sizeUnit="px" size="60" inline />
             </div>
         );
     }

@@ -1,12 +1,17 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import Dashboard from '../Dashboard';
 import Welcome from '../Welcome';
-import './landing.css'
+import './landing.css';
 
-const Landing = (props) => (
+const Landing = ({ isAuthenticated }) => (
     <div className="landing-container">
-        {props.isAuthenticated?<Dashboard /> : <Welcome />}
+        {isAuthenticated ? <Dashboard /> : <Welcome />}
     </div>
 );
 
 export default Landing;
+
+Landing.propTypes = {
+    isAuthenticated: PropTypes.bool.isRequired,
+};

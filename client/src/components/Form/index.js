@@ -1,8 +1,8 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
+import { Alert } from 'react-bootstrap';
 import Logo from '../../resources/LOGO/logo.png';
-import { Alert } from 'react-bootstrap'
 
 const Form = ({
     tagline,
@@ -11,7 +11,7 @@ const Form = ({
     footerLinkText,
     footerLink,
     footerLinkClick,
-    errorMessage
+    errorMessage,
 }) => (
     <div>
         <div className="form-header">
@@ -46,6 +46,7 @@ Form.defaultProps = {
     footerText: '',
     footerLinkText: '',
     footerLink: '',
+    errorMessage: '',
 };
 
 Form.propTypes = {
@@ -55,4 +56,5 @@ Form.propTypes = {
     footerLinkText: PropTypes.string,
     footerLink: PropTypes.string,
     footerLinkClick: PropTypes.func,
+    errorMessage: PropTypes.string,
 };

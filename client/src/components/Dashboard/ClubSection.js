@@ -1,29 +1,33 @@
 
 import { FaFrown } from 'react-icons/fa';
 import React, { Component } from 'react';
-import SignUpFormChooseClubType from '../SignUp/signUpFormChooseClubType'
-import { Link } from 'react-router-dom'
-import { Button } from 'react-bootstrap';
+import { Link } from 'react-router-dom';
+import PropTypes from 'prop-types';
+import SignUpFormChooseClubType from '../SignUp/signUpFormChooseClubType';
 
-const ClubBox = (props) => (
-
-    <Link to={`/club/${props.club._id}`} >
-        <div className="box"> 
-            <p>{props.club.name}</p>
+const ClubBox = ({ club }) => (
+    <Link to={`/club/${club._id}`}>
+        <div className="box">
+            <p>{club.name}</p>
         </div>
     </Link>
+);
 
-)
+ClubBox.propTypes = {
+    club: PropTypes.shape({}).isRequired,
+};
 
 class ClubSection extends Component {
+    constructor(props) {
+        super(props);
 
-    state = {
-        clubs: []
+        this.state = {
+            clubs: [],
+        };
     }
 
-
     componentDidMount() {
-        let self = this;
+        const self = this;
         fetch('/api/club?q=name', {
             method: 'GET',
             mode: 'cors',
@@ -37,48 +41,41 @@ class ClubSection extends Component {
         });
     }
 
-    renderNoClubs() {
-        return (
-            <div>
-                It doesn't seem you are currently in any clubs <FaFrown />
-                {this.renderNewClubs()}
-            </div>
-        )
-    }
-
-    renderNewClubs() {
-        return (
-            <div>
-                Join an existing one or create a new one!
-                <br />
-                <SignUpFormChooseClubType />
-            </div>
-        )
-    }
+    renderNoClubs = () => (
+        <div>
+            It doesn&apos;t seem you are currently in any clubs <FaFrown />
+        </div>
+    );
 
     renderClubs() {
+        const { clubs } = this.state;
         return (
             <div>
                 Go to a club page:
                 <div className="club-container">
-                    {this.state.clubs.map(function (club) {
-                        return <ClubBox key={club._id} club={club} />
-                    })}
+                    {clubs.map(club => <ClubBox key={club._id} club={club} />)}
                 </div>
-                {this.renderNewClubs()}
             </div>
         );
-
     }
 
     render() {
-        let hasClubs = this.props.clubs.length == 0;
+        const { clubs } = this.props;
         return (
             <div>
-                {hasClubs ? this.renderNoClubs() : this.renderClubs()}
+                {clubs.length === 0 ? this.renderNoClubs() : this.renderClubs()}
+                <div>
+                    Join an existing one or create a new one!
+                    <br />
+                    <SignUpFormChooseClubType />
+                </div>
             </div>
-        )
+        );
     }
-};
+}
 
 export default ClubSection;
+
+ClubSection.propTypes = {
+    clubs: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
+};

@@ -1,9 +1,15 @@
-import React, { Component, Fragment } from 'react';
-import { Modal, FormControl, Button, Form, Alert } from 'react-bootstrap';
+import React, { Component } from 'react';
+import {
+    Modal,
+    FormControl,
+    Button,
+    Form,
+    Alert,
+} from 'react-bootstrap';
+import PropTypes from 'prop-types';
 
 
 class InviteClub extends Component {
-
     constructor(props) {
         super(props);
 
@@ -11,14 +17,14 @@ class InviteClub extends Component {
             copySuccess: '',
             value: 'Loading...',
             club: {
-                link : '',
-            }
-        }
+                link: '',
+            },
+        };
     }
 
-    componentDidMount(){
-        let self = this;
-        fetch(`/api/club/${this.props.clubId}`, {
+    componentDidMount() {
+        const self = this;
+        fetch(`/api/club/${self.props.clubId}`, {
             method: 'GET',
             mode: 'cors',
         }).then((response) => {
@@ -41,28 +47,35 @@ class InviteClub extends Component {
     };
 
     render() {
+        const { show, hide } = this.props;
+        const { club, copySuccess, value } = this.state;
         return (
-            <Modal show={this.props.show} onHide={this.props.hide}>
+            <Modal show={show} onHide={hide}>
                 <Modal.Header closeButton>
                     <Modal.Title>Invite Execs to this Club</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                    {this.state.copySuccess && <Alert bsStyle="success">{this.state.copySuccess}</Alert>}
+                    {copySuccess && <Alert bsStyle="success">{copySuccess}</Alert>}
                     Please send the code below to invite another exec into the club
                     <Form inline>
-                        <FormControl readOnly
-                            inputRef={(ref) => { this.input = ref }}
+                        <FormControl
+                            readOnly
+                            inputRef={(ref) => { this.input = ref; }}
                             type="text"
-                            value={this.state.club.link || this.state.value}
+                            value={club.link || value}
                             placeholder="Enter text"
                         />
                         <Button onClick={this.copyToClipboard}>Copy</Button>
                     </Form>
                 </Modal.Body>
             </Modal>
-        )
+        );
     }
-
 }
 
 export default InviteClub;
+
+InviteClub.propTypes = {
+    show: PropTypes.bool.isRequired,
+    hide: PropTypes.bool.isRequired,
+};

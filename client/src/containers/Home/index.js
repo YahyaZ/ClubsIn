@@ -1,12 +1,6 @@
-import React, { Component } from "react";
-import Landing from "../../components/Landing"
+import React from 'react';
+import Landing from '../../components/Landing';
 
-class Home extends Component {
-    render() {
-        return(
-            <Landing />
-        )
-    }
-}
+const Home = () => <Landing />;
 
 export default Home;
