@@ -29,7 +29,7 @@ let taskSchema = new mongoose.Schema({
         type: Boolean,
         default: false
     },
-    assignee: [{type: mongoose.Schema.Types.ObjectId, ref: 'users'}]
+    assignee: [{type: mongoose.Schema.Types.ObjectId, ref: 'User'}]
 })
 
 var Tasks = mongoose.model('Tasks', taskSchema, 'tasks');

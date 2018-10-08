@@ -7,7 +7,7 @@ const Task = ({
     name,
     date,
     active,
-    member,
+    members,
     onClick,
     onKeyPress,
 }) => (
@@ -20,10 +20,12 @@ const Task = ({
     >
         <div className="task-info">
             <h3>{name}</h3>
-            <p>Complete by: {date}</p>
+            <p>Complete by: {new Date(date).toDateString()}</p>
         </div>
         <div className="task-member">
-            <Member name={member[0]} />
+            {members.map(member => (
+                <Member firstName={member.firstName} lastName={member.lastName} key={member._id} />
+            ))}
         </div>
     </div>
 );
@@ -34,10 +36,7 @@ Task.propTypes = {
     name: PropTypes.string.isRequired,
     date: PropTypes.string.isRequired,
     active: PropTypes.string.isRequired,
-    member: PropTypes.shape({
-        name: PropTypes.string.isRequired,
-        color: PropTypes.string.isRequired,
-    }).isRequired,
+    members: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
     onClick: PropTypes.func.isRequired,
     onKeyPress: PropTypes.func.isRequired,
 };

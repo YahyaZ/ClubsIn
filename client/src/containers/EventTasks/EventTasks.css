@@ -28,13 +28,11 @@ h2 {
 
 .event-menu-item:hover {
     background-color: #0085FF;
-    filter: brightness(120%);
     color: white;
 }
 
 .event-menu-item:active {
     background-color: #0085FF;
-    filter: brightness(95%);
     color: white;
 }
 

@@ -7,18 +7,24 @@ import './TaskDetails.css';
 const TaskDetails = ({
     name,
     date,
-    member,
+    members,
     description,
 }) => (
     <div className="task-details-container">
         <div className="task-details-info-container">
             <div className="task-details-info">
                 <h3>{name}</h3>
-                <p>Complete by: {date}</p>
+                <p>Complete by: {new Date(date).toDateString()}</p>
             </div>
             <div className="task-details-member">
-                <Member name={member[0]} />
-                <p>Assigned to {member[0]}</p>
+                {members.map(member => (
+                    <Member
+                        firstName={member.firstName}
+                        lastName={member.lastName}
+                        key={member._id}
+                    />
+                ))}
+                {members.length === 1 ? <p>Assigned to: {`${members[0].firstName} ${members[0].lastName}`}</p> : ''}
             </div>
         </div>
         <p>{description}</p>
@@ -34,6 +40,6 @@ export default TaskDetails;
 TaskDetails.propTypes = {
     name: PropTypes.string.isRequired,
     date: PropTypes.string.isRequired,
-    member: PropTypes.string.isRequired,
+    members: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
     description: PropTypes.string.isRequired,
 };

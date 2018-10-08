@@ -42,14 +42,16 @@ function addTask(req, res, next) {
  * @param {Object} next
  */
 function findTasksForEvent(req, res, next){
-    Tasks.find({event_id: req.params.id}, (err, tasks)=>{
-        if(err){
-            var error = new Error("No task found");
-            error.status = 404;
-            return next(error);
-        }
-        res.json(tasks);
-    })
+    Tasks.find({event_id: req.params.id})
+        .populate('assignee')
+        .exec((err, tasks) => {
+            if (err) {
+                var error = new Error("No task found");
+                error.status = 404;
+                return next(error);
+            }
+            res.json(tasks);
+        });
 }
 
 /**

@@ -10,6 +10,7 @@ class EventTasks extends Component {
         this.state = {
             selectedMenu: 'myTasks',
             selectedTasks: [],
+            tasks: [],
             selectedTask: null,
             userId: JSON.parse(localStorage.getItem('User'))._id,
         };
@@ -20,11 +21,10 @@ class EventTasks extends Component {
     }
 
     getMyTasks = () => {
-        const { selectedTasks, userId } = this.state;
-        const myTasks = selectedTasks.reduce((result, task) => {
-            task.assignee.forEach((assigneeId) => {
-                if (assigneeId === userId
-                    && !result.find(t => t._id === task._id)) {
+        const { tasks, userId } = this.state;
+        const myTasks = tasks.reduce((result, task) => {
+            task.assignee.forEach((assignee) => {
+                if (assignee._id === userId) {
                     result.push(task);
                 }
             });
@@ -36,10 +36,10 @@ class EventTasks extends Component {
 
     getAllTasks = () => {
         const { tasks } = this.state;
-        this.setState({ selectedTask: tasks });
+        this.setState({ selectedTasks: tasks });
     }
 
-    getTasks = () => {
+    getTasks = async () => {
         const self = this;
         const { match } = this.props; // eslint-disable-line
         fetch(`/api/task/${match.params.eventId}`, {
@@ -53,8 +53,8 @@ class EventTasks extends Component {
         }).then((allTasks) => {
             self.setState({
                 tasks: allTasks,
-                selectedTasks: allTasks,
             });
+            this.getMyTasks();
         });
     }
 
@@ -87,11 +87,9 @@ class EventTasks extends Component {
             });
 
             if (item === 'myTasks') {
-                const tasks = this.getMyTasks();
-                this.setState({ tasks });
+                this.getMyTasks();
             } else if (item === 'allTasks') {
-                const tasks = this.getAllTasks();
-                this.setState({ tasks });
+                this.getAllTasks();
             }
         }
     }
@@ -104,7 +102,7 @@ class EventTasks extends Component {
     }
 
     render() {
-        const { tasks, selectedTask } = this.state;
+        const { selectedTasks, selectedTask } = this.state;
         return (
             <div className="event-tasks-container">
                 <div className="event-menu">
@@ -124,14 +122,14 @@ class EventTasks extends Component {
                     />
                 </div>
                 <div className="event-task-list">
-                    {tasks
-                        ? tasks.map(task => (
+                    {selectedTasks
+                        ? selectedTasks.map(task => (
                             <Task
                                 name={task.name}
-                                date={task.date}
+                                date={task.due_date}
                                 active={this.isSelectedTask(task)}
-                                member={task.assignee}
-                                key={task.name}
+                                members={task.assignee}
+                                key={task._id}
                                 onClick={() => this.selectTask(task)}
                                 onKeyPress={e => this.handleKeyPress(e, 'SELECT_TASK', task)}
                             />
@@ -143,9 +141,9 @@ class EventTasks extends Component {
                         ? (
                             <TaskDetails
                                 name={selectedTask.name}
-                                date={selectedTask.date}
+                                date={selectedTask.due_date}
                                 description={selectedTask.description}
-                                member={selectedTask.assignee}
+                                members={selectedTask.assignee}
                             />
                         )
                         : ''
