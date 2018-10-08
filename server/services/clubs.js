@@ -40,7 +40,7 @@ function createClub(req, res, next) {
             }
         });
     } else {
-        res.status(400).json({ "error": "All Fields required" })
+        res.status(400).json({ "error": "Please fill out all fields" })
     }
 }
 
@@ -73,7 +73,7 @@ function addUserToClub(req, res, next) {
             }
         });
     } else {
-        res.status(400).json({ "error": "All Fields required" })
+        res.status(400).json({ "error": "Please fill out all fields" })
     }
 }
 

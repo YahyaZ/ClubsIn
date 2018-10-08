@@ -92,7 +92,7 @@ describe('Clubs', function () {
                 .end(function (err, res) {
                     res.should.have.status(400);
                     res.body.should.be.a('object');
-                    res.body.should.have.property('error').eql('All Fields required');
+                    res.body.should.have.property('error').eql('Please fill out all fields');
                     authenticatedUser
                         .get('/api/user/profile')
                         .end(function (err, res) {
@@ -114,7 +114,7 @@ describe('Clubs', function () {
                 .end(function (err, res) {
                     res.should.have.status(400);
                     res.body.should.be.a('object');
-                    res.body.should.have.property('error').eql('All Fields required');
+                    res.body.should.have.property('error').eql('Please fill out all fields');
                     authenticatedUser
                         .get('/api/user/profile')
                         .end(function (err, res) {
@@ -137,7 +137,7 @@ describe('Clubs', function () {
                 .end(function (err, res) {
                     res.should.have.status(400);
                     res.body.should.be.a('object');
-                    res.body.should.have.property('error').eql('All Fields required');
+                    res.body.should.have.property('error').eql('Please fill out all fields');
                     authenticatedUser
                         .get('/api/user/profile')
                         .end(function (err, res) {
@@ -332,4 +332,67 @@ describe('Clubs', function () {
                 });
         });
     });
+
+    describe('Club Invite', function(){
+        let userTwo = {
+            email: "jane.smith@gmail.com",
+            password: "Test1234",
+        }
+
+        let authenticatedUserTwo = request.agent(server);
+
+        let club = {
+            "type": "Culture",
+            "name": "Culture Club",
+            "university": "5ba7090d8046d72680a34505",
+        }
+        
+        before(function(done){
+            authenticatedUserTwo
+                .post('/api/user/login')
+                .send(userTwo)
+                .end(function(err,res){
+                    res.should.have.status(200);
+                    res.body.should.have.property('_id');
+                    userTwo._id = res.body._id;
+                    done();
+                });
+        })
+
+        beforeEach(function(done){
+            Clubs.remove({}, err => {
+                authenticatedUser
+                    .post('/api/club/create')
+                    .send(club)
+                    .end(function (err, res) {
+                        res.should.have.status(200);
+                        res.body.should.have.property('_id');
+                        res.body.should.have.property('link');
+                        club._id = res.body._id;
+                        club.link = res.body.link;
+                        done();
+                    })
+            });
+        });
+
+        it('should be add a new user to the club given the link', function(done){
+            //authenticatedUser will get the link
+            authenticatedUser
+                .get(`/api/club/${club._id}`)
+                .end(function (err, res){
+                    res.should.have.status(200);
+                    res.body.should.have.property('_id').eql(club._id);
+                    res.body.should.have.property('link').eql(club.link);
+                    // authentincatedUserTwo will get the link from authenticatedUserOne and join
+                    authenticatedUserTwo
+                        .post('/api/club/invite')
+                        .send({inviteCode: club.link})
+                        .end(function(err, res){
+                            res.should.have.status(200);
+                            console.log(res.body);
+                            done();
+                        })
+                });
+        });
+    })
 });

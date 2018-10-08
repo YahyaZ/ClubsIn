@@ -71,7 +71,7 @@ describe('User Management', function () {
                     res.should.have.status(400);
                     res.body.should.be.a('object');
                     res.body.should.not.have.a.property('_id');
-                    res.body.should.have.a.property('error').eql('All fields required');
+                    res.body.should.have.a.property('error').eql('Please fill out all fields');
                     done();
                 });
 
@@ -87,7 +87,7 @@ describe('User Management', function () {
                     res.should.have.status(400);
                     res.body.should.be.a('object');
                     res.body.should.not.have.a.property('_id');
-                    res.body.should.have.a.property('error').eql('All fields required');
+                    res.body.should.have.a.property('error').eql('Please fill out all fields');
                     done();
                 });
 
@@ -154,7 +154,7 @@ describe('User Management', function () {
                     res.should.have.status(400);
                     res.body.should.be.a('object');
                     res.body.should.not.have.a.property('_id');
-                    res.body.should.have.a.property('error').eql('All fields required');
+                    res.body.should.have.a.property('error').eql('Please fill out all fields');
                     done();
                 });
 
@@ -173,7 +173,7 @@ describe('User Management', function () {
                     res.should.have.status(400);
                     res.body.should.be.a('object');
                     res.body.should.not.have.a.property('_id');
-                    res.body.should.have.a.property('error').eql('All fields required');
+                    res.body.should.have.a.property('error').eql('Please fill out all fields');
                     done();
                 });
 
@@ -192,7 +192,7 @@ describe('User Management', function () {
                     res.should.have.status(400);
                     res.body.should.be.a('object');
                     res.body.should.not.have.a.property('_id');
-                    res.body.should.have.a.property('error').eql('All fields required');
+                    res.body.should.have.a.property('error').eql('Please fill out all fields');
                     done();
                 });
 
@@ -361,7 +361,7 @@ describe('User Management', function () {
                     res.should.have.status(400);
                     res.body.should.be.a('object');
                     res.body.should.not.have.a.property('username');
-                    res.body.should.have.a.property('error').eql('All fields required');
+                    res.body.should.have.a.property('error').eql('Please fill out all fields');
                     chai.request(server)
                         .post('/api/user/login')
                         .send(user)

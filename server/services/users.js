@@ -57,9 +57,8 @@ function getAllUsers(req, res) {
 function signUp(req, res, next) {
   // Checks if the passwords match, if it doesnt, return a 400 error
   if (req.body.password !== req.body.passwordConf) {
-    var err = new Error('Passwords do not match.');
+    var err = new Error('Passwords do not match');
     err.status = 400;
-    res.json({ "error": "passwords dont match" });
     return next(err);
   }
 
@@ -100,7 +99,7 @@ function signUp(req, res, next) {
       }
     });
   } else {
-    res.status(400).json({ "error": "All fields required." })
+    res.status(400).json({ "error": "Please fill out all fields" })
   }
 }
 
@@ -118,7 +117,6 @@ function login(req, res, next) {
       if (error || !user) {
         res.status(400).json({ "error": "Wrong email or password" })
       } else {
-        console.log(user.email + " logged in")
         // Sets the Session Usedid
         req.session.userId = user._id;
         delete user.password;
@@ -126,7 +124,7 @@ function login(req, res, next) {
       }
     });
   } else {
-    var err = new Error('All fields required.');
+    var err = new Error('Please fill out all fields');
     err.status = 400;
     return next(err);
   }
