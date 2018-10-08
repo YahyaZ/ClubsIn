@@ -11,6 +11,7 @@ import moment from 'moment';
 import RingLoader from 'react-spinners/RingLoader';
 import 'react-datepicker/dist/react-datepicker.css';
 import SelectMemberOption from './SelectMemberOption';
+import './AddTask.css';
 
 
 class AddTask extends Component {
@@ -21,8 +22,8 @@ class AddTask extends Component {
             date: moment(),
             name: '',
             description: '',
-            selectedMembersToAdd: [],
-            memberToAdd: '',
+            selectedMembers: [],
+            selectedAssigned: [],
             clubMembers: [],
             assignee: [],
             message: '',
@@ -30,7 +31,7 @@ class AddTask extends Component {
         };
 
         this.addTask = this.addTask.bind(this);
-        this.addToTask = this.addToTask.bind(this);
+        this.handleMemberSelectClick = this.handleMemberSelectClick.bind(this);
         this.handleChange = this.handleChange.bind(this);
         this.handleDateChange = this.handleDateChange.bind(this);
         this.handleSelectChange = this.handleSelectChange.bind(this);
@@ -59,19 +60,41 @@ class AddTask extends Component {
         });
     }
 
-    addToTask() {
+    handleMemberSelectClick(action) {
         const {
             clubMembers,
-            memberToAdd,
+            selectedMembers,
+            assignee,
+            selectedAssigned,
         } = this.state;
 
-        const newClubMembers = clubMembers.filter(cm => cm._id !== memberToAdd);
+        let memberList = clubMembers;
+        let memberListKey = 'clubMembers';
+        let moveToList = assignee;
+        let moveToListKey = 'assignee';
+        let selectedList = selectedMembers;
+        let selectedListKey = 'selectedMembers';
 
-        this.setState(prevState => ({
-            assignee: [...prevState.assignee, memberToAdd],
-            clubMembers: newClubMembers,
-            memberToAdd: '',
-        }));
+        // switch arrays depending on button action
+        console.log(action);
+        if (action === 'REMOVE') {
+            memberList = assignee;
+            memberListKey = 'assignee';
+            moveToList = clubMembers;
+            moveToListKey = 'clubMembers';
+            selectedList = selectedAssigned;
+            selectedListKey = 'selectedAssigned';
+        }
+
+        const newMemberList = memberList
+            .filter(clubMember => selectedList
+                .every(selected => selected._id !== clubMember._id));
+
+        this.setState({
+            [moveToListKey]: moveToList.concat(selectedList),
+            [memberListKey]: newMemberList,
+            [selectedListKey]: [],
+        });
     }
 
     addTask(e) {
@@ -95,11 +118,11 @@ class AddTask extends Component {
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(fields),
         }).then((response) => {
-            if (response.status === 400) {
+            if (response.status !== 200) {
                 response.json().then((data) => {
                     self.setState({ message: data.error, loading: false });
                 });
-            } else if (response.status === 200) {
+            } else {
                 this.props.history.push(`/club/${match.params.clubId}/event/${match.params.eventId}`); // eslint-disable-line
             }
         });
@@ -114,8 +137,16 @@ class AddTask extends Component {
     }
 
     handleSelectChange(e) {
-        const members = [...e.target.options].filter(o => o.selected).map(o => o);
-        this.setState({ [e.target.name]: members[0].value });
+        const { clubMembers, assignee } = this.state;
+        let membersList = clubMembers;
+        // switch depending on which select was changed
+        if (e.target.name === 'selectedAssigned') {
+            membersList = assignee;
+        }
+        const members = [...e.target.options]
+            .filter(option => option.selected)
+            .map(option => membersList[option.value]);
+        this.setState({ [e.target.name]: members });
     }
 
     render() {
@@ -126,8 +157,9 @@ class AddTask extends Component {
             message,
             assignee,
             clubMembers,
-            selectedMembersToAdd,
             loading,
+            selectedMembers,
+            selectedAssigned,
         } = this.state;
 
         const { match } = this.props; // eslint-disable-line
@@ -169,34 +201,56 @@ class AddTask extends Component {
                         dateFormat="LLL"
                     />
                 </FormGroup>
-                <FormGroup controlId="formAssign">
-                    <ControlLabel>Assign: </ControlLabel>
-                    <FormControl
-                        name="memberToAdd"
-                        componentClass="select"
-                        value={selectedMembersToAdd}
-                        onChange={this.handleSelectChange}
-                        multiple
-                    >
-                        {clubMembers.map(member => (
-                            <SelectMemberOption
-                                key={member._id}
-                                memberId={member._id}
-                                firstName={member.firstName}
-                                lastName={member.lastName}
-                            />
-                        ))}
-                    </FormControl>
-                    <Button type="button" bsStyle="primary" onClick={this.addToTask}>Add to task</Button>
+                <FormGroup className="task-select" controlId="formAssign">
+                    <FormGroup className="member-select">
+                        <ControlLabel>Members: </ControlLabel>
+                        <FormControl
+                            name="selectedMembers"
+                            componentClass="select"
+                            onChange={this.handleSelectChange}
+                            multiple
+                        >
+                            {clubMembers.map((member, index) => (
+                                <SelectMemberOption
+                                    key={member._id}
+                                    index={index}
+                                    firstName={member.firstName}
+                                    lastName={member.lastName}
+                                />
+                            ))}
+                        </FormControl>
+                    </FormGroup>
+                    <FormGroup className="button-select">
+                        <Button type="button" onClick={() => this.handleMemberSelectClick('ADD')} disabled={selectedMembers.length === 0}>&gt;&gt;</Button>
+                        <Button type="button" onClick={() => this.handleMemberSelectClick('REMOVE')} disabled={selectedAssigned.length === 0}>&lt;&lt;</Button>
+                    </FormGroup>
+                    <FormGroup className="member-select">
+                        <ControlLabel>Assigned: </ControlLabel>
+                        <FormControl
+                            name="selectedAssigned"
+                            componentClass="select"
+                            onChange={this.handleSelectChange}
+                            multiple
+                        >
+                            {assignee.map((member, index) => (
+                                <SelectMemberOption
+                                    key={member._id}
+                                    index={index}
+                                    firstName={member.firstName}
+                                    lastName={member.lastName}
+                                />
+                            ))}
+                        </FormControl>
+                    </FormGroup>
                 </FormGroup>
-                <p>Assigned Users: </p>
-                {assignee.map(assigned => <p key={assigned}>{assigned}</p>)}
+                {/* <p>Assigned Users: </p>
+                {assignee.map(assigned => <p key={assigned}>{assigned}</p>)} */}
 
                 <Link to={{ pathname: `/club/${match.params.clubId}/event/${match.params.eventId}` }}>
                     <Button type="button">Cancel</Button>
                 </Link>
                 <Button type="button" onClick={this.addTask}>Add task</Button>
-                <RingLoader loading={loading} color="#0B58B6" sizeUnit="px" size="60" inline />
+                <RingLoader loading={loading} color="#0B58B6" sizeUnit="px" size={60} inline />
             </div>
         );
     }

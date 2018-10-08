@@ -1,0 +1,15 @@
+.task-select {
+    display: flex;
+    justify-content: space-around;
+}
+
+.member-select {
+    width: 100%;
+}
+
+.button-select {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    margin-top: 25px;
+}

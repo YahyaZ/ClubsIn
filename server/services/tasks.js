@@ -24,7 +24,7 @@ function addTask(req, res, next) {
             due_date: due_date,
             name: name,
             description: description,
-            assignee: [assignee],
+            assignee: assignee,
         };
         Tasks.create(taskData, (err) => {
             if(err) next(err);

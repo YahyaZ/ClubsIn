@@ -1,14 +1,14 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-const SelectMemberOption = ({ memberId, firstName, lastName }) => (
-    <option value={memberId}>{`${firstName} ${lastName}`}</option>
+const SelectMemberOption = ({ index, firstName, lastName }) => (
+    <option value={index}>{`${firstName} ${lastName}`}</option>
 );
 
 export default SelectMemberOption;
 
 SelectMemberOption.propTypes = {
-    memberId: PropTypes.string.isRequired,
+    index: PropTypes.number.isRequired,
     firstName: PropTypes.string.isRequired,
     lastName: PropTypes.string.isRequired,
 };
