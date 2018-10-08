@@ -3,15 +3,43 @@ import { FaFrown } from 'react-icons/fa';
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
+import Card from '@material-ui/core/Card';
+import CardActionArea from '@material-ui/core/CardActionArea';
+import CardActions from '@material-ui/core/CardActions';
+import CardContent from '@material-ui/core/CardContent';
+import Button from '@material-ui/core/Button';
+import Typography from '@material-ui/core/Typography';
 import SignUpFormChooseClubType from '../SignUp/signUpFormChooseClubType';
+import ArrowForward from '@material-ui/icons/ArrowForward';
 
-const ClubBox = ({ club }) => (
+
+const styles = {
+    card: {
+      maxWidth: 300,
+    },
+  };
+  
+
+const ClubBox = ({ club }) => {
+    return (
     <Link to={`/club/${club._id}`}>
-        <div className="box">
-            <p>{club.name}</p>
-        </div>
+        <Card style={styles.card}>
+            <CardActionArea>
+                <CardContent>
+                    <Typography gutterBottom variant="h5" component="h4">
+                        {club.name}
+                    </Typography>
+                </CardContent>
+            </CardActionArea>
+            <CardActions style={{justifyContent: 'center'}}>
+                <Button   size="large" color="secondary">
+                    View Club
+                    <ArrowForward />
+                </Button>
+            </CardActions>
+        </Card>
     </Link>
-);
+)};
 
 ClubBox.propTypes = {
     club: PropTypes.shape({}).isRequired,
