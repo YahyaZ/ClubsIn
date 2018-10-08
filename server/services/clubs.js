@@ -53,27 +53,35 @@ function createClub(req, res, next) {
  */
 function addUserToClub(req, res, next) {
     if (req.body.inviteCode) {
-        console.log(req.body.inviteCode, req.session.userId);
         // Checks if the club is existing or not, if it doesnt, add it
-        Clubs.findOneAndUpdate({ $and: [{ link: req.body.inviteCode }, { users: { $ne: req.session.userId } }] }, {
-            $push: { users: req.session.userId }
-        }, function (err, club) {
-            console.log('Added');
+        Clubs.findOne({ link: req.body.inviteCode }, function (err, club) {
             if (err) {
-                console.log(err);
+                return next(err);
             }
-            // Club Exists, so return Club Already exists
+            // Club Exists, Check if user is in club
             if (club) {
-                UserService.addUserToClub(req.session.userId, club._id)
-                req.session.clubId = club._id;
-                return res.json(club)
+                if (!club.users.includes(req.session.userId)){
+                    club.users.push(req.session.userId);
+                    club.save(function(err,club){
+                        if (err) {
+                            return next(err);
+                        }
+
+                        UserService.addUserToClub(req.session.userId, club._id)
+                        req.session.clubId = club._id;
+                        return res.json(club)
+                    });
+                } else{
+                    // User already is in club
+                    res.status(400).json({ "error": "User is already in club" });
+                }
             } else {
                 // No club is found, Invalid Link
-                res.status(404).json({ "error": "Invite Link Invalid" })
+                res.status(404).json({ "error": "Invite Link Invalid" });
             }
         });
     } else {
-        res.status(400).json({ "error": "Please fill out all fields" })
+        res.status(400).json({ "error": "Please fill out all fields" });
     }
 }
 

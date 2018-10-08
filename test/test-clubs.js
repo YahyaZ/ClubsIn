@@ -10,7 +10,7 @@ let should = chai.should();
 chai.use(chaiHttp);
 
 
-describe('Clubs', function () {
+describe.only('Clubs', function () {
     let user = {
         email: "john.smith@gmail.com",
         password: "Test1234",
@@ -333,7 +333,7 @@ describe('Clubs', function () {
         });
     });
 
-    describe('Club Invite', function(){
+    describe.only('Club Invite', function(){
         let userTwo = {
             email: "jane.smith@gmail.com",
             password: "Test1234",
@@ -389,7 +389,10 @@ describe('Clubs', function () {
                         .send({inviteCode: club.link})
                         .end(function(err, res){
                             res.should.have.status(200);
-                            console.log(res.body);
+                            res.body.should.have.property('_id').eql(club._id);
+                            res.body.should.have.property('users');
+                            res.body.users.should.be.a('array').that.includes(userTwo._id);
+                            res.body.users.should.be.a('array').that.includes(user._id);
                             done();
                         })
                 });
