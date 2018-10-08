@@ -18,6 +18,7 @@ const styles = {
       maxWidth: 300,
       marginTop:20,
       marginBottom:20,
+      marginRight: 10,
     },
   };
   
@@ -28,7 +29,7 @@ const ClubBox = ({ club }) => {
         <Card style={styles.card}>
             <CardActionArea>
                 <CardContent>
-                    <Typography gutterBottom variant="h5" component="h4">
+                    <Typography  gutterBottom variant="h5" component="h4">
                         {club.name}
                     </Typography>
                 </CardContent>
