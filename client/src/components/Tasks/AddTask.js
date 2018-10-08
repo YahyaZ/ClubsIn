@@ -76,7 +76,6 @@ class AddTask extends Component {
         let selectedListKey = 'selectedMembers';
 
         // switch arrays depending on button action
-        console.log(action);
         if (action === 'REMOVE') {
             memberList = assignee;
             memberListKey = 'assignee';
