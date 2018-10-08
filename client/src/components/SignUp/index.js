@@ -19,7 +19,7 @@ class SignUp extends Component {
             loading: false,
         };
 
-        this.goToPage = this.goToPage.bind(this);
+        //this.goToPage = this.goToPage.bind(this);
         this.handleInputChange = this.handleInputChange.bind(this);
         this.handleInputClubChange = this.handleInputClubChange.bind(this);
         this.updateUser = this.updateUser.bind(this);
