@@ -9,12 +9,14 @@ const TaskDetails = ({
     date,
     members,
     description,
+    completed,
 }) => (
     <div className="task-details-container">
         <div className="task-details-info-container">
             <div className="task-details-info">
                 <h3>{name}</h3>
-                <p>Complete by: {new Date(date).toDateString()}</p>
+                <p>{completed ? '' : `Complete by: ${new Date(date).toDateString()}`}</p>
+                {new Date(date) < new Date() ? <p className="overdue">Overdue</p> : ''}
             </div>
             <div className="task-details-member">
                 {members.map(member => (
@@ -42,4 +44,5 @@ TaskDetails.propTypes = {
     date: PropTypes.string.isRequired,
     members: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
     description: PropTypes.string.isRequired,
+    completed: PropTypes.bool.isRequired,
 };

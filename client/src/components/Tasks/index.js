@@ -8,19 +8,20 @@ const Task = ({
     date,
     active,
     members,
+    completed,
     onClick,
     onKeyPress,
 }) => (
     <div
         role="button"
         tabIndex="0"
-        className={`task-container ${active}`}
+        className={`task-container ${active} ${completed ? 'completed' : ''} ${new Date(date) < new Date() ? 'overdue' : ''}`}
         onClick={onClick}
         onKeyPress={onKeyPress}
     >
         <div className="task-info">
             <h3>{name}</h3>
-            <p>Complete by: {new Date(date).toDateString()}</p>
+            <p>{completed ? 'Completed' : `Complete by: ${new Date(date).toDateString()}`}</p>
         </div>
         <div className="task-member">
             {members.map(member => (
@@ -37,6 +38,7 @@ Task.propTypes = {
     date: PropTypes.string.isRequired,
     active: PropTypes.string.isRequired,
     members: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
+    completed: PropTypes.bool.isRequired,
     onClick: PropTypes.func.isRequired,
     onKeyPress: PropTypes.func.isRequired,
 };
