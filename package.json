@@ -8,7 +8,8 @@
     "start:server": "cd server && nodemon server.js --exec babel-node --presets es2015,stage-0",
     "start:client": "cd client && npm start",
     "debug": "concurrently \"cd server && nodemon --inspect server.js --exec babel-node --presets es2015,stage-0\" \"npm run start:client\"",
-    "start": "concurrently \"npm run start:server\" \"npm run start:client\""
+    "start": "concurrently \"npm run start:server\" \"npm run start:client\"",
+    "build": "concurrently \"npm run start:server\" \"cd client && npm run build\""
   },
   "repository": {
     "type": "git",
