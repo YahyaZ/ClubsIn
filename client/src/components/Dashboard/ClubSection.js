@@ -16,6 +16,8 @@ import ArrowForward from '@material-ui/icons/ArrowForward';
 const styles = {
     card: {
       maxWidth: 300,
+      marginTop:20,
+      marginBottom:20,
     },
   };
   
