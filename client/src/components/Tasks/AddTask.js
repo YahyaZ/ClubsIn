@@ -187,11 +187,12 @@ class AddTask extends Component {
                             />
                         ))}
                     </FormControl>
+                    <br/>
                     <Button type="button" bsStyle="primary" onClick={this.addToTask}>Add to task</Button>
                 </FormGroup>
                 <p>Assigned Users: </p>
                 {assignee.map(assigned => <p key={assigned}>{assigned}</p>)}
-
+                
                 <Link to={{ pathname: `/club/${match.params.clubId}/event/${match.params.eventId}` }}>
                     <Button type="button">Cancel</Button>
                 </Link>
