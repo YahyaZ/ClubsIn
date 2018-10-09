@@ -27,7 +27,7 @@ class AddTask extends Component {
             clubMembers: [],
             assignee: [],
             message: '',
-            loading: false,
+            loading: true,
             edit: false,
             taskId: '',
         };
@@ -63,6 +63,7 @@ class AddTask extends Component {
                 assignee: task.assignee,
                 edit: true,
                 taskId: task._id,
+                loading: false,
             });
         }
     }
@@ -80,7 +81,7 @@ class AddTask extends Component {
                 });
             } else {
                 response.json().then((users) => {
-                    self.setState({ clubMembers: users });
+                    self.setState({ clubMembers: users, loading: false });
                 });
             }
         });
@@ -203,7 +204,7 @@ class AddTask extends Component {
         const method = edit ? 'PUT' : 'POST'; // if editing, PUT request, else POST
         return (
             <div className="events-container">
-                <h2>Add task</h2>
+                <h2>{edit ? 'Edit task' : 'Add task'}</h2>
                 {message}
 
                 <FormGroup controlId="formName">
@@ -214,6 +215,7 @@ class AddTask extends Component {
                         placeholder="Name of the task"
                         name="name"
                         onChange={this.handleChange}
+                        disabled={loading}
                     />
                 </FormGroup>
                 <FormGroup controlId="formDescription">
@@ -225,6 +227,7 @@ class AddTask extends Component {
                         name="description"
                         componentClass="textarea"
                         onChange={this.handleChange}
+                        disabled={loading}
                     />
                 </FormGroup>
                 <FormGroup controlId="formDate">
@@ -236,6 +239,7 @@ class AddTask extends Component {
                         placholderText="Due date of the task"
                         showTimeSelect
                         dateFormat="LLL"
+                        disabled={loading}
                     />
                 </FormGroup>
                 <FormGroup className="task-select" controlId="formAssign">
@@ -246,6 +250,7 @@ class AddTask extends Component {
                             componentClass="select"
                             onChange={this.handleSelectChange}
                             multiple
+                            disabled={loading}
                         >
                             {clubMembers.map((member, index) => (
                                 <SelectMemberOption
@@ -258,8 +263,8 @@ class AddTask extends Component {
                         </FormControl>
                     </FormGroup>
                     <FormGroup className="button-select">
-                        <Button type="button" onClick={() => this.handleMemberSelectClick('ADD')} disabled={selectedMembers.length === 0}>&gt;&gt;</Button>
-                        <Button type="button" onClick={() => this.handleMemberSelectClick('REMOVE')} disabled={selectedAssigned.length === 0}>&lt;&lt;</Button>
+                        <Button type="button" onClick={() => this.handleMemberSelectClick('ADD')} disabled={selectedMembers.length === 0 || loading}>&gt;&gt;</Button>
+                        <Button type="button" onClick={() => this.handleMemberSelectClick('REMOVE')} disabled={selectedAssigned.length === 0 || loading}>&lt;&lt;</Button>
                     </FormGroup>
                     <FormGroup className="member-select">
                         <ControlLabel>Assigned: </ControlLabel>
@@ -268,6 +273,7 @@ class AddTask extends Component {
                             componentClass="select"
                             onChange={this.handleSelectChange}
                             multiple
+                            disabled={loading}
                         >
                             {assignee.map((member, index) => (
                                 <SelectMemberOption
@@ -284,7 +290,7 @@ class AddTask extends Component {
                 <Link to={{ pathname: `/club/${match.params.clubId}/event/${match.params.eventId}` }}>
                     <Button type="button">Cancel</Button>
                 </Link>
-                <Button type="button" onClick={() => this.addTask(method)}>{edit ? 'Edit task' : 'Add task'}</Button>
+                <Button type="button" onClick={() => this.addTask(method)} disabled={loading}>{edit ? 'Edit task' : 'Add task'}</Button>
                 <RingLoader loading={loading} color="#0B58B6" sizeUnit="px" size={60} inline />
             </div>
         );
