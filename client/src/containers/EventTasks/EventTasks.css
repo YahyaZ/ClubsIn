@@ -17,10 +17,6 @@ h2 {
     margin-left: 30px;
 }
 
-.event-tasks-container > div {
-    height: 100%;
-}
-
 .event-menu {
     min-width: 250px;
     display: flex;

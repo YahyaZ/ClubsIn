@@ -236,7 +236,8 @@ class AddTask extends Component {
                         selected={date}
                         onChange={this.handleDateChange}
                         name="date"
-                        placholderText="Due date of the task"
+                        placeholderText="Due date of the task"
+                        minDate={moment()}
                         showTimeSelect
                         dateFormat="LLL"
                         disabled={loading}

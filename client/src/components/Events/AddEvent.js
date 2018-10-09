@@ -7,6 +7,7 @@ import {
 } from 'react-bootstrap';
 import DatePicker from 'react-datepicker';
 import { Link } from 'react-router-dom';
+import PropTypes from 'prop-types';
 import moment from 'moment';
 import 'react-datepicker/dist/react-datepicker.css';
 import RingLoader from 'react-spinners/RingLoader';
@@ -29,6 +30,18 @@ class AddEvent extends Component {
         this.handleDateChange = this.handleDateChange.bind(this);
     }
 
+    componentDidMount() {
+        const { edit } = this.props;
+        if (edit) {
+            const { name, description, date } = this.props;
+            this.setState({
+                name,
+                description,
+                date: moment(date),
+            });
+        }
+    }
+
     handleChange(e) {
         this.setState({ [e.target.name]: e.target.value });
     }
@@ -37,13 +50,12 @@ class AddEvent extends Component {
         this.setState({ date });
     }
 
-    addEvent(e) {
+    addEvent(method) {
         const self = this;
-        const { match } = this.props; // eslint-disable-line
+        const { match, edit, _id, getEvent } = this.props; // eslint-disable-line
         const userId = JSON.parse(localStorage.getItem('User'))._id;
-
-        e.preventDefault();
         const fields = {
+            _id,
             clubId: match.params.clubId,
             name: self.state.name,
             description: self.state.description,
@@ -52,18 +64,23 @@ class AddEvent extends Component {
         };
         self.setState({ loading: true });
         fetch('/api/event', {
-            method: 'POST',
+            method,
             mode: 'cors',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(fields),
         }).then((response) => {
-            if (response.status === 400) {
+            if (response.status === 200) {
+                self.setState({ loading: false });
+                if (!edit) {
+                    // disable lint as this.props.history is built in
+                    this.props.history.push(`/club/${match.params.clubId}`); //eslint-disable-line
+                } else {
+                    getEvent();
+                }
+            } else {
                 response.json().then((data) => {
                     self.setState({ message: data.error, loading: false });
                 });
-            } else if (response.status === 200) {
-                // disable lint as this.props.history is built in
-                this.props.history.push(`/club/${match.params.clubId}`); //eslint-disable-line
             }
         });
     }
@@ -77,11 +94,11 @@ class AddEvent extends Component {
             loading,
         } = this.state;
         // ignore as match in in-built prop
-        const { match } = this.props; // eslint-disable-line
-
+        const { match, edit } = this.props; // eslint-disable-line
+        const method = edit ? 'PUT' : 'POST';
         return (
-            <div className="events-container">
-                <h2>Add event</h2>
+            <div className="events-container" style={{ width: '100%' }}>
+                <h2>{edit ? 'Edit event' : 'Add event'}</h2>
                 {message}
                 <FormGroup controlId="formName">
                     <ControlLabel>Name:</ControlLabel>
@@ -104,26 +121,46 @@ class AddEvent extends Component {
                         onChange={this.handleChange}
                     />
                 </FormGroup>
-                <FormGroup inline controlId="formDate">
+                <FormGroup controlId="formDate">
                     <ControlLabel>Date:</ControlLabel>
                     <DatePicker
                         selected={date}
                         onChange={this.handleDateChange}
                         name="date"
-                        placholderText="Date of the event"
+                        placeholderText="Date of the event"
+                        minDate={moment()}
                         showTimeSelect
                         dateFormat="LLL"
                     />
                 </FormGroup>
 
-                <Link to={{ pathname: `/club/${match.params.clubId}` }}>
-                    <Button type="button">Cancel</Button>
-                </Link>
-                <Button type="button" onClick={this.addEvent}>Add event</Button> <br /><br />
-                <RingLoader loading={loading} color="#0B58B6" sizeUnit="px" size="60" inline />
+                {edit ? '' : (
+                    <Link to={{ pathname: `/club/${match.params.clubId}` }}>
+                        <Button type="button">Cancel</Button>
+                    </Link>
+                )}
+
+                <Button type="button" onClick={() => this.addEvent(method)}>{edit ? 'Edit event' : 'Add event'}</Button> <br /><br />
+                <RingLoader loading={loading} color="#0B58B6" sizeUnit="px" size={60} inline />
             </div>
         );
     }
 }
 
 export default AddEvent;
+
+AddEvent.defaultProps = {
+    edit: false,
+    name: '',
+    description: '',
+    date: '',
+    getEvent: () => {},
+};
+
+AddEvent.propTypes = {
+    edit: PropTypes.bool,
+    name: PropTypes.string,
+    description: PropTypes.string,
+    date: PropTypes.string,
+    getEvent: PropTypes.func,
+};
