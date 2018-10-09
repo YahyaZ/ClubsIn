@@ -24,6 +24,8 @@ router.post('/', TaskService.addTask)
 
 router.get('/assigned', TaskService.assignedTask);
 
+router.get('/:id', TaskService.getTask)
+
 /**
  * /api/tasks/:id
  * GET - RETURNS ALL  TASKS FOR AN EVENT
@@ -34,7 +36,7 @@ router.get('/assigned', TaskService.assignedTask);
  *  - 404: No tasks with such event_id is found
  */
 
-router.get('/:id', TaskService.findTasksForEvent)
+router.get('/event/:id', TaskService.findTasksForEvent)
 
 
 
