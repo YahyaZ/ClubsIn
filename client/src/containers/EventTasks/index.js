@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+import { Button } from 'react-bootstrap';
+import { Link } from 'react-router-dom';
 import Task from '../../components/Tasks';
 import TaskDetails from '../../components/Tasks/TaskDetails';
 import MenuItem from './MenuItem';
@@ -8,6 +10,7 @@ class EventTasks extends Component {
     constructor() {
         super();
         this.state = {
+            event: null,
             selectedMenu: 'myTasks',
             selectedTasks: [],
             tasks: [],
@@ -17,7 +20,19 @@ class EventTasks extends Component {
     }
 
     componentDidMount() {
+        this.getEvent();
         this.getTasks();
+    }
+
+    getEvent = () => {
+        const self = this;
+        const { match } = this.props; // eslint-disable-line
+        fetch(`/api/event/${match.params.eventId}`, {
+            method: 'GET',
+            mode: 'cors',
+        })
+            .then(response => response.json())
+            .then(event => self.setState({ event }));
     }
 
     getMyTasks = () => {
@@ -102,55 +117,66 @@ class EventTasks extends Component {
     }
 
     render() {
-        const { selectedTasks, selectedTask } = this.state;
+        const { event, selectedTasks, selectedTask } = this.state;
+        const { match } = this.props; // eslint-disable-line
         return (
-            <div className="event-tasks-container">
-                <div className="event-menu">
-                    <MenuItem
-                        itemName="My Tasks"
-                        itemType="myTasks"
-                        isSelectedMenu={this.isSelectedMenu}
-                        selectMenu={this.selectMenu}
-                        handleKeyPress={this.handleKeyPress}
-                    />
-                    <MenuItem
-                        itemName="All Tasks"
-                        itemType="allTasks"
-                        isSelectedMenu={this.isSelectedMenu}
-                        selectMenu={this.selectMenu}
-                        handleKeyPress={this.handleKeyPress}
-                    />
-                </div>
-                <div className="event-task-list">
-                    {selectedTasks
-                        ? selectedTasks.map(task => (
-                            <Task
-                                name={task.name}
-                                date={task.due_date}
-                                active={this.isSelectedTask(task)}
-                                members={task.assignee}
-                                completed={task.completed}
-                                key={task._id}
-                                onClick={() => this.selectTask(task)}
-                                onKeyPress={e => this.handleKeyPress(e, 'SELECT_TASK', task)}
+            <div>
+                <h2 className="event-title">{event && `${event.name} - ${new Date(event.date).toDateString()}`}</h2>
+                <div className="event-tasks-container">
+                    <div className="event-menu">
+                        <div>
+                            <MenuItem
+                                itemName="My Tasks"
+                                itemType="myTasks"
+                                isSelectedMenu={this.isSelectedMenu}
+                                selectMenu={this.selectMenu}
+                                handleKeyPress={this.handleKeyPress}
                             />
-                        ))
-                        : ''}
-                </div>
-                <div className="event-task-details">
-                    {selectedTask
-                        ? (
-                            <TaskDetails
-                                taskId={selectedTask._id}
-                                name={selectedTask.name}
-                                date={selectedTask.due_date}
-                                description={selectedTask.description}
-                                members={selectedTask.assignee}
-                                completed={selectedTask.completed}
+                            <MenuItem
+                                itemName="All Tasks"
+                                itemType="allTasks"
+                                isSelectedMenu={this.isSelectedMenu}
+                                selectMenu={this.selectMenu}
+                                handleKeyPress={this.handleKeyPress}
                             />
-                        )
-                        : ''
-                    }
+                        </div>
+                        <div className="event-menu-button">
+                            <Link to={`/club/${match.params.clubId}`}>
+                                <Button>Return to club</Button>
+                            </Link>
+                        </div>
+                    </div>
+                    <div className="event-task-list">
+                        {selectedTasks
+                            ? selectedTasks.map(task => (
+                                <Task
+                                    name={task.name}
+                                    date={task.due_date}
+                                    active={this.isSelectedTask(task)}
+                                    members={task.assignee}
+                                    completed={task.completed}
+                                    key={task._id}
+                                    onClick={() => this.selectTask(task)}
+                                    onKeyPress={e => this.handleKeyPress(e, 'SELECT_TASK', task)}
+                                />
+                            ))
+                            : ''}
+                    </div>
+                    <div className="event-task-details">
+                        {selectedTask
+                            ? (
+                                <TaskDetails
+                                    taskId={selectedTask._id}
+                                    name={selectedTask.name}
+                                    date={selectedTask.due_date}
+                                    description={selectedTask.description}
+                                    members={selectedTask.assignee}
+                                    completed={selectedTask.completed}
+                                />
+                            )
+                            : ''
+                        }
+                    </div>
                 </div>
             </div>
         );
