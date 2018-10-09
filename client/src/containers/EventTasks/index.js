@@ -130,6 +130,7 @@ class EventTasks extends Component {
     render() {
         const { event, selectedTasks, selectedTask } = this.state;
         const { match } = this.props; // eslint-disable-line
+        selectedTasks.sort(task => task.completed ? 1 : -1);
         return (
             <div>
                 <h2 className="event-title">{event && `${event.name} - ${new Date(event.date).toDateString()}`}</h2>
