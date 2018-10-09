@@ -58,7 +58,7 @@ class EventTasks extends Component {
         const self = this;
         const { match } = this.props; // eslint-disable-line
         const { selectedMenu, selectedTask } = this.state;
-        fetch(`/api/task/${match.params.eventId}`, {
+        fetch(`/api/task/event/${match.params.eventId}`, {
             method: 'GET',
             mode: 'cors',
         }).then((response) => {
@@ -184,6 +184,7 @@ class EventTasks extends Component {
                                     members={selectedTask.assignee}
                                     completed={selectedTask.completed}
                                     getTasks={this.getTasks}
+                                    editLink={`/club/${match.params.clubId}/event/${match.params.eventId}/task/${selectedTask._id}`}
                                 />
                             )
                             : ''

@@ -36,6 +36,24 @@ function addTask(req, res, next) {
 }
 
 /**
+ * 
+ * Get task based on id
+ * 
+ */
+function getTask(req, res, next) {
+    Tasks.findOne({_id: req.params.id})
+        .populate('assignee')
+        .exec((err, tasks) => {
+            if (err) {
+                var error = new Error("No task found");
+                error.status = 404;
+                return next(error);
+            }
+            res.json(tasks);
+        })
+}
+
+/**
  * Finds all tasks for a specific event and returns it
  * @param {Object} req 
  * @param {Object} res 
@@ -83,6 +101,7 @@ function updateTask(req,res, next) {
             assignee: req.body.assignee
         },(err, task) => {
             if(err) {
+                console.log(err);
                 err.status = 404;
                 next(err);
             } 
@@ -104,6 +123,7 @@ function assignedTask(req,res,next){
 
 module.exports = {
     addTask: addTask,
+    getTask: getTask,
     findTasksForEvent: findTasksForEvent,
     deleteTask: deleteTask,
     updateTask: updateTask,

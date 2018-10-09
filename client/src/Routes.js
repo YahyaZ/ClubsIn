@@ -47,6 +47,7 @@ export default ({ childProps }) => ( // eslint-disable-line react/prop-types
                 <AuthenticatedRoute exact path="/club/:clubId/event" component={AddEvent} props={childProps} />
                 <AuthenticatedRoute exact path="/club/:clubId/event/:eventId" component={EventTasks} props={childProps} />
                 <AuthenticatedRoute exact path="/club/:clubId/event/:eventId/task" component={AddTask} props={childProps} />
+                <AuthenticatedRoute exact path="/club/:clubId/event/:eventId/task/:taskId" component={AddTask} props={childProps} />
                 {/* Unmatched routes */}
                 <Route component={NotFound} />
             </Switch>

@@ -1,5 +1,6 @@
 import React from 'react';
 import { Button } from 'react-bootstrap';
+import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import Member from '../Members';
 import './TaskDetails.css';
@@ -32,6 +33,7 @@ const TaskDetails = ({
     description,
     completed,
     getTasks,
+    editLink,
 }) => (
     <div className="task-details-container">
         <div className="task-details-info-container">
@@ -53,7 +55,9 @@ const TaskDetails = ({
         </div>
         <p>{description}</p>
         <div className="task-details-buttons">
-            <Button bsStyle="primary">Edit Task</Button>
+            <Link to={editLink}>
+                <Button bsStyle="primary">Edit Task</Button>
+            </Link>
             {completed
                 ? (
                     <Button
@@ -86,4 +90,5 @@ TaskDetails.propTypes = {
     description: PropTypes.string.isRequired,
     completed: PropTypes.bool.isRequired,
     getTasks: PropTypes.func.isRequired,
+    editLink: PropTypes.string.isRequired,
 };

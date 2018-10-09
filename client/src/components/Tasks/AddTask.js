@@ -28,6 +28,8 @@ class AddTask extends Component {
             assignee: [],
             message: '',
             loading: false,
+            edit: false,
+            taskId: '',
         };
 
         this.addTask = this.addTask.bind(this);
@@ -38,7 +40,31 @@ class AddTask extends Component {
     }
 
     componentDidMount() {
-        this.getClubMembers();
+        const { match } = this.props; // eslint-disable-line
+        if (match.params.taskId) {
+            this.getTaskDetails(match.params.clubId, match.params.taskId);
+        } else {
+            this.getClubMembers();
+        }
+    }
+
+    getTaskDetails = async (clubId, taskId) => {
+        const taskResponse = await fetch(`/api/task/${taskId}`);
+        const task = await taskResponse.json();
+        const membersResponse = await fetch(`/api/club/${clubId}/users`);
+        const members = await membersResponse.json();
+        if (task) {
+            const unassignedMembers = this.filterMembers(members, task.assignee);
+            this.setState({
+                date: moment(task.due_date),
+                name: task.name,
+                description: task.description,
+                clubMembers: unassignedMembers,
+                assignee: task.assignee,
+                edit: true,
+                taskId: task._id,
+            });
+        }
     }
 
     getClubMembers() {
@@ -59,6 +85,11 @@ class AddTask extends Component {
             }
         });
     }
+
+    filterMembers = (sourceList, targetList) => (
+        sourceList.filter(sourceMember => targetList
+            .every(targetMember => sourceMember._id !== targetMember._id))
+    )
 
     handleMemberSelectClick(action) {
         const {
@@ -85,9 +116,7 @@ class AddTask extends Component {
             selectedListKey = 'selectedAssigned';
         }
 
-        const newMemberList = memberList
-            .filter(clubMember => selectedList
-                .every(selected => selected._id !== clubMember._id));
+        const newMemberList = this.filterMembers(memberList, selectedList);
 
         this.setState({
             [moveToListKey]: moveToList.concat(selectedList),
@@ -96,23 +125,31 @@ class AddTask extends Component {
         });
     }
 
-    addTask(e) {
+    addTask(method) {
         const self = this;
         const { match } = this.props; // eslint-disable-line
+        const {
+            taskId,
+            date,
+            name,
+            description,
+            assignee,
+        } = this.state;
         const userId = JSON.parse(localStorage.getItem('User'))._id;
 
-        e.preventDefault();
         const fields = {
+            _id: taskId,
             event_id: match.params.eventId,
             created_by: userId,
-            due_date: moment(self.state.date).toISOString(),
-            name: self.state.name,
-            description: self.state.description,
-            assignee: self.state.assignee,
+            due_date: moment(date).toISOString(),
+            name,
+            completed: false,
+            description,
+            assignee,
         };
         self.setState({ loading: true });
         fetch('/api/task', {
-            method: 'POST',
+            method,
             mode: 'cors',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(fields),
@@ -122,7 +159,7 @@ class AddTask extends Component {
                     self.setState({ message: data.error, loading: false });
                 });
             } else {
-                this.props.history.push(`/club/${match.params.clubId}/event/${match.params.eventId}`); // eslint-disable-line
+                self.props.history.push(`/club/${match.params.clubId}/event/${match.params.eventId}`);
             }
         });
     }
@@ -159,10 +196,11 @@ class AddTask extends Component {
             loading,
             selectedMembers,
             selectedAssigned,
+            edit,
         } = this.state;
 
         const { match } = this.props; // eslint-disable-line
-
+        const method = edit ? 'PUT' : 'POST'; // if editing, PUT request, else POST
         return (
             <div className="events-container">
                 <h2>Add task</h2>
@@ -246,7 +284,7 @@ class AddTask extends Component {
                 <Link to={{ pathname: `/club/${match.params.clubId}/event/${match.params.eventId}` }}>
                     <Button type="button">Cancel</Button>
                 </Link>
-                <Button type="button" onClick={this.addTask}>Add task</Button>
+                <Button type="button" onClick={() => this.addTask(method)}>{edit ? 'Edit task' : 'Add task'}</Button>
                 <RingLoader loading={loading} color="#0B58B6" sizeUnit="px" size={60} inline />
             </div>
         );
