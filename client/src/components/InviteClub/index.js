@@ -77,5 +77,5 @@ export default InviteClub;
 
 InviteClub.propTypes = {
     show: PropTypes.bool.isRequired,
-    hide: PropTypes.bool.isRequired,
+    hide: PropTypes.func.isRequired,
 };

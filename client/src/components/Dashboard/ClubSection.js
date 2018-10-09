@@ -9,11 +9,14 @@ import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
-import SignUpFormChooseClubType from '../SignUp/signUpFormChooseClubType';
 import ArrowForward from '@material-ui/icons/ArrowForward';
+<<<<<<< HEAD
 import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
 
 
+=======
+import SignUpFormChooseClubType from '../SignUp/signUpFormChooseClubType';
+>>>>>>> 7bfc535679fb39537ca8a877b7f3a7858be6f8f2
 
 const styles = {
     card: {
@@ -141,5 +144,5 @@ class ClubSection extends Component {
 export default ClubSection;
 
 ClubSection.propTypes = {
-    clubs: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
+    clubs: PropTypes.arrayOf(PropTypes.string).isRequired,
 };

@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Button } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
+import AddEvent from '../../components/Events/AddEvent';
 import Task from '../../components/Tasks';
 import TaskDetails from '../../components/Tasks/TaskDetails';
 import MenuItem from './MenuItem';
@@ -130,6 +131,53 @@ class EventTasks extends Component {
         }
     }
 
+    renderTaskList() {
+        const { selectedTasks } = this.state;
+        selectedTasks.sort(task => task.completed ? 1 : -1);
+        return (
+            <div className="event-task-list" key="task-list">
+                {selectedTasks
+                    ? selectedTasks.map(task => (
+                        <Task
+                            name={task.name}
+                            date={task.due_date}
+                            active={this.isSelectedTask(task)}
+                            members={task.assignee}
+                            completed={task.completed}
+                            key={task._id}
+                            onClick={() => this.selectTask(task)}
+                            onKeyPress={e => this.handleKeyPress(e, 'SELECT_TASK', task)}
+                        />
+                    ))
+                    : ''}
+            </div>
+        );
+    }
+
+    renderTaskDetails() {
+        const { selectedTask } = this.state;
+        const { match } = this.props;
+        return (
+            <div className="event-task-details" key="task-details">
+                {selectedTask
+                    ? (
+                        <TaskDetails
+                            taskId={selectedTask._id}
+                            name={selectedTask.name}
+                            date={selectedTask.due_date}
+                            description={selectedTask.description}
+                            members={selectedTask.assignee}
+                            completed={selectedTask.completed}
+                            getTasks={this.getTasks}
+                            editLink={`/club/${match.params.clubId}/event/${match.params.eventId}/task/${selectedTask._id}`}
+                        />
+                    )
+                    : ''
+                }
+            </div>
+        );
+    }
+
     render() {
         const { event, selectedTasks, selectedTask, loaded } = this.state;
         const { match } = this.props; // eslint-disable-line
@@ -153,6 +201,13 @@ class EventTasks extends Component {
                                 selectMenu={this.selectMenu}
                                 handleKeyPress={this.handleKeyPress}
                             />
+                            <MenuItem
+                                itemName="Event Details"
+                                itemType="eventDetails"
+                                isSelectedMenu={this.isSelectedMenu}
+                                selectMenu={this.selectMenu}
+                                handleKeyPress={this.handleKeyPress}
+                            />
                         </div>
                         <div className="event-menu-button">
                             <Link to={`/club/${match.params.clubId}`}>
@@ -160,39 +215,24 @@ class EventTasks extends Component {
                             </Link>
                         </div>
                     </div>
-                    <div className="event-task-list">
-                        {selectedTasks
-                            ? selectedTasks.map(task => (
-                                <Task
-                                    name={task.name}
-                                    date={task.due_date}
-                                    active={this.isSelectedTask(task)}
-                                    members={task.assignee}
-                                    completed={task.completed}
-                                    key={task._id}
-                                    onClick={() => this.selectTask(task)}
-                                    onKeyPress={e => this.handleKeyPress(e, 'SELECT_TASK', task)}
-                                />
-                            ))
-                            : ''}
-                    </div>
-                    <div className="event-task-details">
-                        {selectedTask
-                            ? (
-                                <TaskDetails
-                                    taskId={selectedTask._id}
-                                    name={selectedTask.name}
-                                    date={selectedTask.due_date}
-                                    description={selectedTask.description}
-                                    members={selectedTask.assignee}
-                                    completed={selectedTask.completed}
-                                    getTasks={this.getTasks}
-                                    editLink={`/club/${match.params.clubId}/event/${match.params.eventId}/task/${selectedTask._id}`}
-                                />
-                            )
-                            : ''
-                        }
-                    </div>
+                    {selectedMenu === 'eventDetails'
+                        ? (
+                            <AddEvent
+                                _id={event._id}
+                                match={match}
+                                name={event.name}
+                                date={event.date}
+                                description={event.description}
+                                getEvent={this.getEvent}
+                                edit
+                            />
+                        )
+                        : (
+                            [
+                                this.renderTaskList(),
+                                this.renderTaskDetails(),
+                            ]
+                        )}
                 </div>
             </div>
         );

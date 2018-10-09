@@ -35,7 +35,12 @@ Start both simultaneously - `npm start`
 * All javascript statements must be terminated with a `;`
 * If a component has many properties, each property must be initialised on a new line, in line with the previous component.
 * Use `const` and `lets`, **NEVER** use `var`
-* Use trailing commas in arrays and objects, e.g. ['One', 'Two', ]
+* Use trailing commas in multiple line arrays and objects,   
+    e.g.  
+    [  
+      'One',  
+      'Two',  
+    ]  
 
 ## Credits
 

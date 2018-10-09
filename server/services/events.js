@@ -110,14 +110,14 @@ function addEvent(req, res, next) {
  * @param {Object} next 
  */
 function updateEvent(req,res,next){
-    if(res.body._id && res.body.name && res.body.description && res.body.date){
-        Events.findOneAndUpdate({_id: res.body._id}, {
+    if(req.body._id && req.body.name && req.body.description && req.body.date){
+        Events.findOneAndUpdate({_id: req.body._id}, {
             name: req.body.name,
             description: req.body.description,
             date: req.body.date,
-            last_modified: Date.now
+            last_modified: new Date()
         }, (err) => {
-            if(err){
+            if (err) {
                 var error = new Error("Event not found");
                 error.status = 404;
                 return next(error);

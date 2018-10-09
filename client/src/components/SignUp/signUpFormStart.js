@@ -106,11 +106,6 @@ class SignUpFormStart extends Component {
                             />
                         </InputGroup>
                     </FormGroup>
-                    <div className="form-body-footer">
-                        <Checkbox name="agreedToTC">
-                            I agree to the terms and conditions
-                        </Checkbox>
-                    </div>
                     <button type="submit" className="form-button">Sign Up</button>
                 </form>
             </div>
