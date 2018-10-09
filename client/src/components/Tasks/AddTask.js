@@ -288,7 +288,7 @@ class AddTask extends Component {
                 </FormGroup>
 
                 <Link to={{ pathname: `/club/${match.params.clubId}/event/${match.params.eventId}` }}>
-                    <Button type="button">Cancel</Button>
+                    <Button type="button" disabled={loading}>Cancel</Button>
                 </Link>
                 <Button type="button" onClick={() => this.addTask(method)} disabled={loading}>{edit ? 'Edit task' : 'Add task'}</Button>
                 <RingLoader loading={loading} color="#0B58B6" sizeUnit="px" size={60} inline />
