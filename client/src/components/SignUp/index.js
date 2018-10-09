@@ -78,6 +78,7 @@ class SignUp extends Component {
                     });
                 });
             } else if (response.status === 200) {
+                self.props.childProps.authenticate(true);
                 response.json().then((data) => {
                     localStorage.setItem('User', JSON.stringify(data));
                     self.setState({ redirect: true, loading: false });
@@ -99,6 +100,7 @@ class SignUp extends Component {
                     formBody={(
                         <div>
                             <SignUpFormStart
+                            {...this.props}
                                 buttonClick={this.submitForm}
                                 handleInputChange={this.handleInputChange}
                             />

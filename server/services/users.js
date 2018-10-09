@@ -91,7 +91,7 @@ function signUp(req, res, next) {
 
         let newUser = new User(userData);
         newUser.save(function (err) {
-          if (err) { console.log(err); return next(err); }
+          if (err) { err.status=400; return next(err); }
           req.session.userId = newUser._id;
           res.send(newUser);
 
