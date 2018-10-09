@@ -2,6 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import Member from '../Members';
+import Skeleton from 'react-loading-skeleton';
 import './Event.css';
 
 const Event = ({
@@ -10,26 +11,30 @@ const Event = ({
     members,
     link,
 }) => (
-    <Link to={link}>
-        <div className="event-container">
-            <div className="event-date">
-                <h3>{new Date(date).toDateString()}</h3>
-            </div>
-            <div className="event-details">
-                <h4>{name}</h4>
-                <div className="member-list">
-                    {members.map(member => (
-                        <Member
-                            firstName={member.firstName}
-                            lastName={member.lastName}
-                            key={member._id}
-                        />
-                    ))}
+        <Link to={link}>
+            <div className="event-container">
+                <div className="event-date">
+                    {(date ? <h3>{new Date(date).toDateString()}</h3> :
+                        <p>
+                            <Skeleton width={150} />
+                        </p>
+                    )}
+                </div>
+                <div className="event-details">
+                    <h4>{name || <Skeleton width={100}/>}</h4>
+                    <div className="member-list">
+                        {members ? (members.map(member => (
+                            <Member
+                                firstName={member.firstName}
+                                lastName={member.lastName}
+                                key={member._id}
+                            />
+                        ))):''}
+                    </div>
                 </div>
             </div>
-        </div>
-    </Link>
-);
+        </Link>
+    );
 
 export default Event;
 

@@ -7,11 +7,12 @@ class Club extends Component {
         super(props);
 
         this.state = {
-            myEvents: [],
-            allEvents: [],
+            myEvents: [1,2,3],
+            allEvents: [1,2,3],
             userId: JSON.parse(localStorage.getItem('User')).id,
             // ignore eslint as match is built in prop
             clubId: props.match.params.clubId, //eslint-disable-line
+            loaded: false,
         };
 
         this.getEvents = this.getEvents.bind(this);
@@ -34,7 +35,7 @@ class Club extends Component {
             }
             return response.json();
         }).then((allEvents) => {
-            self.setState({ allEvents });
+            self.setState({ allEvents, loaded:false});
             this.getMyEvents(allEvents);
         });
     }
@@ -82,7 +83,7 @@ class Club extends Component {
     )
 
     render() {
-        const { myEvents, allEvents } = this.state;
+        const { myEvents, allEvents, loaded } = this.state;
 
         return (
             <div>

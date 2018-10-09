@@ -5,6 +5,7 @@ import Task from '../../components/Tasks';
 import TaskDetails from '../../components/Tasks/TaskDetails';
 import MenuItem from './MenuItem';
 import './EventTasks.css';
+import Skeleton from 'react-loading-skeleton';
 
 class EventTasks extends Component {
     constructor() {
@@ -12,10 +13,11 @@ class EventTasks extends Component {
         this.state = {
             event: null,
             selectedMenu: 'myTasks',
-            selectedTasks: [],
-            tasks: [],
+            selectedTasks: [1,2,3],
+            tasks: [1,2,3],
             selectedTask: null,
             userId: JSON.parse(localStorage.getItem('User'))._id,
+            loaded: false
         };
     }
 
@@ -69,6 +71,7 @@ class EventTasks extends Component {
         }).then((allTasks) => {
             self.setState({
                 tasks: allTasks,
+                loaded:true
             });
 
             if (selectedMenu === 'myTasks') {
@@ -128,11 +131,11 @@ class EventTasks extends Component {
     }
 
     render() {
-        const { event, selectedTasks, selectedTask } = this.state;
+        const { event, selectedTasks, selectedTask, loaded } = this.state;
         const { match } = this.props; // eslint-disable-line
         return (
             <div>
-                <h2 className="event-title">{event && `${event.name} - ${new Date(event.date).toDateString()}`}</h2>
+                <h2 className="event-title">{loaded ? (event && `${event.name} - ${new Date(event.date).toDateString()}`):<Skeleton width={500} />}</h2>
                 <div className="event-tasks-container">
                     <div className="event-menu">
                         <div>

@@ -21,8 +21,6 @@ class SignUp extends Component {
 
         //this.goToPage = this.goToPage.bind(this);
         this.handleInputChange = this.handleInputChange.bind(this);
-        this.handleInputClubChange = this.handleInputClubChange.bind(this);
-        this.updateUser = this.updateUser.bind(this);
         this.submitForm = this.submitForm.bind(this);
     }
 
@@ -38,23 +36,6 @@ class SignUp extends Component {
                 ...newPartialInput,
             },
         }));
-    }
-
-    handleInputClubChange(newPartialInput) {
-        this.setState(state => ({
-            ...state,
-            input: {
-                ...state.input,
-                club: {
-                    ...state.input.club,
-                    ...newPartialInput,
-                },
-            },
-        }));
-    }
-
-    updateUser() {
-        this.goToPage('chooseClubType');
     }
 
     submitForm(e) {
