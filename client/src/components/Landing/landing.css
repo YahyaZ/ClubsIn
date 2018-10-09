@@ -2,3 +2,8 @@
     margin-left: 10%;
     margin-right: 10%;
 }
+
+.opaqueBox{
+    opacity: 0.9;
+    background-color: var(--logo-blue);
+}
