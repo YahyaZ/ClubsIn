@@ -9,40 +9,37 @@ import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
-import SignUpFormChooseClubType from '../SignUp/signUpFormChooseClubType';
 import ArrowForward from '@material-ui/icons/ArrowForward';
-
+import SignUpFormChooseClubType from '../SignUp/signUpFormChooseClubType';
 
 const styles = {
     card: {
-      maxWidth: 300,
-      marginTop:20,
-      marginBottom:20,
-      marginRight: 10,
+        maxWidth: 300,
+        marginTop: 20,
+        marginBottom: 20,
+        marginRight: 10,
     },
-  };
-  
+};
 
-const ClubBox = ({ club }) => {
-    return (
+const ClubBox = ({ club }) => (
     <Link to={`/club/${club._id}`}>
         <Card style={styles.card}>
             <CardActionArea>
                 <CardContent>
-                    <Typography  gutterBottom variant="h5" component="h4">
+                    <Typography gutterBottom variant="display1" component="h4">
                         {club.name}
                     </Typography>
                 </CardContent>
             </CardActionArea>
-            <CardActions style={{justifyContent: 'center'}}>
-                <Button   size="large" color="secondary">
+            <CardActions style={{ justifyContent: 'center' }}>
+                <Button size="large" color="secondary">
                     View Club
                     <ArrowForward />
                 </Button>
             </CardActions>
         </Card>
     </Link>
-)};
+);
 
 ClubBox.propTypes = {
     club: PropTypes.shape({}).isRequired,
@@ -108,5 +105,5 @@ class ClubSection extends Component {
 export default ClubSection;
 
 ClubSection.propTypes = {
-    clubs: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
+    clubs: PropTypes.arrayOf(PropTypes.string).isRequired,
 };
