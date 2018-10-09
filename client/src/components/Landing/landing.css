@@ -6,4 +6,5 @@
 .opaqueBox{
     opacity: 0.9;
     background-color: var(--logo-blue);
+    height: 80vh;
 }
