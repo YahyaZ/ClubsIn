@@ -74,8 +74,8 @@ function deleteTask(req,res){
  * @param {Object} next 
  */
 function updateTask(req,res, next) {
-    if(req.body.id && req.body.due_date && req.body.name && req.body.description && req.body.completed && req.body.assignee ){
-        Tasks.findOneAndUpdate({ _id: req.body.id },{
+    if(req.body._id && req.body.due_date && req.body.name && req.body.description && req.body.assignee) {
+        Tasks.findOneAndUpdate({ _id: req.body._id },{
             due_date: req.body.due_date,
             name: req.body.name,
             description: req.body.description,

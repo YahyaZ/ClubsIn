@@ -54,9 +54,10 @@ class EventTasks extends Component {
         this.setState({ selectedTasks: tasks });
     }
 
-    getTasks = async () => {
+    getTasks = () => {
         const self = this;
         const { match } = this.props; // eslint-disable-line
+        const { selectedMenu, selectedTask } = this.state;
         fetch(`/api/task/${match.params.eventId}`, {
             method: 'GET',
             mode: 'cors',
@@ -69,7 +70,17 @@ class EventTasks extends Component {
             self.setState({
                 tasks: allTasks,
             });
-            this.getMyTasks();
+
+            if (selectedMenu === 'myTasks') {
+                self.getMyTasks();
+            } else {
+                self.getAllTasks();
+            }
+
+            if (selectedTask) {
+                const updatedTask = allTasks.find(task => task._id === selectedTask._id);
+                self.setState({ selectedTask: updatedTask });
+            }
         });
     }
 
@@ -172,6 +183,7 @@ class EventTasks extends Component {
                                     description={selectedTask.description}
                                     members={selectedTask.assignee}
                                     completed={selectedTask.completed}
+                                    getTasks={this.getTasks}
                                 />
                             )
                             : ''

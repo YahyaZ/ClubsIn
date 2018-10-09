@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import Member from '../Members';
 import './TaskDetails.css';
 
-const completeTask = (_id, date, name, description, completed, assignee) => {
+const completeTask = (_id, date, name, description, completed, assignee, getTasks) => {
     fetch('/api/task', {
         method: 'PUT',
         mode: 'cors',
@@ -17,9 +17,11 @@ const completeTask = (_id, date, name, description, completed, assignee) => {
             completed,
             assignee,
         }),
-    })
-        .then(response => response.json())
-        .then(data => console.log(data));
+    }).then((response) => {
+        if (response.status === 200) {
+            getTasks();
+        }
+    });
 };
 
 const TaskDetails = ({
@@ -29,12 +31,13 @@ const TaskDetails = ({
     members,
     description,
     completed,
+    getTasks,
 }) => (
     <div className="task-details-container">
         <div className="task-details-info-container">
             <div className="task-details-info">
                 <h3>{name}</h3>
-                <p>{completed ? '' : `Complete by: ${new Date(date).toDateString()}`}</p>
+                <p>{completed ? 'Completed' : `Complete by: ${new Date(date).toDateString()}`}</p>
                 {new Date(date) < new Date() ? <p className="overdue">Overdue</p> : ''}
             </div>
             <div className="task-details-member">
@@ -51,7 +54,24 @@ const TaskDetails = ({
         <p>{description}</p>
         <div className="task-details-buttons">
             <Button bsStyle="primary">Edit Task</Button>
-            <Button onClick={() => completeTask(taskId)}>Complete Task</Button>
+            {completed
+                ? (
+                    <Button
+                        onClick={() => completeTask(taskId,
+                            date, name, description, false, members, getTasks)}
+                    >
+                        Uncomplete Task
+                    </Button>
+                )
+                : (
+                    <Button
+                        onClick={() => completeTask(taskId,
+                            date, name, description, true, members, getTasks)}
+                    >
+                        Complete Task
+                    </Button>
+                )
+            }
         </div>
     </div>
 );
@@ -65,4 +85,5 @@ TaskDetails.propTypes = {
     members: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
     description: PropTypes.string.isRequired,
     completed: PropTypes.bool.isRequired,
+    getTasks: PropTypes.func.isRequired,
 };
