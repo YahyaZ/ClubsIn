@@ -1,13 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Avatar from '@material-ui/core/Avatar';
-import Tooltip from '@material-ui/core/Tooltip';
 import './Member.css';
+import CustomTooltip from '../Tooltip';
 
 const Member = ({ firstName, lastName }) => (
-    <Tooltip title={`${firstName} ${lastName}`} placement="top">
+    <CustomTooltip title={`${firstName} ${lastName}`} placement="top">
         <Avatar>{firstName.substring(0, 1)}</Avatar>
-    </Tooltip>
+    </CustomTooltip>
 );
 
 export default Member;

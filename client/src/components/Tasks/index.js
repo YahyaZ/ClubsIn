@@ -15,7 +15,7 @@ const Task = ({
     <div
         role="button"
         tabIndex="0"
-        className={`task-container ${active} ${completed ? 'completed' : ''} ${new Date(date) < new Date() ? 'overdue' : ''}`}
+        className={`task-container ${active} ${completed ? 'completed' : ''} ${new Date(date) < new Date() && !completed ? 'overdue' : ''}`}
         onClick={onClick}
         onKeyPress={onKeyPress}
     >

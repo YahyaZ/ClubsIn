@@ -19,7 +19,11 @@ const Event = ({
                 <h4>{name}</h4>
                 <div className="member-list">
                     {members.map(member => (
-                        <Member name={member.firstName} key={member._id} />
+                        <Member
+                            firstName={member.firstName}
+                            lastName={member.lastName}
+                            key={member._id}
+                        />
                     ))}
                 </div>
             </div>

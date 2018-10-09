@@ -4,7 +4,26 @@ import PropTypes from 'prop-types';
 import Member from '../Members';
 import './TaskDetails.css';
 
+const completeTask = (_id, date, name, description, completed, assignee) => {
+    fetch('/api/task', {
+        method: 'PUT',
+        mode: 'cors',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+            _id,
+            due_date: date,
+            name,
+            description,
+            completed,
+            assignee,
+        }),
+    })
+        .then(response => response.json())
+        .then(data => console.log(data));
+};
+
 const TaskDetails = ({
+    taskId,
     name,
     date,
     members,
@@ -32,7 +51,7 @@ const TaskDetails = ({
         <p>{description}</p>
         <div className="task-details-buttons">
             <Button bsStyle="primary">Edit Task</Button>
-            <Button>Complete Task</Button>
+            <Button onClick={() => completeTask(taskId)}>Complete Task</Button>
         </div>
     </div>
 );
@@ -40,6 +59,7 @@ const TaskDetails = ({
 export default TaskDetails;
 
 TaskDetails.propTypes = {
+    taskId: PropTypes.string.isRequired,
     name: PropTypes.string.isRequired,
     date: PropTypes.string.isRequired,
     members: PropTypes.arrayOf(PropTypes.shape({})).isRequired,

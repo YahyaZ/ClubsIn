@@ -129,6 +129,7 @@ class EventTasks extends Component {
                                 date={task.due_date}
                                 active={this.isSelectedTask(task)}
                                 members={task.assignee}
+                                completed={task.completed}
                                 key={task._id}
                                 onClick={() => this.selectTask(task)}
                                 onKeyPress={e => this.handleKeyPress(e, 'SELECT_TASK', task)}
@@ -140,10 +141,12 @@ class EventTasks extends Component {
                     {selectedTask
                         ? (
                             <TaskDetails
+                                taskId={selectedTask._id}
                                 name={selectedTask.name}
                                 date={selectedTask.due_date}
                                 description={selectedTask.description}
                                 members={selectedTask.assignee}
+                                completed={selectedTask.completed}
                             />
                         )
                         : ''

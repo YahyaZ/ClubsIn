@@ -86,10 +86,10 @@ class Club extends Component {
 
         return (
             <div>
-                <br/>
+                <br />
                 {myEvents.length > 0 ? this.renderEvents('My Events', myEvents) : this.renderNoEvents()}
                 {allEvents.length > 0 ? this.renderEvents('All Events', allEvents) : this.renderNoEvents()}
-                <br/>
+                <br />
             </div>
         );
     }
