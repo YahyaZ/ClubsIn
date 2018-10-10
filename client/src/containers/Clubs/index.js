@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import Event from '../../components/Events';
 import Skeleton from 'react-loading-skeleton';
+import Event from '../../components/Events';
 import './Club.css';
 
 class Club extends Component {
@@ -10,7 +10,7 @@ class Club extends Component {
         this.state = {
             myEvents: [1, 2, 3],
             allEvents: [1, 2, 3],
-            userId: JSON.parse(localStorage.getItem('User')).id,
+            userId: JSON.parse(localStorage.getItem('User'))._id,
             // ignore eslint as match is built in prop
             clubId: props.match.params.clubId, //eslint-disable-line
         };
