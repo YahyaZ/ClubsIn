@@ -115,10 +115,14 @@ function updateTask(req,res, next) {
 
 function assignedTask(req,res,next){
     let userId = req.session.userId;
-    Tasks.find({assignee : userId}, function(err, tasks){
+    let limit = parseInt(req.query.limit,10) || 5;
+    Tasks.find({assignee : userId, completed:false})
+    .sort({due_date: 1})
+    .limit(limit)
+    .exec(function(err, tasks){
         if(err) next(err);
         res.json(tasks);
-    })
+    });
 }
 
 module.exports = {
