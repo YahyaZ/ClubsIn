@@ -29,8 +29,8 @@ const ClubBox = ({ club }) => {
             <Link to={`/club/${club._id}`}>
                 <Card style={styles.card}>
                     <CardActionArea>
-                        <CardContent>
-                            <Typography gutterBottom variant="h5" component="h4">
+                        <CardContent style={{ justifyContent: 'center' }}>
+                            <Typography gutterBottom variant="h5" component="h4" align='center'>
                                 {club.name}
                             </Typography>
                         </CardContent>
@@ -46,7 +46,6 @@ const ClubBox = ({ club }) => {
         )
     } else {
         return (
-
             <Card style={styles.card}>
                 <CardActionArea>
                     <CardContent>
@@ -66,7 +65,6 @@ const ClubBox = ({ club }) => {
                     </Button>
                 </CardActions>
             </Card>
-
         )
     }
 }
@@ -84,9 +82,15 @@ class ClubSection extends Component {
             clubs: [],
             loaded: false,
         };
+
+        this.rerender = this.rerender.bind(this);
     }
 
     componentDidMount() {
+        this.getClubs();
+    }
+
+    getClubs(){
         const self = this;
         fetch('/api/club?q=name', {
             method: 'GET',
@@ -100,6 +104,10 @@ class ClubSection extends Component {
             self.setState({ clubs, loaded: true });
 
         });
+    }
+
+    rerender = () =>{
+        this.getClubs();
     }
 
     renderNoClubs = () => (
@@ -129,7 +137,7 @@ class ClubSection extends Component {
                 <div>
                     Join more clubs:
                     <br />
-                    <SignUpFormChooseClubType />
+                    <SignUpFormChooseClubType rerender={this.rerender} />
                 </div>
             </div>
         );
