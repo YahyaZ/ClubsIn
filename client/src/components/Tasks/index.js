@@ -1,8 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import Skeleton from 'react-loading-skeleton';
 import Member from '../Members';
 import './Task.css';
-import Skeleton from 'react-loading-skeleton';
 
 const Task = ({
     name,
@@ -34,12 +34,21 @@ const Task = ({
 
 export default Task;
 
+Task.defaultProps = {
+    name: '',
+    date: '',
+    members: [],
+    completed: false,
+    onClick: () => {},
+    onKeyPress: () => {},
+};
+
 Task.propTypes = {
-    name: PropTypes.string.isRequired,
-    date: PropTypes.string.isRequired,
+    name: PropTypes.string,
+    date: PropTypes.string,
     active: PropTypes.string.isRequired,
-    members: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
-    completed: PropTypes.bool.isRequired,
-    onClick: PropTypes.func.isRequired,
-    onKeyPress: PropTypes.func.isRequired,
+    members: PropTypes.arrayOf(PropTypes.shape({})),
+    completed: PropTypes.bool,
+    onClick: PropTypes.func,
+    onKeyPress: PropTypes.func,
 };
