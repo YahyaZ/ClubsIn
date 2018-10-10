@@ -7,12 +7,11 @@ class Club extends Component {
         super(props);
 
         this.state = {
-            myEvents: [1,2,3],
-            allEvents: [1,2,3],
+            myEvents: [1, 2, 3],
+            allEvents: [1, 2, 3],
             userId: JSON.parse(localStorage.getItem('User')).id,
             // ignore eslint as match is built in prop
             clubId: props.match.params.clubId, //eslint-disable-line
-            loaded: false,
         };
 
         this.getEvents = this.getEvents.bind(this);
@@ -35,7 +34,7 @@ class Club extends Component {
             }
             return response.json();
         }).then((allEvents) => {
-            self.setState({ allEvents, loaded:false});
+            self.setState({ allEvents });
             this.getMyEvents(allEvents);
         });
     }
@@ -68,7 +67,7 @@ class Club extends Component {
                         date={e.date}
                         name={e.name}
                         members={e.users}
-                        link={`/club/${this.state.clubId}/event/${e._id}`} // eslint-disable-line
+                        link={e._id ? `/club/${this.state.clubId}/event/${e._id}` : ''} // eslint-disable-line
                         key={e._id}
                     />
                 ))}
@@ -76,20 +75,21 @@ class Club extends Component {
         </div>
     )
 
-    renderNoEvents = () => (
+    renderNoEvents = eventType => (
         <div className="events-container no-events">
+            <h2>{eventType}</h2>
             <h1>No events found</h1>
         </div>
     )
 
     render() {
-        const { myEvents, allEvents, loaded } = this.state;
+        const { myEvents, allEvents } = this.state;
 
         return (
             <div>
                 <br />
-                {myEvents.length > 0 ? this.renderEvents('My Events', myEvents) : this.renderNoEvents()}
-                {allEvents.length > 0 ? this.renderEvents('All Events', allEvents) : this.renderNoEvents()}
+                {myEvents.length > 0 ? this.renderEvents('My Events', myEvents) : this.renderNoEvents('My Events')}
+                {allEvents.length > 0 ? this.renderEvents('All Events', allEvents) : this.renderNoEvents('All Events')}
                 <br />
             </div>
         );

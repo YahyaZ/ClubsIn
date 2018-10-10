@@ -26,9 +26,7 @@
     margin: 5px;
 }
 
-.no-events {
-    display: flex;
-    align-items: center;
-    justify-content: center;
+.no-events h1 {
     color: #c4c4c4;
+    text-align: center;
 }

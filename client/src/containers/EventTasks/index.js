@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
 import { Button } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
+import Skeleton from 'react-loading-skeleton';
 import AddEvent from '../../components/Events/AddEvent';
 import Task from '../../components/Tasks';
 import TaskDetails from '../../components/Tasks/TaskDetails';
 import MenuItem from './MenuItem';
 import './EventTasks.css';
-import Skeleton from 'react-loading-skeleton';
 
 class EventTasks extends Component {
     constructor() {
@@ -14,11 +14,11 @@ class EventTasks extends Component {
         this.state = {
             event: null,
             selectedMenu: 'myTasks',
-            selectedTasks: [1,2,3],
-            tasks: [1,2,3],
+            selectedTasks: [1, 2, 3],
+            tasks: [1, 2, 3],
             selectedTask: null,
             userId: JSON.parse(localStorage.getItem('User'))._id,
-            loaded: false
+            loaded: false,
         };
     }
 
@@ -72,7 +72,7 @@ class EventTasks extends Component {
         }).then((allTasks) => {
             self.setState({
                 tasks: allTasks,
-                loaded:true
+                loaded: true,
             });
 
             if (selectedMenu === 'myTasks') {
@@ -132,7 +132,7 @@ class EventTasks extends Component {
     }
 
     renderTaskList() {
-        const { selectedTasks } = this.state;
+        const { selectedTasks, loaded } = this.state;
         selectedTasks.sort(task => task.completed ? 1 : -1);
         return (
             <div className="event-task-list" key="task-list">
@@ -144,9 +144,9 @@ class EventTasks extends Component {
                             active={this.isSelectedTask(task)}
                             members={task.assignee}
                             completed={task.completed}
-                            key={task._id}
-                            onClick={() => this.selectTask(task)}
-                            onKeyPress={e => this.handleKeyPress(e, 'SELECT_TASK', task)}
+                            key={loaded ? task._id : task}
+                            onClick={loaded ? () => this.selectTask(task) : null}
+                            onKeyPress={loaded ? e => this.handleKeyPress(e, 'SELECT_TASK', task) : null}
                         />
                     ))
                     : ''}
@@ -183,7 +183,7 @@ class EventTasks extends Component {
         const { match } = this.props; // eslint-disable-line
         return (
             <div>
-                <h2 className="event-title">{loaded ? (event && `${event.name} - ${new Date(event.date).toDateString()}`):<Skeleton width={500} />}</h2>
+                <h2 className="event-title">{loaded ? (event && `${event.name} - ${new Date(event.date).toDateString()}`) : <Skeleton width={500} />}</h2>
                 <div className="event-tasks-container">
                     <div className="event-menu">
                         <div>
@@ -191,22 +191,22 @@ class EventTasks extends Component {
                                 itemName="My Tasks"
                                 itemType="myTasks"
                                 isSelectedMenu={this.isSelectedMenu}
-                                selectMenu={this.selectMenu}
-                                handleKeyPress={this.handleKeyPress}
+                                selectMenu={loaded ? this.selectMenu : () => {}}
+                                handleKeyPress={loaded ? this.handleKeyPress : () => {}}
                             />
                             <MenuItem
                                 itemName="All Tasks"
                                 itemType="allTasks"
                                 isSelectedMenu={this.isSelectedMenu}
-                                selectMenu={this.selectMenu}
-                                handleKeyPress={this.handleKeyPress}
+                                selectMenu={loaded ? this.selectMenu : () => {}}
+                                handleKeyPress={loaded ? this.handleKeyPress : () => {}}
                             />
                             <MenuItem
                                 itemName="Event Details"
                                 itemType="eventDetails"
                                 isSelectedMenu={this.isSelectedMenu}
-                                selectMenu={this.selectMenu}
-                                handleKeyPress={this.handleKeyPress}
+                                selectMenu={loaded ? this.selectMenu : () => {}}
+                                handleKeyPress={loaded ? this.handleKeyPress : () => {}}
                             />
                         </div>
                         <div className="event-menu-button">
