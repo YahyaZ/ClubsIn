@@ -13,40 +13,13 @@ import PropTypes from 'prop-types';
 class SignUpFormStart extends Component {
     constructor(props) {
         super(props);
-        this.handleSubmit = this.handleSubmit.bind(this);
     }
 
-    handleSubmit = (e) => {
-        e.preventDefault();
-        /* let self = this;
-        e.preventDefault();
-        console.log(this.state);
 
-        fetch(signUpApi,{
-            method:"POST",
-            mode:"cors",
-            credentials:"same-origin",
-            headers:{
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify(this.state.input)
-        }
-        )
-        .then(function(response){
-            if(response.status === 400){
-                response.json().then(function(data){
-                    self.setState({message:data.error})
-                })
-            } else if (response.status === 200){
-                console.log('User Added');
-                self.props.buttonClick();
-            }
-        }
-        ) */
-    }
+  
 
     render() {
-        const { message, buttonClick, handleInputChange } = this.props;
+        const { message, buttonClick, handleInputChange} = this.props;
         return (
             <div>
                 {message}
@@ -55,6 +28,7 @@ class SignUpFormStart extends Component {
                         <InputGroup>
                             <InputGroup.Addon><FaUser /></InputGroup.Addon>
                             <FormControl
+                                isRequired={true}
                                 type="text"
                                 placeholder="First Name"
                                 name="firstName"

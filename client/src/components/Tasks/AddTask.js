@@ -42,6 +42,7 @@ class AddTask extends Component {
     }
 
     componentDidMount() {
+        document.title = "Add Task - Club'in";
         const { match } = this.props; // eslint-disable-line
         if (match.params.taskId) {
             this.getTaskDetails(match.params.clubId, match.params.taskId);

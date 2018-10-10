@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import Event from '../../components/Events';
+import Skeleton from 'react-loading-skeleton';
 import './Club.css';
 
 class Club extends Component {
@@ -25,6 +26,19 @@ class Club extends Component {
     getEvents = () => {
         const self = this;
         const { clubId } = this.state;
+        fetch(`/api/club/${clubId}`, {
+            method: 'GET',
+            mode: 'cors',
+        }).then((response) => {
+            if (response.status === 401) {
+                return 'Error';
+            }
+            return response.json();
+        }).then((club) => {
+            self.setState({ club });
+            document.title = `${club.name} - Club'in`;
+        });
+
         fetch(`/api/club/${clubId}/events`, {
             method: 'GET',
             mode: 'cors',
@@ -57,7 +71,7 @@ class Club extends Component {
     }
 
     renderEvents = (eventType, events) => (
-        <div className="events-container">
+        <div className="events-container events-margin ">
             <h2>
                 {eventType}
             </h2>
@@ -83,11 +97,13 @@ class Club extends Component {
     )
 
     render() {
-        const { myEvents, allEvents } = this.state;
+        const { myEvents, allEvents, club } = this.state;
 
         return (
             <div>
-                <br />
+                <div className="events-container  events-transparent ">
+                    <h2>{club ? club.name : <Skeleton width={200} />}</h2>
+                </div>
                 {myEvents.length > 0 ? this.renderEvents('My Events', myEvents) : this.renderNoEvents('My Events')}
                 {allEvents.length > 0 ? this.renderEvents('All Events', allEvents) : this.renderNoEvents('All Events')}
                 <br />
