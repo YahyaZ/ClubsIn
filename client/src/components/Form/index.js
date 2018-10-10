@@ -17,14 +17,14 @@ const Form = ({
         <div className="form-header">
             <img className="logo" src={Logo} alt="logo" />
             <div className="tagline">{tagline}</div>
-            {errorMessage && <Alert bsStyle="warning">{errorMessage}</Alert>}
+            {errorMessage && <Alert bsStyle="danger">{errorMessage}</Alert>}
         </div>
         {formBody}
         <div className="form-footer">
-            {footerText}
+            {footerText} {' '}
             <span className="link">
-                {!footerLinkClick
-                    ? <Link to={`${footerLink}`}> {footerLinkText} </Link>
+                {!footerLinkClick 
+                    ? <Link to={`${footerLink}`}>{footerLinkText}</Link>
                     : (
                         <span
                             role="link"
