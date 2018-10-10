@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 
 let eventSchema = new mongoose.Schema({
-    club_id: {type: mongoose.Schema.Types.ObjectId, ref:'clubs'},
+    club_id: {type: mongoose.Schema.Types.ObjectId, ref:'Club'},
     name: {
         type: String,
         required: [true, "Event name cannot be blank"],

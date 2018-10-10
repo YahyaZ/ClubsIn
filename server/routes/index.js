@@ -14,8 +14,8 @@ let router = express.Router();
 router.use('/user', users);
 router.use('/club',auth.requiresLogin, clubs);
 router.use('/university', universities);
-router.use('/event', events);
-router.use('/task', tasks)
+router.use('/event',auth.requiresLogin, events);
+router.use('/task',auth.requiresLogin, tasks)
 
 
 
