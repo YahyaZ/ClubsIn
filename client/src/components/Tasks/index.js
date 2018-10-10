@@ -26,14 +26,16 @@ const Task = ({
         </div>
         <div className="task-member">
             {members.length < 3 ? members.map(member => (
-                <Member firstName={member.firstName} lastName={member.lastName} key={member._id} />
+                <Member _id={member._id} firstName={member.firstName} lastName={member.lastName} key={member._id} />
             )) : ([
                 <Member
+                    _id={members[0]._id}
                     firstName={members[0].firstName}
                     lastName={members[0].lastName}
                     key={members[0]._id}
                 />,
                 <Member
+                    _id={members[1]._id}
                     firstName={members[1].firstName}
                     lastName={members[1].lastName}
                     key={members[1]._id}
@@ -41,7 +43,7 @@ const Task = ({
                 <Member
                     overflow
                     length={members.length - 2}
-                    key={0}
+                    key="0"
                 />,
             ])}
         </div>

@@ -71,6 +71,7 @@ const EventDetails = ({
             <div className="member-list">
                 {members.map(member => (
                     <Member
+                        _id={member._id}
                         firstName={member.firstName}
                         lastName={member.lastName}
                         key={member._id}
