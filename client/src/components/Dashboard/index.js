@@ -6,6 +6,7 @@ import UserManagement from './UserManagment';
 import './dashboard.css';
 import Update from '../ChangePassword';
 import EventSection from './EventSection';
+import TaskSection from './TaskSection';
 
 const DashboardSection = (props) => {
     const { title, component } = props;
@@ -54,7 +55,7 @@ class Dashboard extends Component {
                 <Grid>
                     <DashboardSection title="Clubs" component={<ClubSection clubs={user.clubs} />} />
                     <DashboardSection title="Upcoming Events" component={<EventSection />} />
-                    <DashboardSection title="Assigned Tasks" component={<div>This is where they can get assigned tasks</div>} />
+                    <DashboardSection title="Assigned Tasks" component={<TaskSection />} />
                     <DashboardSection title={`${user.firstName}'s Settings`} component={<Update email={user.email} />} />
                 </Grid>
             </div>

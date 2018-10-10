@@ -1,26 +1,15 @@
 
 import React, { Component } from 'react';
-import Event from '../Events'
-
-const styles = {
-    card: {
-        maxWidth: 300,
-        marginTop: 20,
-        marginBottom: 20,
-        marginRight: 10,
-    },
-};
-
+import Event from '../Events';
 
 class EventSection extends Component {
     constructor(props) {
         super(props);
 
         this.state = {
-            events: [1,2,3],
+            events: [1, 2, 3],
             loaded: false,
         };
-
     }
 
     componentDidMount() {
@@ -40,10 +29,6 @@ class EventSection extends Component {
         }).then((events) => {
             self.setState({ events, loaded: true });
         });
-    }
-
-    rerender = () => {
-        this.getEvents();
     }
 
     renderNoEvents = () => (
@@ -85,4 +70,3 @@ class EventSection extends Component {
 }
 
 export default EventSection;
-
