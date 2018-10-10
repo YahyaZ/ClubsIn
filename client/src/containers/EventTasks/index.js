@@ -146,14 +146,14 @@ class EventTasks extends Component {
         return (
             <div className="event-task-list" key="task-list">
                 {selectedTasks.length > 0
-                    ? selectedTasks.map(task => (
+                    ? selectedTasks.map( (task, i) => (
                         <Task
                             name={task.name}
                             date={task.due_date}
                             active={this.isSelectedTask(task)}
                             members={task.assignee}
                             completed={task.completed}
-                            key={loaded ? task._id : task}
+                            key={i}
                             onClick={loaded ? () => this.selectTask(task) : null}
                             onKeyPress={loaded ? e => this.handleKeyPress(e, 'SELECT_TASK', task) : null}
                         />
