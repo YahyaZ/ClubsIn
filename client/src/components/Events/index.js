@@ -10,8 +10,9 @@ const Event = ({
     name,
     members,
     link,
+    clubName,
 }) => (
-        <Link to={link}>
+        <Link to={link || '/'}>
             <div className="event-container">
                 <div className="event-date">
                     {(date ? <h3>{new Date(date).toDateString()}</h3> :
@@ -22,6 +23,7 @@ const Event = ({
                 </div>
                 <div className="event-details">
                     <h4>{name || <Skeleton width={100}/>}</h4>
+                    <h3>{clubName}</h3>
                     <div className="member-list">
                         {members ? (members.map(member => (
                             <Member

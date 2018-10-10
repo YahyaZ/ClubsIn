@@ -163,11 +163,18 @@ function deleteEvent(req, res, next) {
 
 function getUpcomingEvents(req, res, next){
     let userId = req.session.userId;
+    let limit = parseInt(req.query.limit,10) || 5;
     ClubService.getClubsByUserId(userId,"",function(clubs){
         let clubArray = clubs.map(function(club){
             return club._id;
         })
-        Events.find({club_id: {$in: clubArray}}, function(err, events){
+        Events.find({
+            club_id: {$in: clubArray},
+            date: {$gte : new Date() },
+        }).sort([['date', 1]])
+        .limit(limit).
+        populate('club_id', 'name').
+        exec(function(err, events){
             if(err) next (err);
             res.json(events);
         })
