@@ -28,9 +28,9 @@ const ClubBox = ({ club }) => {
         return (
             <Link to={`/club/${club._id}`}>
                 <Card style={styles.card}>
-                    <CardActionArea>
-                        <CardContent style={{ justifyContent: 'center' }}>
-                            <Typography gutterBottom variant="h5" component="h4" align='center'>
+                    <CardActionArea style={{ width: '100%' }}>
+                        <CardContent>
+                            <Typography gutterBottom variant="h5" component="h4" style={{ textAlign: 'center' }}>
                                 {club.name}
                             </Typography>
                         </CardContent>
@@ -38,36 +38,34 @@ const ClubBox = ({ club }) => {
                     <CardActions style={{ justifyContent: 'center' }}>
                         <Button size="large" color="secondary">
                             View Club
-                    <ArrowForward />
+                            <ArrowForward />
                         </Button>
                     </CardActions>
                 </Card>
             </Link>
-        )
-    } else {
-        return (
-            <Card style={styles.card}>
-                <CardActionArea>
-                    <CardContent>
-                        <Typography gutterBottom variant="h5" component="h4">
-                            <p>
-                                <Skeleton width={120} />
-                            </p>
-                        </Typography>
-                        </CardContent>
-                </CardActionArea>
-                <CardActions style={{ justifyContent: 'center' }}>
-
-                    <Button size="large" color="secondary">
-                        <p>
-                            <Skeleton width={80} />
-                        </p>
-                    </Button>
-                </CardActions>
-            </Card>
-        )
+        );
     }
-}
+    return (
+        <Card style={styles.card}>
+            <CardActionArea>
+                <CardContent>
+                    <Typography gutterBottom variant="h5" component="h4">
+                        <p>
+                            <Skeleton width={120} />
+                        </p>
+                    </Typography>
+                </CardContent>
+            </CardActionArea>
+            <CardActions style={{ justifyContent: 'center' }}>
+                <Button size="large" color="secondary">
+                    <p>
+                        <Skeleton width={80} />
+                    </p>
+                </Button>
+            </CardActions>
+        </Card>
+    );
+};
 
 
 ClubBox.propTypes = {
