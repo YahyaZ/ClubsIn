@@ -21,10 +21,10 @@ const Form = ({
         </div>
         {formBody}
         <div className="form-footer">
-            {footerText}
+            {footerText} {' '}
             <span className="link">
-                {!footerLinkClick
-                    ? <Link to={`${footerLink}`}> {footerLinkText} </Link>
+                {!footerLinkClick 
+                    ? <Link to={`${footerLink}`}>{footerLinkText}</Link>
                     : (
                         <span
                             role="link"
