@@ -38,6 +38,7 @@ Event.defaultProps = {
     name: '',
     members: [],
     link: '',
+    clubName: '',
 };
 
 Event.propTypes = {
@@ -45,7 +46,7 @@ Event.propTypes = {
     name: PropTypes.string,
     members: PropTypes.arrayOf(PropTypes.shape({})),
     link: PropTypes.string,
-    clubName: PropTypes.string.isRequired,
+    clubName: PropTypes.string,
 };
 
 const EventDetails = ({

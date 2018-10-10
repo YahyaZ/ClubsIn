@@ -68,7 +68,7 @@ class Club extends Component {
                         name={e.name}
                         members={e.users}
                         link={e._id ? `/club/${this.state.clubId}/event/${e._id}` : ''} // eslint-disable-line
-                        key={e._id}
+                        key={e._id || e}
                     />
                 ))}
             </div>

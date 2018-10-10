@@ -27,7 +27,7 @@ class EventSection extends Component {
         this.getEvents();
     }
 
-    getEvents(){
+    getEvents() {
         const self = this;
         fetch('/api/event/upcoming?limit=3', {
             method: 'GET',
@@ -39,11 +39,10 @@ class EventSection extends Component {
             return response.json();
         }).then((events) => {
             self.setState({ events, loaded: true });
-
         });
     }
 
-    rerender = () =>{
+    rerender = () => {
         this.getEvents();
     }
 
@@ -59,14 +58,16 @@ class EventSection extends Component {
             <div>
                 Go to one of your upcoming events!
                 <div className="club-container">
-                    {loaded ? events.map(e => <Event
-                        date={e.date}
-                        name={e.name}
-                        members={e.users}
-                        link={`/club/${e.club_id._id}/event/${e._id}`} // eslint-disable-line
-                        key={e._id}
-                        clubName={e.club_id.name}
-                    />) : [1,2,3].map(i => <Event />)}
+                    {loaded ? events.map(e => (
+                        <Event
+                            date={e.date}
+                            name={e.name}
+                            members={e.users}
+                            link={`/club/${e.club_id._id}/event/${e._id}`} // eslint-disable-line
+                            key={e._id}
+                            clubName={e.club_id.name}
+                        />
+                    )) : [1, 2, 3].map(i => <Event key={i} />)}
                 </div>
             </div>
         );

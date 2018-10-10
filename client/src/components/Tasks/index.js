@@ -25,9 +25,25 @@ const Task = ({
             <p>{name ? (completed ? 'Completed' : `Complete by: ${new Date(date).toDateString()}`) : <Skeleton />}</p>
         </div>
         <div className="task-member">
-            {name && members.map(member => (
+            {members.length < 3 ? members.map(member => (
                 <Member firstName={member.firstName} lastName={member.lastName} key={member._id} />
-            ))}
+            )) : ([
+                <Member
+                    firstName={members[0].firstName}
+                    lastName={members[0].lastName}
+                    key={members[0]._id}
+                />,
+                <Member
+                    firstName={members[1].firstName}
+                    lastName={members[1].lastName}
+                    key={members[1]._id}
+                />,
+                <Member
+                    overflow
+                    length={members.length - 2}
+                    key={0}
+                />,
+            ])}
         </div>
     </div>
 );
