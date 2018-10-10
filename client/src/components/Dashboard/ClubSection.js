@@ -127,7 +127,7 @@ class ClubSection extends Component {
     }
 
     render() {
-        const { clubs } = this.props;
+        const { clubs } = this.state;
         return (
             <div>
                 {!this.state.loaded ? this.renderClubs() : (

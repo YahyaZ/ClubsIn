@@ -10,7 +10,7 @@ let should = chai.should();
 chai.use(chaiHttp);
 
 
-describe.only('Clubs', function () {
+describe('Clubs', function () {
     let user = {
         email: "john.smith@gmail.com",
         password: "Test1234",
@@ -333,7 +333,7 @@ describe.only('Clubs', function () {
         });
     });
 
-    describe.only('Club Invite', function(){
+    describe('Club Invite', function(){
         let userTwo = {
             email: "jane.smith@gmail.com",
             password: "Test1234",
