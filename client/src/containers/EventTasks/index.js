@@ -158,7 +158,7 @@ class EventTasks extends Component {
         const { selectedTask, loaded, tasks } = this.state;
         const { match } = this.props;
         if (loaded) {
-            if (tasks > 0) {
+            if (tasks.length > 0) {
                 return (
                     <div className="event-task-details" key="task-details">
                         {selectedTask
