@@ -25,7 +25,6 @@ class EventTasks extends Component {
     componentDidMount() {
         this.getEvent();
         this.getTasks();
-        
     }
 
     getEvent = () => {
@@ -36,10 +35,10 @@ class EventTasks extends Component {
             mode: 'cors',
         })
             .then(response => response.json())
-            .then(event => {
-                self.setState({ event })
-                document.title=`${event.name} - club'in`
-        });
+            .then((event) => {
+                self.setState({ event });
+                document.title = `${event.name} - club'in`;
+            });
     }
 
     getMyTasks = () => {
@@ -63,7 +62,7 @@ class EventTasks extends Component {
 
     getTasks = () => {
         const self = this;
-        const { match } = this.props; // eslint-disable-line
+        const { match, location } = this.props; // eslint-disable-line
         const { selectedMenu, selectedTask } = this.state;
         fetch(`/api/task/event/${match.params.eventId}`, {
             method: 'GET',
@@ -88,6 +87,12 @@ class EventTasks extends Component {
             if (selectedTask) {
                 const updatedTask = allTasks.find(task => task._id === selectedTask._id);
                 self.setState({ selectedTask: updatedTask });
+            }
+
+            const params = new URLSearchParams(location.search);
+            const taskId = params.get('taskId');
+            if (taskId) {
+                self.setState({ selectedTask: allTasks.find(task => task._id === taskId) });
             }
         });
     }
@@ -182,14 +187,12 @@ class EventTasks extends Component {
                         }
                     </div>
                 );
-            } else {
-                return (
-                    <h1 style={{textAlign:'center', width: '100%'}}>There does not seem to be any tasks here </h1>
-                )
             }
-        } else {
-            return '';
+            return (
+                <h1 style={{ textAlign: 'center', width: '100%' }}>There does not seem to be any tasks here </h1>
+            );
         }
+        return '';
     }
 
     render() {

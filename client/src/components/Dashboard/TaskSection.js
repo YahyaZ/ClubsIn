@@ -47,23 +47,20 @@ class TaskSection extends Component {
                             name={task.name}
                             date={task.due_date}
                             members={task.assignee}
-                            link={{
-                                pathname: `/club/blah/event/${task.event_id}`,
-                                query: { taskId: task._id },
-                            }}
+                            link={`/club/${task.event_id.club_id}/event/${task.event_id._id}?taskId=${task._id}`}
                         />
                     )) : tasks.map(i => <Event key={i} />)
                     }
                 </div>
             </div>
-        )        
+        );
     }
 
     render() {
-        const { loaded } = this.state;
+        const { tasks } = this.state;
         return (
             <div>
-                { loaded ? this.renderTasks() : this.renderNoTasks() }
+                { tasks.length !== 0 ? this.renderTasks() : this.renderNoTasks() }
             </div>
         );
     }
