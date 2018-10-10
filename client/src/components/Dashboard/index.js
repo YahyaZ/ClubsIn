@@ -36,13 +36,14 @@ class Dashboard extends Component {
     }
 
     componentDidMount() {
-        document.title = "club'in"
+        
         const user = JSON.parse(localStorage.getItem('User'));
         if (user) {
             this.setState({
                 user,
             });
         }
+        document.title = 'Dashboard - clubín'
     }
 
 

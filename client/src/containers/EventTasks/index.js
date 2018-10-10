@@ -25,6 +25,7 @@ class EventTasks extends Component {
     componentDidMount() {
         this.getEvent();
         this.getTasks();
+        
     }
 
     getEvent = () => {
@@ -35,7 +36,10 @@ class EventTasks extends Component {
             mode: 'cors',
         })
             .then(response => response.json())
-            .then(event => self.setState({ event }));
+            .then(event => {
+                self.setState({ event })
+                document.title=`${event.name} - club'in`
+        });
     }
 
     getMyTasks = () => {
