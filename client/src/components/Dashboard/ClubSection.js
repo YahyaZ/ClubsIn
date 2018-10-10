@@ -30,7 +30,7 @@ const ClubBox = ({ club }) => {
                 <Card style={styles.card}>
                     <CardActionArea style={{ width: '100%' }}>
                         <CardContent>
-                            <Typography gutterBottom variant="h5" component="h4" style={{ textAlign: 'center' }}>
+                            <Typography gutterBottom variant="display1" component="h4" style={{ textAlign: 'center' }}>
                                 {club.name}
                             </Typography>
                         </CardContent>
@@ -68,8 +68,12 @@ const ClubBox = ({ club }) => {
 };
 
 
+ClubBox.defaultProps = {
+    club: {},
+};
+
 ClubBox.propTypes = {
-    club: PropTypes.shape({}).isRequired,
+    club: PropTypes.shape({}),
 };
 
 class ClubSection extends Component {
@@ -88,7 +92,7 @@ class ClubSection extends Component {
         this.getClubs();
     }
 
-    getClubs(){
+    getClubs() {
         const self = this;
         fetch('/api/club?q=name', {
             method: 'GET',
@@ -100,11 +104,10 @@ class ClubSection extends Component {
             return response.json();
         }).then((clubs) => {
             self.setState({ clubs, loaded: true });
-
         });
     }
 
-    rerender = () =>{
+    rerender = () => {
         this.getClubs();
     }
 
@@ -120,7 +123,7 @@ class ClubSection extends Component {
             <div>
                 Go to a club page:
                 <div className="club-container">
-                    {loaded ? clubs.map(club => <ClubBox key={club._id} club={club} />) : [1,2,3].map(i => <ClubBox />)}
+                    {loaded ? clubs.map(club => <ClubBox key={club._id} club={club} />) : [1, 2, 3].map(i => <ClubBox key={i} />)}
                 </div>
             </div>
         );

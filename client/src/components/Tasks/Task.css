@@ -38,3 +38,8 @@
 .task-info {
     flex-grow: 2;
 }
+
+.task-member {
+    display: flex;
+    max-width: 40%;
+}
