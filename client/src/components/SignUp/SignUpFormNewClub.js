@@ -164,7 +164,7 @@ class SignUpFormNewClub extends Component {
                     tagline="Register your Club Now!"
                     footerText="Already registered your club yet?"
                     footerLinkText="Find it here"
-                    footerLinkClick={() => this.goToPage('existingClub')}
+                    footerLinkClick=""
                 />
             </div>
         );

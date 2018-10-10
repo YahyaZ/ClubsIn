@@ -43,7 +43,7 @@ class SignUpFormChooseClubType extends Component {
                     <Button bsStyle="primary" type="button" onClick={this.handleShow}>Existing Club</Button>
                     <Button bsStyle="primary" type="button" onClick={() => this.handleOnClick('newClubRedirect')}>Register Club</Button>
                 </ButtonToolbar>
-                <ExistingClub show={show} hide={this.handleClose} />
+                <ExistingClub show={show} hide={this.handleClose} rerender={this.props.rerender} />
             </React.Fragment>
         );
     }

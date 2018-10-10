@@ -57,7 +57,6 @@ const ClubBox = ({ club }) => {
                 </CardContent>
             </CardActionArea>
             <CardActions style={{ justifyContent: 'center' }}>
-
                 <Button size="large" color="secondary">
                     <p>
                         <Skeleton width={80} />
@@ -81,9 +80,15 @@ class ClubSection extends Component {
             clubs: [],
             loaded: false,
         };
+
+        this.rerender = this.rerender.bind(this);
     }
 
     componentDidMount() {
+        this.getClubs();
+    }
+
+    getClubs(){
         const self = this;
         fetch('/api/club?q=name', {
             method: 'GET',
@@ -97,6 +102,10 @@ class ClubSection extends Component {
             self.setState({ clubs, loaded: true });
 
         });
+    }
+
+    rerender = () =>{
+        this.getClubs();
     }
 
     renderNoClubs = () => (
@@ -126,7 +135,7 @@ class ClubSection extends Component {
                 <div>
                     Join more clubs:
                     <br />
-                    <SignUpFormChooseClubType />
+                    <SignUpFormChooseClubType rerender={this.rerender} />
                 </div>
             </div>
         );

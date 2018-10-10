@@ -8,6 +8,7 @@ import {
     FormGroup,
 } from 'react-bootstrap';
 import BounceLoader from 'react-spinners/BounceLoader';
+import Redirect from 'react-router-dom/Redirect';
 
 class ExistingClub extends Component {
     constructor(props) {
@@ -16,6 +17,9 @@ class ExistingClub extends Component {
         this.state = {
             input: '',
             loading: false,
+            successMessage: '',
+            errorMessage:'',
+
         };
 
         this.handleSubmit = this.handleSubmit.bind(this);
@@ -37,13 +41,24 @@ class ExistingClub extends Component {
         const { input } = this.state;
         e.preventDefault();
         e.stopPropagation();
+        self.setState({ loading: true, errorMessage:'',successMessage:''  });
         fetch('api/club/invite', {
             method: 'POST',
             mode: 'cors',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(input),
-        }).then(() => {
-            self.setState({ loading: true });
+            body: JSON.stringify({inviteCode: input}),
+        }).then((response) => {
+            self.setState({ loading: false });
+            if(response.status == 200){
+                self.props.rerender();
+                response.json().then((data) => {
+                    self.setState({successMessage: `You are now in ${data.name}!`});
+                });
+            } else{
+                response.json().then((data) => {
+                    self.setState({errorMessage: data.error});
+                });
+            }
         });
 
         /* TODO RAMU: loading:true is for the loading component
@@ -53,12 +68,16 @@ class ExistingClub extends Component {
 
     render() {
         const {
-            show,
-            hide,
-            copySuccess,
             input,
             loading,
+            errorMessage,
+            successMessage,
         } = this.state;
+
+        const {
+            show,
+            hide,
+        } = this.props;
 
         return (
             <Modal show={show} onHide={hide}>
@@ -66,7 +85,8 @@ class ExistingClub extends Component {
                     <Modal.Title>Enter the Invite Code</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                    {copySuccess && <Alert bsStyle="success">{copySuccess}</Alert>}
+                    {successMessage && <Alert bsStyle="success">{successMessage}</Alert>}
+                    {errorMessage && <Alert bsStyle="danger">{errorMessage}</Alert>}
                     Please enter the invite code to join a club
                     <Form inline onSubmit={this.handleSubmit}>
                         <FormControl
