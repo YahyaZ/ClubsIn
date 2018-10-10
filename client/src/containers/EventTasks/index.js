@@ -179,7 +179,7 @@ class EventTasks extends Component {
     }
 
     render() {
-        const { event, selectedTasks, selectedTask, loaded } = this.state;
+        const { event, selectedMenu, loaded } = this.state;
         const { match } = this.props; // eslint-disable-line
         return (
             <div>

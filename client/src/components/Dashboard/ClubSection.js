@@ -10,13 +10,8 @@ import CardContent from '@material-ui/core/CardContent';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import ArrowForward from '@material-ui/icons/ArrowForward';
-<<<<<<< HEAD
 import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
-
-
-=======
 import SignUpFormChooseClubType from '../SignUp/signUpFormChooseClubType';
->>>>>>> 7bfc535679fb39537ca8a877b7f3a7858be6f8f2
 
 const styles = {
     card: {
