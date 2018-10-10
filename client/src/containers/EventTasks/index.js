@@ -136,7 +136,7 @@ class EventTasks extends Component {
         selectedTasks.sort(task => task.completed ? 1 : -1);
         return (
             <div className="event-task-list" key="task-list">
-                {selectedTasks
+                {selectedTasks.length > 0
                     ? selectedTasks.map(task => (
                         <Task
                             name={task.name}
@@ -155,27 +155,37 @@ class EventTasks extends Component {
     }
 
     renderTaskDetails() {
-        const { selectedTask } = this.state;
+        const { selectedTask, loaded, tasks } = this.state;
         const { match } = this.props;
-        return (
-            <div className="event-task-details" key="task-details">
-                {selectedTask
-                    ? (
-                        <TaskDetails
-                            taskId={selectedTask._id}
-                            name={selectedTask.name}
-                            date={selectedTask.due_date}
-                            description={selectedTask.description}
-                            members={selectedTask.assignee}
-                            completed={selectedTask.completed}
-                            getTasks={this.getTasks}
-                            editLink={`/club/${match.params.clubId}/event/${match.params.eventId}/task/${selectedTask._id}`}
-                        />
-                    )
-                    : ''
-                }
-            </div>
-        );
+        if (loaded) {
+            if (tasks > 0) {
+                return (
+                    <div className="event-task-details" key="task-details">
+                        {selectedTask
+                            ? (
+                                <TaskDetails
+                                    taskId={selectedTask._id}
+                                    name={selectedTask.name}
+                                    date={selectedTask.due_date}
+                                    description={selectedTask.description}
+                                    members={selectedTask.assignee}
+                                    completed={selectedTask.completed}
+                                    getTasks={this.getTasks}
+                                    editLink={`/club/${match.params.clubId}/event/${match.params.eventId}/task/${selectedTask._id}`}
+                                />
+                            )
+                            : ''
+                        }
+                    </div>
+                );
+            } else {
+                return (
+                    <h1 style={{textAlign:'center', width: '100%'}}>There does not seem to be any tasks here </h1>
+                )
+            }
+        } else {
+            return '';
+        }
     }
 
     render() {
@@ -191,22 +201,22 @@ class EventTasks extends Component {
                                 itemName="My Tasks"
                                 itemType="myTasks"
                                 isSelectedMenu={this.isSelectedMenu}
-                                selectMenu={loaded ? this.selectMenu : () => {}}
-                                handleKeyPress={loaded ? this.handleKeyPress : () => {}}
+                                selectMenu={loaded ? this.selectMenu : () => { }}
+                                handleKeyPress={loaded ? this.handleKeyPress : () => { }}
                             />
                             <MenuItem
                                 itemName="All Tasks"
                                 itemType="allTasks"
                                 isSelectedMenu={this.isSelectedMenu}
-                                selectMenu={loaded ? this.selectMenu : () => {}}
-                                handleKeyPress={loaded ? this.handleKeyPress : () => {}}
+                                selectMenu={loaded ? this.selectMenu : () => { }}
+                                handleKeyPress={loaded ? this.handleKeyPress : () => { }}
                             />
                             <MenuItem
                                 itemName="Event Details"
                                 itemType="eventDetails"
                                 isSelectedMenu={this.isSelectedMenu}
-                                selectMenu={loaded ? this.selectMenu : () => {}}
-                                handleKeyPress={loaded ? this.handleKeyPress : () => {}}
+                                selectMenu={loaded ? this.selectMenu : () => { }}
+                                handleKeyPress={loaded ? this.handleKeyPress : () => { }}
                             />
                         </div>
                         <div className="event-menu-button">
