@@ -46,7 +46,6 @@ class TaskSection extends Component {
                         <Event
                             name={task.name}
                             date={task.due_date}
-                            members={task.assignee}
                             link={`/club/${task.event_id.club_id}/event/${task.event_id._id}?taskId=${task._id}`}
                         />
                     )) : tasks.map(i => <Event key={i} />)
