@@ -25,6 +25,7 @@ class SignUpFormNewClub extends Component {
 
     componentDidMount() {
         const self = this;
+        document.title = "Register New Club - Club'in";
         fetch('/api/university')
             .then(response => response.json())
             .then((data) => {

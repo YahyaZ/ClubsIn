@@ -44,28 +44,30 @@ class SignUp extends Component {
         const self = this;
         const { input } = this.state;
         self.setState({ loading: true });
-        fetch('/api/user/signup', {
-            method: 'POST',
-            mode: 'cors',
-            credentials: 'same-origin',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(input),
-        }).then((response) => {
-            if (response.status === 400) {
-                response.json().then((data) => {
-                    self.setState({
-                        errorMessage: data.error,
-                        loading: false,
+      
+            fetch('/api/user/signup', {
+                method: 'POST',
+                mode: 'cors',
+                credentials: 'same-origin',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(input),
+            }).then((response) => {
+                if (response.status === 400) {
+                    response.json().then((data) => {
+                        self.setState({
+                            errorMessage: data.error,
+                            loading: false,
+                        });
                     });
-                });
-            } else if (response.status === 200) {
-                self.props.childProps.authenticate(true);
-                response.json().then((data) => {
-                    localStorage.setItem('User', JSON.stringify(data));
-                    self.setState({ redirect: true, loading: false });
-                });
-            } /** TODO: WHEN YOU ADD SIGN UP ROUTING do loading:false too in your setState */
-        });
+                } else if (response.status === 200) {
+                    self.props.childProps.authenticate(true);
+                    response.json().then((data) => {
+                        localStorage.setItem('User', JSON.stringify(data));
+                        self.setState({ redirect: true, loading: false });
+                    });
+                } /** TODO: WHEN YOU ADD SIGN UP ROUTING do loading:false too in your setState */
+            });
+       
     }
 
 
@@ -81,7 +83,7 @@ class SignUp extends Component {
                     formBody={(
                         <div>
                             <SignUpFormStart
-                            {...this.props}
+                                {...this.props}
                                 buttonClick={this.submitForm}
                                 handleInputChange={this.handleInputChange}
                             />
