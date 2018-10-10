@@ -119,6 +119,7 @@ function assignedTask(req,res,next){
     Tasks.find({assignee : userId, completed:false})
     .sort({due_date: 1})
     .limit(limit)
+    .populate('event_id', 'club_id')
     .exec(function(err, tasks){
         if(err) next(err);
         res.json(tasks);
