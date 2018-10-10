@@ -5,12 +5,13 @@ import {
     FormControl,
     FormGroup,
 } from 'react-bootstrap';
-import DatePicker from 'react-datepicker';
 import { Link } from 'react-router-dom';
 import moment from 'moment';
 import RingLoader from 'react-spinners/RingLoader';
-import 'react-datepicker/dist/react-datepicker.css';
 import SelectMemberOption from './SelectMemberOption';
+import 'react-dates/initialize';
+import 'react-dates/lib/css/_datepicker.css';
+import {SingleDatePicker} from 'react-dates';
 import './AddTask.css';
 
 
@@ -19,7 +20,8 @@ class AddTask extends Component {
         super(props);
 
         this.state = {
-            date: moment(),
+            date: null,
+            focused: null,
             name: '',
             description: '',
             selectedMembers: [],
@@ -173,6 +175,7 @@ class AddTask extends Component {
         this.setState({ date });
     }
 
+
     handleSelectChange(e) {
         const { clubMembers, assignee } = this.state;
         let membersList = clubMembers;
@@ -232,16 +235,22 @@ class AddTask extends Component {
                 </FormGroup>
                 <FormGroup controlId="formDate">
                     <ControlLabel>Date:</ControlLabel>
-                    <DatePicker
-                        selected={date}
-                        onChange={this.handleDateChange}
-                        name="date"
-                        placeholderText="Due date of the task"
-                        minDate={moment()}
-                        showTimeSelect
-                        dateFormat="LLL"
-                        disabled={loading}
-                    />
+                    <br />
+                    <SingleDatePicker
+                          // showClearDate={true}
+                          readOnly
+                          block={true}
+                          numberOfMonths={1}
+                          date={this.state.date}
+                          onDateChange={date => this.handleDateChange(date)}
+                          focused={this.state.focused}
+                          onFocusChange={({ focused }) =>
+                            this.setState({ focused })
+                          }
+                          openDirection="down"
+                          displayFormat="DD MMM YYYY"
+                          hideKeyboardShortcutsPanel={true}
+                        />
                 </FormGroup>
                 <FormGroup className="task-select" controlId="formAssign">
                     <FormGroup className="member-select">

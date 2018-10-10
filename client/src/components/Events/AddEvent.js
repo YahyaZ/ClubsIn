@@ -5,11 +5,12 @@ import {
     FormControl,
     FormGroup,
 } from 'react-bootstrap';
-import DatePicker from 'react-datepicker';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import moment from 'moment';
-import 'react-datepicker/dist/react-datepicker.css';
+import 'react-dates/initialize';
+import 'react-dates/lib/css/_datepicker.css';
+import {SingleDatePicker} from 'react-dates';
 import RingLoader from 'react-spinners/RingLoader';
 
 
@@ -123,15 +124,22 @@ class AddEvent extends Component {
                 </FormGroup>
                 <FormGroup controlId="formDate">
                     <ControlLabel>Date:</ControlLabel>
-                    <DatePicker
-                        selected={date}
-                        onChange={this.handleDateChange}
-                        name="date"
-                        placeholderText="Date of the event"
-                        minDate={moment()}
-                        showTimeSelect
-                        dateFormat="LLL"
-                    />
+                    <br />
+                    <SingleDatePicker
+                          // showClearDate={true}
+                          readOnly
+                          block={true}
+                          numberOfMonths={1}
+                          date={this.state.date}
+                          onDateChange={date => this.handleDateChange(date)}
+                          focused={this.state.focused}
+                          onFocusChange={({ focused }) =>
+                            this.setState({ focused })
+                          }
+                          openDirection="down"
+                          displayFormat="DD MMM YYYY"
+                          hideKeyboardShortcutsPanel={true}
+                        />
                 </FormGroup>
 
                 {edit ? '' : (
