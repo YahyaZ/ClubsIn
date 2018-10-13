@@ -36,9 +36,12 @@ function addTask(req, res, next) {
 }
 
 /**
- * 
- * Get task based on id
- * 
+ * Returns a single tasks data based on the id provided through
+ * URL parameters
+ * GET METHOD
+ * @param {Object} req 
+ * @param {Object} res 
+ * @param {Object} next 
  */
 function getTask(req, res, next) {
     Tasks.findOne({_id: req.params.id})
@@ -92,7 +95,8 @@ function deleteTask(req,res){
  * @param {Object} next 
  */
 function updateTask(req,res, next) {
-    if(req.body._id && req.body.due_date && req.body.name && req.body.description && req.body.assignee) {
+    if(req.body._id && req.body.due_date && req.body.name 
+        && req.body.description && req.body.assignee) {
         Tasks.findOneAndUpdate({ _id: req.body._id },{
             due_date: req.body.due_date,
             name: req.body.name,
@@ -113,6 +117,13 @@ function updateTask(req,res, next) {
 
 }
 
+/**
+ * Returns a JSON object of assigned tasks assigned to the logged in user
+ * GET METHOD
+ * @param {Object} req 
+ * @param {Object} res 
+ * @param {Object} next 
+ */
 function assignedTask(req,res,next){
     let userId = req.session.userId;
     let limit = parseInt(req.query.limit,10) || 5;
