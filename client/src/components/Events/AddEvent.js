@@ -90,7 +90,6 @@ class AddEvent extends Component {
         const {
             name,
             description,
-            date,
             message,
             loading,
         } = this.state;
