@@ -24,8 +24,9 @@ if(process.env.NODE_ENV == 'test'){
 
 // Connect to database
 let dbURL = process.env.NODE_ENV == 'test' ? process.env.DB_TEST_URL : process.env.DB_URL
-
 mongoose.connect(dbURL);
+
+//Once connected to db
 let db = mongoose.connection;
 db.on('error', console.error.bind(console, 'Connection Error'));
 db.once('open', function () {
