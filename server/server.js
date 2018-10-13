@@ -18,6 +18,7 @@ import router from './routes';
 const logDir = 'log';
 
 // Create the log directory if it does not exist
+
 if (!fs.existsSync(logDir)) {
     fs.mkdirSync(logDir);
 }
@@ -104,7 +105,7 @@ app.use('/api', router);
 
 
 // If there is no Page give error of 404
-app.use((err, req, res, next) => {
+app.use((err, _req, _res, next) => {
     if (!err) {
         const error = new Error('File Not Found');
         error.status = 404;
@@ -118,7 +119,7 @@ app.use((err, req, res, next) => {
  * Catches all errors passed by the next() function in previous functions
  * Returns the Error as a json
  */
-app.use((err, req, res) => {
+app.use((err, _req, res, _next) => {
     res.status(err.status || 500).json({ error: err.message });
 });
 
