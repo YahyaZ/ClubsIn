@@ -17,9 +17,7 @@ function requiresLogin(req, res, next) {
   }
   else {
     // User is not authenticated, throw an error
-    var err = new Error('You are unauthorised to see this page');
-    err.status = 401;
-    next(err);
+   handleUnauthorisedAccess(next);
   }
 }
 
@@ -36,12 +34,16 @@ function requiresUserClub(req, res, next) {
       if (authorised) {
         next();
       } else {
-        var err = new Error('You are unauthorised to see this page');
-        err.status = 401;
-        next(err);
+        handleUnauthorisedAccess(next);
       }
     })
   }
+}
+
+function handleUnauthorisedAccess(next){
+  const err = new Error('You are unauthorised to see this page');
+  err.status = 401;
+  next(err);
 }
 
 module.exports = {
