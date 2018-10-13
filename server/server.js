@@ -6,90 +6,124 @@ import bodyParser from 'body-parser';
 import cookieParser from 'cookie-parser';
 import session from 'express-session';
 import mongoose from 'mongoose';
-import logger from 'morgan';
+import morgan from 'morgan';
 import dotenv from 'dotenv';
 import cors from 'cors';
-import router from './routes'
-import connectMongo from 'connect-mongo';
 import path from 'path';
+import connectMongo from 'connect-mongo';
+import { createLogger, format, transports } from 'winston';
+import fs from 'fs';
+import router from './routes';
 
+const logDir = 'log';
 
+// Create the log directory if it does not exist
+if (!fs.existsSync(logDir)) {
+    fs.mkdirSync(logDir);
+}
+
+const filename = path.join(logDir, 'results.log');
+
+const logger = createLogger({
+    level: 'debug',
+    format: format.combine(
+        format.timestamp({
+            format: 'YYYY-MM-DD HH:mm:ss',
+        }),
+        format.printf(info => `${info.timestamp} ${info.level}: ${info.message}`),
+    ),
+    transports: [
+        new transports.Console({
+            level: 'info',
+            format: format.combine(
+                format.colorize({
+                    all: true,
+                }),
+                format.printf(
+                    info => `${info.timestamp} ${info.level}: ${info.message}`,
+                ),
+            ),
+        }),
+        new transports.File({ filename }),
+    ],
+});
 
 // Sets up the environment configurations
-if(process.env.NODE_ENV == 'test'){
-  dotenv.config({path:path.resolve() + "/server/.env"});
+if (process.env.NODE_ENV === 'test') {
+    logger.info('Using Test Environment');
+    dotenv.config({ path: `${path.resolve()}/server/.env` });
 } else {
-  dotenv.config();
+    dotenv.config();
 }
 
 // Connect to database
-let dbURL = process.env.NODE_ENV == 'test' ? process.env.DB_TEST_URL : process.env.DB_URL
+const dbURL = process.env.NODE_ENV === 'test' ? process.env.DB_TEST_URL : process.env.DB_URL;
 mongoose.connect(dbURL);
 
-//Once connected to db
-let db = mongoose.connection;
-db.on('error', console.error.bind(console, 'Connection Error'));
-db.once('open', function () {
-  if(process.env.NODE_ENV != 'test'){
-  console.log('Successful connection');
-  }
-})
+//Once connected
+const db = mongoose.connection;
+db.on('error', () => logger.error('Mongoose Connection Failed'));
+db.once('open', () => {
+    if (process.env.NODE_ENV !== 'test') {
+        logger.verbose('MongoDB connected!');
+    }
+});
 
 // Creates the express router application
 const app = express();
 const API_PORT = process.env.API_PORT || 3001;
 
 // Store sessions in mongo
-let MongoStore = connectMongo(session);
+const MongoStore = connectMongo(session);
 app.use(cookieParser());
 app.use(session({
-  secret: 'work hard',
-  resave: true,
-  saveUninitialized: false,
-  store: new MongoStore({
-    mongooseConnection: db
-  })
+    secret: process.env.SESSION_SECRET,
+    resave: true,
+    saveUninitialized: true,
+    store: new MongoStore({
+        mongooseConnection: db,
+    }),
 }));
 
 
 // Allows CORS in dev mode
 app.use(cors());
-if(process.env.NODE_ENV != 'test'){
-  //Do not use logger in test mode
-  app.use(logger('dev'));
+if (process.env.NODE_ENV !== 'test') {
+    // Do not use logger in test mode
+    app.use(morgan('dev'));
 }
 
-//Allows the application to parse the body of requests to access data
+// Allows the application to parse the body of requests to access data
 app.use(bodyParser.urlencoded({
-  extended: true
+    extended: true,
 }));
 app.use(bodyParser.json());
 
 
-//All api requests will go through '/api'
+// All api requests will go through '/api'
 app.use('/api', router);
 
 
-
 // If there is no Page give error of 404
-app.use(function (err, req, res, next) {
-  if(!err){
-    var err = new Error('File Not Found');
-    err.status = 404;
-  }
-  
-  next(err);
+app.use((err, req, res, next) => {
+    if (!err) {
+        const error = new Error('File Not Found');
+        error.status = 404;
+        next(error);
+    } else {
+        next(err);
+    }
 });
 
 /**
  * Catches all errors passed by the next() function in previous functions
  * Returns the Error as a json
  */
-app.use(function (err, req, res, next) {
-  res.status(err.status || 500).json({ error: err.message })
+app.use((err, req, res) => {
+    res.status(err.status || 500).json({ error: err.message });
 });
 
 // Start the server
-app.listen(API_PORT, () => console.log(`Listening on port ${API_PORT}`)); 
+app.listen(API_PORT, () => logger.info(`Listening on port ${API_PORT}`));
 
 export default app;
