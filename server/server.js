@@ -59,8 +59,9 @@ if (process.env.NODE_ENV === 'test') {
 
 // Connect to database
 const dbURL = process.env.NODE_ENV === 'test' ? process.env.DB_TEST_URL : process.env.DB_URL;
-
 mongoose.connect(dbURL);
+
+//Once connected
 const db = mongoose.connection;
 db.on('error', () => logger.error('Mongoose Connection Failed'));
 db.once('open', () => {

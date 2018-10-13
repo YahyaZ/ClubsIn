@@ -1,6 +1,9 @@
 import mongoose from "mongoose";
 import bcrypt from 'bcrypt';
 
+/**
+ * Club schema that defines the structure of how Club data would look in the database
+ */
 let ClubSchema = new mongoose.Schema({
     name: {
       type: String,
@@ -33,6 +36,10 @@ let ClubSchema = new mongoose.Schema({
     }
 });
 
+/**
+ * Before club is saved to database, use bcrypt to has it.
+ * @param {Function} next - Express object to go to next function
+ */
 ClubSchema.pre('save', function (next) {
   var club = this;
   bcrypt.hash(club._id.toString(), 3, function (err, hash) {

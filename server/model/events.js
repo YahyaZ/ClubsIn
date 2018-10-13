@@ -1,5 +1,8 @@
 import mongoose from "mongoose";
 
+/**
+ * Event schema that defines the structure of how event data would look in the database
+ */
 let eventSchema = new mongoose.Schema({
     club_id: {type: mongoose.Schema.Types.ObjectId, ref:'Club'},
     name: {

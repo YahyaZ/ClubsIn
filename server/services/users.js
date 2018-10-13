@@ -31,25 +31,19 @@ function findUser(req, res) {
     });
 }
 
+/**
+ * Returns a single user from the database based on id in url parameter
+ * GET METHOD
+ * @param {Object} id 
+ * @param {Object} callback 
+ */
 function getUser(id, callback){
   return User.findOne({_id: id}, callback)
 }
 
 /**
- * Returns all the Users in the database.
- * This is just for testing purposes, must be removed during production deploy
- * @param {Object} req - Express request Object
- * @param {Object} res - Express response Object
- */
-function getAllUsers(req, res) {
-  User.find(function (err, users) {
-    if (err) return console.error(err);
-    res.json(users);
-  })
-}
-
-/**
- * Adds the new User to the database
+ * Adds the new User to the database based on body parameters
+ * POST METHOD
  * @param {Object} req - Express request Object
  * @param {Object} res - Express response Object
  * @param {Object} next - Express next middleware function
@@ -105,6 +99,7 @@ function signUp(req, res, next) {
 
 /**
  * Logs the User in and adds a session
+ * POST METHOD
  * @param {Object} req - Express request Object
  * @param {Object} res - Express response Object
  * @param {Object} next - Express next middleware function
@@ -130,6 +125,13 @@ function login(req, res, next) {
   }
 }
 
+/**
+ * Authenticates user and then changes password of said user
+ * POST METHOD
+ * @param {Object} req 
+ * @param {Object} res 
+ * @param {Object} next 
+ */
 function updatePassword(req, res, next){
   if(req.body.newPassword && req.body.email && req.body.password){
     User.authenticate(req.body.email, req.body.password, function (error, user) {
@@ -150,7 +152,13 @@ function updatePassword(req, res, next){
   }
 }
 
-
+/**
+ * Ends current session of logged in user
+ * GET METHOD
+ * @param {Object} req 
+ * @param {Object} res 
+ * @param {Object} next 
+ */
 function logout(req, res, next) {
   if (req.session) {
     req.session.destroy(function (err) {
@@ -158,11 +166,8 @@ function logout(req, res, next) {
         return next(err);
       } else {
         res.status(204).send();
-
-
       }
-    }
-    )
+    })
   } else {
     var err = new Error('Session not found');
     err.status = 404;
@@ -170,11 +175,17 @@ function logout(req, res, next) {
   }
 }
 
+/**
+ * Finds a user and then adds new club id to their array of clubs
+ * Function called from  ./clubs.js
+ * @param {Object} userId 
+ * @param {Object} clubId 
+ */
 function addUserToClub(userId, clubId) {
   if (userId && clubId) {
     User.findOneAndUpdate(
       { _id: userId },
-      { $push: { clubs: clubId }}, (err,user)=>{
+      { $push: { clubs: clubId }}, (err)=>{
           return err;
       });
       return true;

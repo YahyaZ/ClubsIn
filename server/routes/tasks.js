@@ -22,8 +22,25 @@ let router = express.Router();
  */
 router.post('/', TaskService.addTask)
 
+/**
+ * /api/tasks/assigned
+ * GET METHOD - returns a json object of all tasks user is assigned to
+ * Parameters:
+ *  NULL
+ * Responses:
+ *  - 200: JSON object of all tasks assigned to this user
+ */
 router.get('/assigned', TaskService.assignedTask);
 
+/**
+ * /api/tasks/:id
+ * GET FUNCTION - Return single task based on id
+ * Parameters:
+ *  - id: id of the task which data for should be returned
+ * Responses:
+ *  - 404: No task of this id was found
+ *  - 200: JSON format return of the task of this id
+ */ 
 router.get('/:id', TaskService.getTask)
 
 /**
