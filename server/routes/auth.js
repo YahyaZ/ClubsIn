@@ -23,6 +23,13 @@ function requiresLogin(req, res, next) {
   }
 }
 
+/**
+ * Validation function which detects if the api call being made is from an authorised
+ * user who is apart of the club being called
+ * @param {Object} req 
+ * @param {Object} res 
+ * @param {Object} next 
+ */
 function requiresUserClub(req, res, next) {
   let authorised = false;
   if (req.session.userId && req.params.id) {
