@@ -44,6 +44,7 @@ class TaskSection extends Component {
                 <div className="club-container">
                     {loaded ? tasks.map(task => (
                         <Event
+                            key={loaded ? task._id : task}
                             name={task.name}
                             date={task.due_date}
                             link={`/club/${task.event_id.club_id}/event/${task.event_id._id}?taskId=${task._id}`}

@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { Grid, Row, Well } from 'react-bootstrap';
 import PropTypes from 'prop-types';
 import ClubSection from './ClubSection';
-import UserManagement from './UserManagment';
 import './dashboard.css';
 import Update from '../ChangePassword';
 import EventSection from './EventSection';

@@ -3,6 +3,9 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
+  "engines": {
+    "node": "8.11.3"
+  },
   "scripts": {
     "test": "set NODE_ENV=test&& mocha --timeout 10000 --compilers js:babel-core/register",
     "start:server": "cd server && nodemon server.js --exec babel-node --presets es2015,stage-0",

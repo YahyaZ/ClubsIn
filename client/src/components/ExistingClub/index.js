@@ -8,7 +8,6 @@ import {
     FormGroup,
 } from 'react-bootstrap';
 import BounceLoader from 'react-spinners/BounceLoader';
-import Redirect from 'react-router-dom/Redirect';
 
 class ExistingClub extends Component {
     constructor(props) {
@@ -49,7 +48,7 @@ class ExistingClub extends Component {
             body: JSON.stringify({inviteCode: input}),
         }).then((response) => {
             self.setState({ loading: false });
-            if(response.status == 200){
+            if(response.status === 200){
                 self.props.rerender();
                 response.json().then((data) => {
                     self.setState({successMessage: `You are now in ${data.name}!`});
@@ -60,9 +59,6 @@ class ExistingClub extends Component {
                 });
             }
         });
-
-        /* TODO RAMU: loading:true is for the loading component
-         * make it show during api call and turn it off on response */
     }
 
 
