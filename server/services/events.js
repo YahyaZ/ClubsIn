@@ -5,10 +5,9 @@ import ClubService from './clubs';
 
 /**
  * Returns all events
- * @param {Object} req 
  * @param {Object} res 
  */
-function getAllEvents(req, res) {
+function getAllEvents(res) {
     Events.find(function (err, events) {
         if(err) return console.error(err);
         res.json(events);
@@ -19,6 +18,7 @@ function getAllEvents(req, res) {
  * Get events with Club ID
  * @param {Object} req
  * @param {Object} res
+ * @param {Object} next
  */
 function getEventsByClubId(req, res, next) {
     // match event with club id,
@@ -43,6 +43,8 @@ function getEventsByClubId(req, res, next) {
 /**
  * Async call to mongoose to get users
  * that have tasks within an event
+ * @param {Event} events 
+ * @param {Object} next 
  */
 async function getUserEvents(events, next) {
     try {
@@ -160,7 +162,13 @@ function deleteEvent(req, res, next) {
     })
 }
 
-
+/**
+ * Returns events which are set in a future date using
+ * the id stored in session
+ * @param {Object} req 
+ * @param {Object} res 
+ * @param {Object} next 
+ */
 function getUpcomingEvents(req, res, next){
     let userId = req.session.userId;
     let limit = parseInt(req.query.limit,10) || 5;

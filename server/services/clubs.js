@@ -88,7 +88,9 @@ function addUserToClub(req, res, next) {
 /**
  * Function simply queries to return all found club files in db
  * Called by a GET request
+ * @param {Object} req 
  * @param {Object} res 
+ * @param {Object} next 
  */
 function getClubs(req, res, next) {
     var options = req.query.q || null;
@@ -100,6 +102,14 @@ function getClubs(req, res, next) {
     });
 }
 
+/**
+ * Provides an id through a post body method which is queried into
+ * the database to find an array of club id's
+ * POST METHOD
+ * @param {*} userId 
+ * @param {*} options 
+ * @param {*} callback 
+ */
 function getClubsByUserId(userId, options, callback) {
     UserService.getUser(userId, function (err, currUser) {
         if (err) next(err);
@@ -128,6 +138,9 @@ function findClubById(req, res, next) {
 /**
  * Gets an array of club members
  * GET method
+ * @param {Object} res 
+ * @param {Object} req 
+ * @param {Object} next 
  */
 function getClubMembers(req, res, next) {
     if (req.params.id) {
