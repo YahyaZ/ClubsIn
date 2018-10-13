@@ -16,10 +16,7 @@ function findUser(req, res, next) {
     getUser(id,
         (err, user) => {
             if (err || user == null) {
-                const error = new Error('User does not exist in the dBase, please'
-                + ' sign up to login as a user');
-                error.status = 404;
-                next(error);
+                next(handleMissingUser());
             }
             res.json(user);
         });
@@ -45,9 +42,7 @@ function getUser(id, callback) {
 function signUp(req, res, next) {
     // Checks if the passwords match, if it doesnt, return a 400 error
     if (req.body.password !== req.body.passwordConf) {
-        const err = new Error('Passwords do not match');
-        err.status = 400;
-        next(err);
+        next(handleNonMatchingPasswords());
     } else // Checks if all the necessary fields are there
     if (req.body.email
     && req.body.firstName
@@ -71,16 +66,13 @@ function signUp(req, res, next) {
             }
             // User Exists, so return User Already exists
             if (user) {
-                res.status(400).json({ error: 'User Already Exists' });
+                next(handleExistingUser());
             } else {
                 // No user is found, so create it
-
                 const newUser = new User(userData);
                 newUser.save((error) => {
                     if (error) {
-                        const userError = error;
-                        userError.status = 400;
-                        next(error);
+                        next(handleDatabaseError(error));
                     } else {
                         req.session.userId = newUser._id;
                         res.send(newUser);
@@ -89,7 +81,7 @@ function signUp(req, res, next) {
             }
         });
     } else {
-        res.status(400).json({ error: 'Please fill out all fields' });
+        next(handleMissingFields());
     }
 }
 
@@ -115,9 +107,7 @@ function login(req, res, next) {
             }
         });
     } else {
-        const err = new Error('Please fill out all fields');
-        err.status = 400;
-        next(err);
+        next(handleMissingFields());
     }
 }
 
@@ -132,7 +122,7 @@ function updatePassword(req, res, next) {
     if (req.body.newPassword && req.body.email && req.body.password) {
         User.authenticate(req.body.email, req.body.password, (error, user) => {
             if (error || !user) {
-                res.status(400).json({ error: 'Wrong email or password' });
+                next(handleAuthenticationIssue());
             } else {
                 const updateUser = user;
                 updateUser.password = req.body.newPassword;
@@ -143,9 +133,9 @@ function updatePassword(req, res, next) {
             }
         });
     } else if (req.body.newPassword !== req.body.confirmPassword) {
-        res.status(400).json({ error: 'Please confirm new password is correct in both fields' });
+        next(handleNonMatchingPasswords());
     } else {
-        res.status(400).json({ error: 'Please fill out all fields' });
+        next(handleMissingFields());
     }
 }
 
@@ -164,10 +154,6 @@ function logout(req, res, next) {
             }
             res.status(204).send();
         });
-    } else {
-        const err = new Error('Session not found');
-        err.status = 404;
-        next(err);
     }
 }
 
@@ -186,6 +172,45 @@ function addUserToClub(userId, clubId) {
         return true;
     }
     return false;
+}
+
+// Error Handlers
+
+function handleMissingUser() {
+    const error = new Error('User does not exist in the dBase, please'
+  + ' sign up to login as a user');
+    error.status = 400;
+    return error;
+}
+
+function handleNonMatchingPasswords() {
+    const error = new Error('Passwords do not match');
+    error.status = 400;
+    return error;
+}
+
+function handleExistingUser() {
+    const error = new Error('User Already Exists');
+    error.status = 400;
+    return error;
+}
+
+function handleMissingFields() {
+    const error = new Error('Please fill out all fields');
+    error.status = 400;
+    return error;
+}
+
+function handleDatabaseError(err) {
+    const error = err;
+    error.status = 400;
+    return error;
+}
+
+function handleAuthenticationIssue() {
+    const error = new Error('Wrong email or password');
+    error.status = 400;
+    return error;
 }
 
 module.exports = {
