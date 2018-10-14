@@ -24,6 +24,7 @@ Start both simultaneously - `npm start`
 * All files should have comments on the top describing what the file does. Methods which are not self explaining must have comments in it
 * File Names should be in lower camel case unless it is a component and then it can be in Upper case unless it is an index.js
 * All lines **must** not exceed **100** characters in length
+* All API server messages **must** be retrievd from userErrorUtils (NO HARDCODING)
 * Braces must be used for all control structures even if the body contains 1 line
 * Must adhere to the DRY principle, if there is repititon in the code, a new method or function must be created and then that will be used
 * If there are subcomponents, those components must reside in the parent's component's folder
