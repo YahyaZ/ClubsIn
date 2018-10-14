@@ -59,6 +59,7 @@ class LoginForm extends Component {
         const { input } = this.state;
         e.preventDefault();
         self.setState({ loading: true });
+        
         // Calls the login api with this details in the form
         fetch(loginApi, {
             method: 'POST',
