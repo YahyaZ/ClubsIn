@@ -1,5 +1,5 @@
 import Tasks from '../model/tasks';
-
+import {createError, errorMessages} from './userErrorUtils';
 /**
  * Adds a new task file to the database based on provided parameters
  * POST method      
@@ -31,7 +31,7 @@ function addTask(req, res, next) {
             else { return res.json(taskData);}
         })
     } else {
-        res.status(400).json({"error":"All fields required"})
+        res.status(400).json({"error": errorMessages.MISSING_FIELDS})
     }
 }
 
@@ -47,11 +47,7 @@ function getTask(req, res, next) {
     Tasks.findOne({_id: req.params.id})
         .populate('assignee')
         .exec((err, tasks) => {
-            if (err) {
-                var error = new Error("No task found");
-                error.status = 404;
-                return next(error);
-            }
+            if (err) createError(errorMessages.TASK_NOT_FOUND, 404)
             res.json(tasks);
         })
 }
@@ -66,11 +62,7 @@ function findTasksForEvent(req, res, next){
     Tasks.find({event_id: req.params.id})
         .populate('assignee')
         .exec((err, tasks) => {
-            if (err) {
-                var error = new Error("No task found");
-                error.status = 404;
-                return next(error);
-            }
+            if (err) createError(errorMessages.TASK_NOT_FOUND, 404)
             res.json(tasks);
         });
 }
@@ -112,7 +104,7 @@ function updateTask(req,res, next) {
             res.status(200).json(task);
         })
     } else {
-        res.status(400).json({"error": "All fields required for updating"});
+        res.status(400).json({"error": errorMessages.MISSING_FIELDS});
     }
 
 }
