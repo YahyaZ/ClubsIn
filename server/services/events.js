@@ -2,6 +2,7 @@ import mongoose from 'mongoose';
 import Events from '../model/events';
 import Users from '../model/users';
 import ClubService from './clubs';
+import {createError, errorMessages} from './userErrorUtils'
 
 /**
  * Returns all events
@@ -101,7 +102,7 @@ function addEvent(req, res, next) {
             else {return res.status(200).json(eventData);}
         })
     } else {
-        res.status(400).json({"error": "All fields required"})
+        res.status(400).json({"error": errorMessages.MISSING_FIELDS})
     }
 }
 
@@ -119,15 +120,11 @@ function updateEvent(req,res,next){
             date: req.body.date,
             last_modified: new Date()
         }, (err) => {
-            if (err) {
-                var error = new Error("Event not found");
-                error.status = 404;
-                return next(error);
-            }
-            return res.status(200).json({"message": "Event updated"});
+            if (err) createError(errorMessages.EVENT_NOT_FOUND, 404);
+            return res.status(200).json({"message": errorMessages.EVENT_UPDATED});
         })
     } else {
-        res.status(400).json({"error": "All fields required"})
+        res.status(400).json({"error": errorMessages.MISSING_FIELDS})
     }
 
 }
