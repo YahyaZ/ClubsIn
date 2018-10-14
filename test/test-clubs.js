@@ -174,7 +174,7 @@ describe('Clubs', function () {
                         .end(function (err, res) {
                             res.should.have.status(400);
                             res.body.should.be.a('object');
-                            res.body.should.have.property('error').eql('Club Already Exists');
+                            res.body.should.have.property('error').eql('Club already exists');
                             done();
                         })
                 });
