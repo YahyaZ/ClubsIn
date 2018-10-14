@@ -29,7 +29,6 @@ class LoginForm extends Component {
          */
         this.state = {
             type: 'password',
-            message: '',
             input: {
                 email: '',
                 password: '',
@@ -57,6 +56,7 @@ class LoginForm extends Component {
         // Sets the variable of self so it is bound to the login object
         const self = this;
         const { input } = this.state;
+        const { setErrorMessage, authenticate } = this.props;
         e.preventDefault();
         self.setState({ loading: true });
         
@@ -68,17 +68,18 @@ class LoginForm extends Component {
             body: JSON.stringify(input),
         }).then((response) => {
             // Some sort of error in the User field
+            self.setState({loading: false, });
             if (response.status === 400) {
                 response.json().then((data) => {
-                    self.setState({ message: data.error, loading: false });
+                    setErrorMessage(data.error);
                 });
             } else if (response.status === 200) {
                 // User is logged in
                 // console.log('User logged in');
-                self.props.authenticate(true);
+                authenticate(true);
                 response.json().then((data) => {
                     localStorage.setItem('User', JSON.stringify(data));
-                    self.setState({ redirect: true, loading: false });
+                    self.setState({ redirect: true, });
                 });
             }
         });
