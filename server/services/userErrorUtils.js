@@ -4,7 +4,11 @@ function createError(message, code){
     return error;
 }
 
-let errorMessages = {
+const successMessages = {
+    EVENT_UPDATED: 'Event Updated',
+}
+
+const errorMessages = {
     USER_NOT_FOUND: 'User does not exist in the dBase, please sign up to login as a user',
     PASSWORD_MISMATCH: 'Passwords do not match',
     EXISTING_USER: 'User Already Exists',
@@ -22,4 +26,6 @@ let errorMessages = {
 module.exports = {
     createError,
     errorMessages,
+    successMessages,
+    
 }

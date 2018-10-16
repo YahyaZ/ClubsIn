@@ -2,7 +2,7 @@ import mongoose from 'mongoose';
 import Events from '../model/events';
 import Users from '../model/users';
 import ClubService from './clubs';
-import {createError, errorMessages} from './userErrorUtils'
+import {createError, errorMessages, successMessages} from './userErrorUtils'
 
 /**
  * Returns all events
@@ -121,7 +121,7 @@ function updateEvent(req, res, next) {
             last_modified: new Date(),
         }, (err) => {
             if (err) createError(errorMessages.EVENT_NOT_FOUND, 404);
-            return res.status(200).json({"message": errorMessages.EVENT_UPDATED});
+            return res.status(200).json({"message": successMessages.EVENT_UPDATED});
         })
     } else {
         res.status(400).json({"error": errorMessages.MISSING_FIELDS})
