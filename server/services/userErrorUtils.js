@@ -16,7 +16,6 @@ const errorMessages = {
     INCORRECT_EMAIL_PASS: 'Wrong email or password',
     TASK_NOT_FOUND: 'No task found',
     EVENT_NOT_FOUND: 'Event not found',
-    EVENT_UPDATED: 'Event Updated',
     CLUB_EXISTS: 'Club already exists',
     USER_IN_CLUB: 'User is already in club',
     INVALID_LINK: 'Invite Link Invalid',
@@ -27,5 +26,5 @@ module.exports = {
     createError,
     errorMessages,
     successMessages,
-    
+
 }
