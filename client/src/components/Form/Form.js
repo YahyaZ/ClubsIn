@@ -23,7 +23,7 @@ const Form = ({
         <div className="form-footer">
             {footerText} {' '}
             <span className="link">
-                {!footerLinkClick 
+                {!footerLinkClick
                     ? <Link to={`${footerLink}`}>{footerLinkText}</Link>
                     : (
                         <span

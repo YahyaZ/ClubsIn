@@ -19,7 +19,6 @@ class SignUp extends Component {
             loading: false,
         };
 
-        //this.goToPage = this.goToPage.bind(this);
         this.handleInputChange = this.handleInputChange.bind(this);
         this.submitForm = this.submitForm.bind(this);
     }
@@ -81,7 +80,7 @@ class SignUp extends Component {
                     formBody={(
                         <div>
                             <SignUpFormStart
-                            {...this.props}
+                                {...this.props}
                                 buttonClick={this.submitForm}
                                 handleInputChange={this.handleInputChange}
                             />

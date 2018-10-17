@@ -8,10 +8,10 @@ import {
 import { Link } from 'react-router-dom';
 import moment from 'moment';
 import RingLoader from 'react-spinners/RingLoader';
+import { SingleDatePicker } from 'react-dates';
 import SelectMemberOption from './SelectMemberOption';
 import 'react-dates/initialize';
 import 'react-dates/lib/css/_datepicker.css';
-import {SingleDatePicker} from 'react-dates';
 import './AddTask.css';
 
 
@@ -197,6 +197,7 @@ class AddTask extends Component {
             message,
             assignee,
             clubMembers,
+            date,
             loading,
             selectedMembers,
             selectedAssigned,
@@ -237,20 +238,18 @@ class AddTask extends Component {
                     <ControlLabel>Date:</ControlLabel>
                     <br />
                     <SingleDatePicker
-                          // showClearDate={true}
-                          readOnly
-                          block={true}
-                          numberOfMonths={1}
-                          date={this.state.date}
-                          onDateChange={date => this.handleDateChange(date)}
-                          focused={this.state.focused}
-                          onFocusChange={({ focused }) =>
-                            this.setState({ focused })
-                          }
-                          openDirection="down"
-                          displayFormat="DD MMM YYYY"
-                          hideKeyboardShortcutsPanel={true}
-                        />
+                        readOnly
+                        block
+                        numberOfMonths={1}
+                        date={date}
+                        onDateChange={newDate => this.handleDateChange(newDate)}
+                        // focused needs to be referenced this way for focused to work
+                        focused={this.state.focused} // eslint-disable-line
+                        onFocusChange={({ focused }) => this.setState({ focused })}
+                        openDirection="down"
+                        displayFormat="DD MMM YYYY"
+                        hideKeyboardShortcutsPanel
+                    />
                 </FormGroup>
                 <FormGroup className="task-select" controlId="formAssign">
                     <FormGroup className="member-select">

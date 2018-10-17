@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Button, ButtonToolbar } from 'react-bootstrap';
 import Redirect from 'react-router-dom/Redirect';
+import PropTypes from 'prop-types';
 import ExistingClub from '../ExistingClub';
 
 class SignUpFormChooseClubType extends Component {
@@ -29,6 +30,7 @@ class SignUpFormChooseClubType extends Component {
 
     render() {
         const { redirect, show } = this.state;
+        const { rerender } = this.props;
         if (redirect) {
             if (redirect === 'existingClubRedirect') {
                 return <Redirect push to="/existingClubRedirect" />;
@@ -43,10 +45,14 @@ class SignUpFormChooseClubType extends Component {
                     <Button bsStyle="primary" type="button" onClick={this.handleShow}>Existing Club</Button>
                     <Button bsStyle="primary" type="button" onClick={() => this.handleOnClick('newClubRedirect')}>Register Club</Button>
                 </ButtonToolbar>
-                <ExistingClub show={show} hide={this.handleClose} rerender={this.props.rerender} />
+                <ExistingClub show={show} hide={this.handleClose} rerender={rerender} />
             </React.Fragment>
         );
     }
 }
 
 export default SignUpFormChooseClubType;
+
+SignUpFormChooseClubType.propTypes = {
+    rerender: PropTypes.func.isRequired,
+};

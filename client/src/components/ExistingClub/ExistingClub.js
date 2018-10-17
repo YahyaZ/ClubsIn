@@ -8,6 +8,7 @@ import {
     FormGroup,
 } from 'react-bootstrap';
 import BounceLoader from 'react-spinners/BounceLoader';
+import PropTypes from 'prop-types';
 
 class ExistingClub extends Component {
     constructor(props) {
@@ -17,8 +18,7 @@ class ExistingClub extends Component {
             input: '',
             loading: false,
             successMessage: '',
-            errorMessage:'',
-
+            errorMessage: '',
         };
 
         this.handleSubmit = this.handleSubmit.bind(this);
@@ -40,27 +40,26 @@ class ExistingClub extends Component {
         const { input } = this.state;
         e.preventDefault();
         e.stopPropagation();
-        self.setState({ loading: true, errorMessage:'',successMessage:''  });
+        self.setState({ loading: true, errorMessage: '', successMessage: '' });
         fetch('api/club/invite', {
             method: 'POST',
             mode: 'cors',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({inviteCode: input}),
+            body: JSON.stringify({ inviteCode: input }),
         }).then((response) => {
             self.setState({ loading: false });
-            if(response.status === 200){
+            if (response.status === 200) {
                 self.props.rerender();
                 response.json().then((data) => {
-                    self.setState({successMessage: `You are now in ${data.name}!`});
+                    self.setState({ successMessage: `You are now in ${data.name}!` });
                 });
-            } else{
+            } else {
                 response.json().then((data) => {
-                    self.setState({errorMessage: data.error});
+                    self.setState({ errorMessage: data.error });
                 });
             }
         });
     }
-
 
     render() {
         const {
@@ -103,3 +102,8 @@ class ExistingClub extends Component {
 }
 
 export default ExistingClub;
+
+ExistingClub.propTypes = {
+    show: PropTypes.bool.isRequired,
+    hide: PropTypes.func.isRequired,
+};

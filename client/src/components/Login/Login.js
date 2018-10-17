@@ -3,18 +3,17 @@ import Form from '../Form';
 import LoginForm from './LoginForm';
 
 class Login extends Component {
-
     constructor() {
-        super()
+        super();
         this.state = {
             errorMessage: '',
-        }
+        };
 
         this.setErrorMessage = this.setErrorMessage.bind(this);
     }
 
     setErrorMessage = (message) => {
-        this.setState({errorMessage: message});
+        this.setState({ errorMessage: message });
     }
 
     render() {
@@ -23,7 +22,12 @@ class Login extends Component {
         return (
             // Renders the Form
             <Form
-                formBody={<LoginForm authenticate={childProps.authenticate} setErrorMessage={this.setErrorMessage} />}
+                formBody={(
+                    <LoginForm
+                        authenticate={childProps.authenticate}
+                        setErrorMessage={this.setErrorMessage}
+                    />
+                )}
                 tagline="Log in to manage your club"
                 footerText="Don't have an account yet?"
                 footerLinkText="Sign up here"

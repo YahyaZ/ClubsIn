@@ -14,20 +14,17 @@ class App extends Component {
 
     async componentDidMount() {
         this.authenticate();
-
     }
 
     authenticate = (isLoggedIn) => {
-        let self = this;
-        console.log(isLoggedIn);
+        const self = this;
         if (isLoggedIn) {
-            self.setState({ isAuthenticating: false, isAuthenticated: isLoggedIn })
+            self.setState({ isAuthenticating: false, isAuthenticated: isLoggedIn });
         } else {
             fetch('/api/user/profile', {
                 method: 'GET',
                 mode: 'cors',
             }).then((response) => {
-                console.log(response);
                 if (response.status === 401) {
                     self.setState({ isAuthenticating: false, isAuthenticated: false });
                 } else {

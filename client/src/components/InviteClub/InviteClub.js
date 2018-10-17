@@ -8,7 +8,6 @@ import {
 } from 'react-bootstrap';
 import PropTypes from 'prop-types';
 
-
 class InviteClub extends Component {
     constructor(props) {
         super(props);

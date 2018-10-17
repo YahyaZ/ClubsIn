@@ -39,6 +39,7 @@ Start both simultaneously - `npm start`
 * Use `const` and `lets`, **NEVER** use `var`
 * Do not nest ternary operators
 * Max 100 characters on one line
+* Where possible, use destructuring assignment on props and state
 * If an object has more than three properties, seperate each property onto a new line
 * Use trailing commas in multiple line arrays and objects,   
     e.g.  

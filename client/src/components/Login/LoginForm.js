@@ -11,6 +11,7 @@ import {
 } from 'react-bootstrap';
 import { Redirect } from 'react-router-dom';
 import BarLoader from 'react-spinners/BarLoader';
+import PropTypes from 'prop-types';
 /* API URL for logging on */
 const loginApi = '/api/user/login';
 
@@ -59,7 +60,7 @@ class LoginForm extends Component {
         const { setErrorMessage, authenticate } = this.props;
         e.preventDefault();
         self.setState({ loading: true });
-        
+
         // Calls the login api with this details in the form
         fetch(loginApi, {
             method: 'POST',
@@ -68,7 +69,7 @@ class LoginForm extends Component {
             body: JSON.stringify(input),
         }).then((response) => {
             // Some sort of error in the User field
-            self.setState({loading: false, });
+            self.setState({ loading: false });
             if (response.status === 400) {
                 response.json().then((data) => {
                     setErrorMessage(data.error);
@@ -79,7 +80,7 @@ class LoginForm extends Component {
                 authenticate(true);
                 response.json().then((data) => {
                     localStorage.setItem('User', JSON.stringify(data));
-                    self.setState({ redirect: true, });
+                    self.setState({ redirect: true });
                 });
             }
         });
@@ -173,3 +174,8 @@ class LoginForm extends Component {
 }
 
 export default LoginForm;
+
+LoginForm.propTypes = {
+    setErrorMessage: PropTypes.func.isRequired,
+    authenticate: PropTypes.func.isRequired,
+};

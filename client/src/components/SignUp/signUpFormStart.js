@@ -7,11 +7,9 @@ import {
 } from 'react-bootstrap';
 import PropTypes from 'prop-types';
 
-// const signUpApi = 'http://localhost:4000/api/user/signup';
-
 class SignUpFormStart extends Component {
     render() {
-        const { message, buttonClick, handleInputChange} = this.props;
+        const { message, buttonClick, handleInputChange } = this.props;
         return (
             <div>
                 {message}
@@ -20,7 +18,7 @@ class SignUpFormStart extends Component {
                         <InputGroup>
                             <InputGroup.Addon><FaUser /></InputGroup.Addon>
                             <FormControl
-                                isRequired={true}
+                                isRequired
                                 type="text"
                                 placeholder="First Name"
                                 name="firstName"

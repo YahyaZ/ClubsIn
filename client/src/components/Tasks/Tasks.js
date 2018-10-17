@@ -12,43 +12,54 @@ const Task = ({
     completed,
     onClick,
     onKeyPress,
-}) => (
-    <div
-        role="button"
-        tabIndex="0"
-        className={`task-container ${active} ${completed ? 'completed' : ''} ${new Date(date) < new Date() && !completed ? 'overdue' : ''}`}
-        onClick={onClick}
-        onKeyPress={onKeyPress}
-    >
-        <div className="task-info">
-            <h3>{name || <Skeleton />}</h3>
-            <p>{name ? (completed ? 'Completed' : `Complete by: ${new Date(date).toDateString()}`) : <Skeleton />}</p>
+}) => {
+    let completedRender = <Skeleton />;
+    if (name) {
+        completedRender = completed ? 'Completed' : `Complete by: ${new Date(date).toDateString()}`;
+    }
+    return (
+        <div
+            role="button"
+            tabIndex="0"
+            className={`task-container ${active} ${completed ? 'completed' : ''} ${new Date(date) < new Date() && !completed ? 'overdue' : ''}`}
+            onClick={onClick}
+            onKeyPress={onKeyPress}
+        >
+            <div className="task-info">
+                <h3>{name || <Skeleton />}</h3>
+                <p>{completedRender}</p>
+            </div>
+            <div className="task-member">
+                {members.length < 3 ? members.map(member => (
+                    <Member
+                        _id={member._id}
+                        firstName={member.firstName}
+                        lastName={member.lastName}
+                        key={member._id}
+                    />
+                )) : ([
+                    <Member
+                        _id={members[0]._id}
+                        firstName={members[0].firstName}
+                        lastName={members[0].lastName}
+                        key={members[0]._id}
+                    />,
+                    <Member
+                        _id={members[1]._id}
+                        firstName={members[1].firstName}
+                        lastName={members[1].lastName}
+                        key={members[1]._id}
+                    />,
+                    <Member
+                        overflow
+                        length={members.length - 2}
+                        key="0"
+                    />,
+                ])}
+            </div>
         </div>
-        <div className="task-member">
-            {members.length < 3 ? members.map(member => (
-                <Member _id={member._id} firstName={member.firstName} lastName={member.lastName} key={member._id} />
-            )) : ([
-                <Member
-                    _id={members[0]._id}
-                    firstName={members[0].firstName}
-                    lastName={members[0].lastName}
-                    key={members[0]._id}
-                />,
-                <Member
-                    _id={members[1]._id}
-                    firstName={members[1].firstName}
-                    lastName={members[1].lastName}
-                    key={members[1]._id}
-                />,
-                <Member
-                    overflow
-                    length={members.length - 2}
-                    key="0"
-                />,
-            ])}
-        </div>
-    </div>
-);
+    );
+};
 
 export default Task;
 

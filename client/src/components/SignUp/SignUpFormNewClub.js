@@ -1,6 +1,11 @@
 import React, { Component } from 'react';
 import { FaUniversity } from 'react-icons/fa';
-import { FormGroup, InputGroup, FormControl, Alert } from 'react-bootstrap';
+import {
+    FormGroup,
+    InputGroup,
+    FormControl,
+    Alert,
+} from 'react-bootstrap';
 import { Redirect } from 'react-router-dom';
 import BarLoader from 'react-spinners/BarLoader';
 import Form from '../Form';

@@ -22,7 +22,7 @@ class EventSection extends Component {
             method: 'GET',
             mode: 'cors',
         }).then((response) => {
-            if (response.status === 401) {
+            if (response.status !== 200) {
                 return [];
             }
             return response.json();

@@ -10,7 +10,7 @@ import PropTypes from 'prop-types';
 import moment from 'moment';
 import 'react-dates/initialize';
 import 'react-dates/lib/css/_datepicker.css';
-import {SingleDatePicker} from 'react-dates';
+import { SingleDatePicker } from 'react-dates';
 import RingLoader from 'react-spinners/RingLoader';
 
 
@@ -89,6 +89,7 @@ class AddEvent extends Component {
     render() {
         const {
             name,
+            date,
             description,
             message,
             loading,
@@ -125,20 +126,18 @@ class AddEvent extends Component {
                     <ControlLabel>Date:</ControlLabel>
                     <br />
                     <SingleDatePicker
-                          // showClearDate={true}
-                          readOnly
-                          block={true}
-                          numberOfMonths={1}
-                          date={this.state.date}
-                          onDateChange={date => this.handleDateChange(date)}
-                          focused={this.state.focused}
-                          onFocusChange={({ focused }) =>
-                            this.setState({ focused })
-                          }
-                          openDirection="down"
-                          displayFormat="DD MMM YYYY"
-                          hideKeyboardShortcutsPanel={true}
-                        />
+                        readOnly
+                        block
+                        numberOfMonths={1}
+                        date={date}
+                        onDateChange={newDate => this.handleDateChange(newDate)}
+                        // focused needs to be referenced this way for onFocusChange to work
+                        focused={this.state.focused} // eslint-disable-line
+                        onFocusChange={({ focused }) => this.setState({ focused })}
+                        openDirection="down"
+                        displayFormat="DD MMM YYYY"
+                        hideKeyboardShortcutsPanel
+                    />
                 </FormGroup>
 
                 {edit ? '' : (

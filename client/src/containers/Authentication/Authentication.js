@@ -8,7 +8,7 @@ class Authentication extends Component {
         const { type } = this.props;
         return (
             <div className="form-container">
-                {type === 'Sign Up' ? <SignUp {...this.props}/> : <Login {...this.props} />}
+                {type === 'Sign Up' ? <SignUp {...this.props} /> : <Login {...this.props} />}
             </div>
         );
     }
