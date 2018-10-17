@@ -37,6 +37,7 @@ Start both simultaneously - `npm start`
 * All javascript statements must be terminated with a `;`
 * If a component has many properties, each property must be initialised on a new line, in line with the previous component.
 * Use `const` and `lets`, **NEVER** use `var`
+* By default, use const, if the variable needs to be reassigned, use lets
 * Do not nest ternary operators
 * Max 100 characters on one line
 * Where possible, use destructuring assignment on props and state
