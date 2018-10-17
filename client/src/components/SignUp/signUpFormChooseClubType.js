@@ -4,6 +4,7 @@ import Redirect from 'react-router-dom/Redirect';
 import PropTypes from 'prop-types';
 import ExistingClub from '../ExistingClub';
 
+/* Button container to show existing club modal form or register new club page */
 class SignUpFormChooseClubType extends Component {
     constructor() {
         super();

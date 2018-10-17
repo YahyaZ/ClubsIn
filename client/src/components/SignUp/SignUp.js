@@ -4,6 +4,7 @@ import BarLoader from 'react-spinners/BarLoader';
 import Form from '../Form';
 import SignUpFormStart from './signUpFormStart';
 
+/* Form container for signing up a new user */
 class SignUp extends Component {
     constructor(props) {
         super(props);
@@ -37,6 +38,7 @@ class SignUp extends Component {
         }));
     }
 
+    // Create new user in database and log new user in
     submitForm(e) {
         e.preventDefault();
         e.stopPropagation();

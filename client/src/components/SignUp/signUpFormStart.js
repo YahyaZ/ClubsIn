@@ -7,6 +7,7 @@ import {
 } from 'react-bootstrap';
 import PropTypes from 'prop-types';
 
+/* Form for creating a new user */
 class SignUpFormStart extends Component {
     render() {
         const { message, buttonClick, handleInputChange } = this.props;

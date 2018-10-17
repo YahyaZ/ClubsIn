@@ -10,6 +10,7 @@ import { Redirect } from 'react-router-dom';
 import BarLoader from 'react-spinners/BarLoader';
 import Form from '../Form';
 
+/* Form for creating a new club */
 class SignUpFormNewClub extends Component {
     constructor(props) {
         super(props);

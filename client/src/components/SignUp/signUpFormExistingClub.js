@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { FaUniversity } from 'react-icons/fa';
 import { FormGroup, InputGroup, FormControl } from 'react-bootstrap';
 
+/* Form for joining an existing club */
 class SignUpFormExistingClub extends Component {
     constructor(props) {
         super(props);
