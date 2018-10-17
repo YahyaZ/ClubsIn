@@ -14,6 +14,7 @@ import 'react-dates/initialize';
 import 'react-dates/lib/css/_datepicker.css';
 import './AddTask.css';
 
+/* Form used to add and edit a task */
 class AddTask extends Component {
     constructor(props) {
         super(props);
@@ -43,6 +44,8 @@ class AddTask extends Component {
     componentDidMount() {
         document.title = "Add Task - Club'in";
         const { match } = this.props; // eslint-disable-line
+        // if taskId exists, then get task details to edit
+        // else just get the club members to assign to the task
         if (match.params.taskId) {
             this.getTaskDetails(match.params.clubId, match.params.taskId);
         } else {
@@ -50,12 +53,14 @@ class AddTask extends Component {
         }
     }
 
+    // Get details of the task, alongside unassigned club members
     getTaskDetails = async (clubId, taskId) => {
         const taskResponse = await fetch(`/api/task/${taskId}`);
         const task = await taskResponse.json();
         const membersResponse = await fetch(`/api/club/${clubId}/users`);
         const members = await membersResponse.json();
         if (task) {
+            // filter between assigned members to the task and unassigned members
             const unassignedMembers = this.filterMembers(members, task.assignee);
             this.setState({
                 date: moment(task.due_date),
@@ -70,6 +75,7 @@ class AddTask extends Component {
         }
     }
 
+    // Gets the club members in order to assign them to a task
     getClubMembers() {
         const self = this;
         const { match } = this.props; // eslint-disable-line
@@ -89,11 +95,15 @@ class AddTask extends Component {
         });
     }
 
+    // Gets two arrays,
+    // returns an array of items from the sourceList that do not exist in the targetList
     filterMembers = (sourceList, targetList) => (
         sourceList.filter(sourceMember => targetList
             .every(targetMember => sourceMember._id !== targetMember._id))
     )
 
+    // Handle assigning or unassigning a member from a task
+    // with the two multiple selects
     handleMemberSelectClick(action) {
         const {
             clubMembers,
@@ -109,7 +119,7 @@ class AddTask extends Component {
         let selectedList = selectedMembers;
         let selectedListKey = 'selectedMembers';
 
-        // switch arrays depending on button action
+        // switch arrays and variables depending on which button was pressed
         if (action === 'REMOVE') {
             memberList = assignee;
             memberListKey = 'assignee';
@@ -128,6 +138,7 @@ class AddTask extends Component {
         });
     }
 
+    // Add task to database and redirect user to the EventTasks page
     addTask(method) {
         const self = this;
         const { match } = this.props; // eslint-disable-line
