@@ -59,11 +59,12 @@ class EventSection extends Component {
     }
 
     render() {
-        const { events } = this.state;
+        const { events, loaded } = this.state;
+        let eventsToRender = this.renderEvents();
+        if (loaded && events.length === 0) eventsToRender = this.renderNoEvents();
         return (
             <div>
-                {!this.state.loaded ? this.renderEvents() : (
-                    events.length === 0 ? this.renderNoEvents() : this.renderEvents())}
+                {eventsToRender}
             </div>
         );
     }

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import Event from '../../components/Events';
+import Event from '../Events';
 
 class TaskSection extends Component {
     constructor(props) {
@@ -57,10 +57,12 @@ class TaskSection extends Component {
     }
 
     render() {
-        const { tasks } = this.state;
+        const { tasks, loaded } = this.state;
+        let tasksToRender = this.renderTasks();
+        if (loaded && tasks.length === 0) tasksToRender = this.renderNoTasks();
         return (
             <div>
-                { tasks.length !== 0 ? this.renderTasks() : this.renderNoTasks() }
+                {tasksToRender}
             </div>
         );
     }

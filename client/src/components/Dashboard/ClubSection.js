@@ -10,7 +10,7 @@ import CardContent from '@material-ui/core/CardContent';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import ArrowForward from '@material-ui/icons/ArrowForward';
-import Skeleton from "react-loading-skeleton";
+import Skeleton from 'react-loading-skeleton';
 import SignUpFormChooseClubType from '../SignUp/signUpFormChooseClubType';
 
 const styles = {
@@ -123,18 +123,22 @@ class ClubSection extends Component {
             <div>
                 Go to a club page:
                 <div className="club-container">
-                    {loaded ? clubs.map(club => <ClubBox key={club._id} club={club} />) : [1, 2, 3].map(i => <ClubBox key={i} />)}
+                    {loaded
+                        ? clubs.map(club => <ClubBox key={club._id} club={club} />)
+                        : [1, 2, 3].map(i => <ClubBox key={i} />)
+                    }
                 </div>
             </div>
         );
     }
 
     render() {
-        const { clubs } = this.state;
+        const { clubs, loaded } = this.state;
+        let clubsToRender = this.renderClubs();
+        if (loaded && clubs.length === 0) clubsToRender = this.renderNoClubs();
         return (
             <div>
-                {!this.state.loaded ? this.renderClubs() : (
-                    clubs.length === 0 ? this.renderNoClubs() : this.renderClubs())}
+                {clubsToRender}
                 <div>
                     Join more clubs:
                     <br />
@@ -146,7 +150,3 @@ class ClubSection extends Component {
 }
 
 export default ClubSection;
-
-ClubSection.propTypes = {
-    clubs: PropTypes.arrayOf(PropTypes.string).isRequired,
-};
