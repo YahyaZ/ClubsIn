@@ -1,6 +1,6 @@
 import Clubs from '../model/clubs';
 import UserService from './users';
-
+import {createError, errorMessages} from './userErrorUtils'
 /**
  * Function communicates to create a new club file in db
  * based on body parameters in by a POST request
@@ -24,7 +24,7 @@ function createClub(req, res, next) {
             }
             // Club Exists, so return Club Already exists
             if (club) {
-                res.status(400).json({ "error": "Club Already Exists" })
+                res.status(400).json({ "error": errorMessages.CLUB_EXISTS })
             } else {
                 // No club is found, so create it
                 Clubs.create(clubData, function (error, club) {
@@ -40,7 +40,7 @@ function createClub(req, res, next) {
             }
         });
     } else {
-        res.status(400).json({ "error": "Please fill out all fields" })
+        res.status(400).json({ "error": errorMessages.MISSING_FIELDS})
     }
 }
 
@@ -73,22 +73,24 @@ function addUserToClub(req, res, next) {
                     });
                 } else{
                     // User already is in club
-                    res.status(400).json({ "error": "User is already in club" });
+                    res.status(400).json({ "error": errorMessages.USER_IN_CLUB });
                 }
             } else {
                 // No club is found, Invalid Link
-                res.status(404).json({ "error": "Invite Link Invalid" });
+                res.status(404).json({ "error": errorMessages.INVALID_LINK});
             }
         });
     } else {
-        res.status(400).json({ "error": "Please fill out all fields" });
+        res.status(400).json({ "error": errorMessages.MISSING_FIELDS });
     }
 }
 
 /**
  * Function simply queries to return all found club files in db
  * Called by a GET request
+ * @param {Object} req 
  * @param {Object} res 
+ * @param {Object} next 
  */
 function getClubs(req, res, next) {
     var options = req.query.q || null;
@@ -100,6 +102,14 @@ function getClubs(req, res, next) {
     });
 }
 
+/**
+ * Provides an id through a post body method which is queried into
+ * the database to find an array of club id's
+ * POST METHOD
+ * @param {*} userId 
+ * @param {*} options 
+ * @param {*} callback 
+ */
 function getClubsByUserId(userId, options, callback) {
     UserService.getUser(userId, function (err, currUser) {
         if (err) next(err);
@@ -121,13 +131,16 @@ function findClubById(req, res, next) {
             res.status(200).json(doc);
         });
     } else {
-        res.status(400).json({ "error": "ID not provided" })
+        res.status(400).json({ "error": errorMessages.NO_ID })
     }
 }
 
 /**
  * Gets an array of club members
  * GET method
+ * @param {Object} res 
+ * @param {Object} req 
+ * @param {Object} next 
  */
 function getClubMembers(req, res, next) {
     if (req.params.id) {

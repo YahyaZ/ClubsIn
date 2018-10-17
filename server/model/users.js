@@ -7,7 +7,7 @@ import mongoose from "mongoose";
 import bcrypt from 'bcrypt';
 
 /**
- * Creates the User schema
+ * User schema that defines the structure of how user data would look in the database
  */
 let UserSchema = new mongoose.Schema({
     firstName: {
@@ -88,6 +88,9 @@ UserSchema.statics.authenticate = function (email, password, callback) {
     })
   });
 
+  /**
+   * For security purposes removes the password from the json before toJSON() is called
+   */
   UserSchema.methods.toJSON = function() {
     var obj = this.toObject();
     delete obj.password;

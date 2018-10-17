@@ -1,5 +1,8 @@
 import mongoose from "mongoose";
 
+/**
+ * Task schema that defines the structure of how task data would look in the database
+ */
 let taskSchema = new mongoose.Schema({
     event_id: {
         required: [true, "Event id for this task cannot be blank"],

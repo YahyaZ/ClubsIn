@@ -2,8 +2,7 @@
     "extends": "airbnb",
     "plugins": [
       "react",
-      "jsx-a11y",
-      "import"
+      "jsx-a11y"
     ],
     "ecmaFeatures": {
       "arrowFunctions": true
@@ -25,6 +24,7 @@
       "indent": ["error", 4],
       "react/jsx-indent": ["error", 4],
       "react/jsx-indent-props": ["error", 4],
-      "react/jsx-one-expression-per-line": [0]
+      "react/jsx-one-expression-per-line": [0],
+      "no-unused-vars": ["error", { "args": "none" }]
     }
   }

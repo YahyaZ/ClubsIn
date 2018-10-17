@@ -4,20 +4,12 @@ import {
     FormGroup,
     FormControl,
     InputGroup,
-    Checkbox,
 } from 'react-bootstrap';
 import PropTypes from 'prop-types';
 
 // const signUpApi = 'http://localhost:4000/api/user/signup';
 
 class SignUpFormStart extends Component {
-    constructor(props) {
-        super(props);
-    }
-
-
-  
-
     render() {
         const { message, buttonClick, handleInputChange} = this.props;
         return (

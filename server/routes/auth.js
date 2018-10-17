@@ -11,40 +11,47 @@ import ClubService from '../services/clubs';
  * @param {Object} next - Express next middleware function
  */
 function requiresLogin(req, res, next) {
-  // Checks if there is a session present and if there is a user associated with that session
-  if (req.session && req.session.userId) {
-    return next();
-  }
-  else {
-    // User is not authenticated, throw an error
-    var err = new Error('You are unauthorised to see this page');
-    err.status = 401;
-    next(err);
-  }
+    // Checks if there is a session present and if there is a user associated with that session
+    if (req.session && req.session.userId) {
+        next();
+    } else {
+        // User is not authenticated, throw an error
+        next(handleUnauthorisedAccess());
+    }
 }
 
+/**
+ * Validation function which detects if the api call being made is from an authorised
+ * user who is apart of the club being called
+ * @param {Object} req
+ * @param {Object} res
+ * @param {Object} next
+ */
 function requiresUserClub(req, res, next) {
-  let authorised = false;
-  if (req.session.userId && req.params.id) {
-    ClubService.getClubsByUserId(req.session.userId, '_id', function (clubs) {
-      clubs.forEach(club => {
-        if (club._id == req.params.id) {
-          authorised = true;
-        }
-      });
+    let authorised = false;
+    if (req.session.userId && req.params.id) {
+        ClubService.getClubsByUserId(req.session.userId, '_id', (clubs) => {
+            clubs.forEach((club) => {
+                if (club._id.toString() === req.params.id) {
+                    authorised = true;
+                }
+            });
+            if (authorised) {
+                next();
+            } else {
+                next(handleUnauthorisedAccess());
+            }
+        });
+    }
+}
 
-      if (authorised) {
-        next();
-      } else {
-        var err = new Error('You are unauthorised to see this page');
-        err.status = 401;
-        next(err);
-      }
-    })
-  }
+function handleUnauthorisedAccess() {
+    const err = new Error('You are unauthorised to see this page');
+    err.status = 401;
+    return err;
 }
 
 module.exports = {
-  requiresLogin: requiresLogin,
-  requiresUserClub: requiresUserClub,
-}
+    requiresLogin,
+    requiresUserClub,
+};

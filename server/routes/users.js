@@ -9,16 +9,6 @@ import { requiresLogin } from './auth'
 let router = express.Router();
 
 /**
- * TODO: Delete This before submission
- * Route to get all Users
- * Path: /api/user/
- * Method: GET
- * Response:
- *  - 200 - Returns Array of User Data
- */
-router.get('/', UserService.getAllUsers)
-
-/**
  * Route to signup users
  * Path: /api/user/signup
  * Method: Post

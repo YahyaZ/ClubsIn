@@ -193,7 +193,6 @@ class AddTask extends Component {
     render() {
         const {
             name,
-            date,
             description,
             message,
             assignee,

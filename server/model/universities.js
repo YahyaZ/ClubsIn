@@ -5,7 +5,7 @@
 import mongoose from "mongoose";
 
 /**
- * Creates the Uni schema
+ * Uni schema that defines the structure of how uni data would look in the database
  */
 let UniSchema = new mongoose.Schema({
     name:String,

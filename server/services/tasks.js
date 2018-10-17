@@ -1,5 +1,5 @@
 import Tasks from '../model/tasks';
-
+import {createError, errorMessages} from './userErrorUtils';
 /**
  * Adds a new task file to the database based on provided parameters
  * POST method      
@@ -31,24 +31,23 @@ function addTask(req, res, next) {
             else { return res.json(taskData);}
         })
     } else {
-        res.status(400).json({"error":"All fields required"})
+        res.status(400).json({"error": errorMessages.MISSING_FIELDS})
     }
 }
 
 /**
- * 
- * Get task based on id
- * 
+ * Returns a single tasks data based on the id provided through
+ * URL parameters
+ * GET METHOD
+ * @param {Object} req 
+ * @param {Object} res 
+ * @param {Object} next 
  */
 function getTask(req, res, next) {
     Tasks.findOne({_id: req.params.id})
         .populate('assignee')
         .exec((err, tasks) => {
-            if (err) {
-                var error = new Error("No task found");
-                error.status = 404;
-                return next(error);
-            }
+            if (err) createError(errorMessages.TASK_NOT_FOUND, 404)
             res.json(tasks);
         })
 }
@@ -63,11 +62,7 @@ function findTasksForEvent(req, res, next){
     Tasks.find({event_id: req.params.id})
         .populate('assignee')
         .exec((err, tasks) => {
-            if (err) {
-                var error = new Error("No task found");
-                error.status = 404;
-                return next(error);
-            }
+            if (err) createError(errorMessages.TASK_NOT_FOUND, 404)
             res.json(tasks);
         });
 }
@@ -92,7 +87,8 @@ function deleteTask(req,res){
  * @param {Object} next 
  */
 function updateTask(req,res, next) {
-    if(req.body._id && req.body.due_date && req.body.name && req.body.description && req.body.assignee) {
+    if(req.body._id && req.body.due_date && req.body.name 
+        && req.body.description && req.body.assignee) {
         Tasks.findOneAndUpdate({ _id: req.body._id },{
             due_date: req.body.due_date,
             name: req.body.name,
@@ -108,11 +104,18 @@ function updateTask(req,res, next) {
             res.status(200).json(task);
         })
     } else {
-        res.status(400).json({"error": "All fields required for updating"});
+        res.status(400).json({"error": errorMessages.MISSING_FIELDS});
     }
 
 }
 
+/**
+ * Returns a JSON object of assigned tasks assigned to the logged in user
+ * GET METHOD
+ * @param {Object} req 
+ * @param {Object} res 
+ * @param {Object} next 
+ */
 function assignedTask(req,res,next){
     let userId = req.session.userId;
     let limit = parseInt(req.query.limit,10) || 5;

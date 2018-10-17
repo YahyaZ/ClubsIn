@@ -44,8 +44,32 @@ router.get('/:id', requiresUserClub, clubService.findClubById);
  */
 router.get('/:id/events',requiresUserClub,  eventService.getEventsByClubId);
 
+/**
+ * Adds a user to a club
+ * /api/club/invite
+ * 
+ * parameters:
+ *  inviteCode: An invite code automatically generated for clubs to invite other executives
+ * 
+ * responses:
+ *  400: User already exists in the issuing inviteCode club
+ *  404: Invite link is invalid
+ *  400: All fields are not filled out
+ *  200: Json object of the club user was added to
+ */
 router.post('/invite', clubService.addUserToClub)
 
+/**
+ * Gets an array of club members
+ * /api/clubs/:id/users
+ * 
+ * parameters:
+ *  id: The id of the club which members of are to be returned
+ * 
+ * responses:
+ *  200: Array of all users related to that club
+ *  404: Club not found
+ */
 router.get('/:id/users',requiresUserClub, clubService.getClubMembers);
 
 module.exports = router;
