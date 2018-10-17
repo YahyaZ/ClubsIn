@@ -3,6 +3,7 @@ import Skeleton from 'react-loading-skeleton';
 import Event from '../../components/Events';
 import './Club.css';
 
+/* Club container that contains the upcoming events of a club */
 class Club extends Component {
     constructor(props) {
         super(props);
@@ -23,6 +24,7 @@ class Club extends Component {
         this.getEvents();
     }
 
+    // Get club events from database as well as club details
     getEvents = () => {
         const self = this;
         const { clubId } = this.state;
@@ -53,6 +55,7 @@ class Club extends Component {
         });
     }
 
+    // filters events to return events that the current user has a task assigned to them inside
     getMyEvents = (events) => {
         const { userId } = this.state;
         const myEvents = events.reduce((result, event) => {

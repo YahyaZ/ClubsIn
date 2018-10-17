@@ -1,7 +1,7 @@
 
 import React, { Component } from 'react';
 import Event from '../Events';
-
+/* Shows events which the current user is assigned a task in */
 class EventSection extends Component {
     constructor(props) {
         super(props);

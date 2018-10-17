@@ -4,6 +4,11 @@ import Avatar from '@material-ui/core/Avatar';
 import randomColor from 'randomcolor';
 import CustomTooltip from '../Tooltip';
 
+/**
+ * Member avatar icon and tooltip popup that sets a random color based on ID.
+ * Also has an overflow prop that will show the number of members
+ * if the number of members on a single component overflows on the container
+ */
 const Member = ({
     _id,
     firstName,

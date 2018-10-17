@@ -13,6 +13,7 @@ const welcomeContainer = {
     width: '100%',
 };
 
+/* Landing page that switches between an authenticated and unauthenticated view */
 const Landing = ({ isAuthenticated }) => (
     <div style={!isAuthenticated ? welcomeContainer : {}}>
         <div className={!isAuthenticated ? 'opaqueBox' : ''}>

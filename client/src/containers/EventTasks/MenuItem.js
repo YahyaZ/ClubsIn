@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
+/* Component for a menu item in an event's tasks */
 const MenuItem = ({
     itemName,
     itemType,

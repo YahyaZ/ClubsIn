@@ -13,7 +13,7 @@ import 'react-dates/lib/css/_datepicker.css';
 import { SingleDatePicker } from 'react-dates';
 import RingLoader from 'react-spinners/RingLoader';
 
-
+/* Form used to add/edit an event */
 class AddEvent extends Component {
     constructor(props) {
         super(props);
@@ -51,6 +51,7 @@ class AddEvent extends Component {
         this.setState({ date });
     }
 
+    // Add event to database, then depending redirect or update depending on add or edit
     addEvent(method) {
         const self = this;
         const { match, edit, _id, getEvent } = this.props; // eslint-disable-line
@@ -74,8 +75,10 @@ class AddEvent extends Component {
                 self.setState({ loading: false });
                 if (!edit) {
                     // disable lint as this.props.history is built in
+                    // redirect to club events page
                     this.props.history.push(`/club/${match.params.clubId}`); //eslint-disable-line
                 } else {
+                    // update event on page
                     getEvent();
                 }
             } else {

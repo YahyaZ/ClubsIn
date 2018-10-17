@@ -8,6 +8,7 @@ import TaskDetails from '../../components/TaskDetails';
 import MenuItem from './MenuItem';
 import './EventTasks.css';
 
+/* Container for an event's tasks */
 class EventTasks extends Component {
     constructor() {
         super();
@@ -27,6 +28,7 @@ class EventTasks extends Component {
         this.getTasks();
     }
 
+    // Get event details from database
     getEvent = () => {
         const self = this;
         const { match } = this.props; // eslint-disable-line
@@ -41,6 +43,7 @@ class EventTasks extends Component {
             });
     }
 
+    // returns tasks that the current user is assigned to
     getMyTasks = () => {
         const { tasks, userId } = this.state;
         const myTasks = tasks.reduce((result, task) => {
@@ -55,11 +58,13 @@ class EventTasks extends Component {
         this.setState({ selectedTasks: myTasks });
     }
 
+    // returns all tasks
     getAllTasks = () => {
         const { tasks } = this.state;
         this.setState({ selectedTasks: tasks });
     }
 
+    // get all tasks from the database
     getTasks = () => {
         const self = this;
         const { match, location } = this.props; // eslint-disable-line
@@ -97,6 +102,7 @@ class EventTasks extends Component {
         });
     }
 
+    // Acts as a click on menu using the enter key
     handleKeyPress = (event, action, value) => {
         if (event.key === 'Enter') {
             if (action === 'SELECT_MENU') {
@@ -107,16 +113,19 @@ class EventTasks extends Component {
         }
     }
 
+    // sets active state on a menu item if it is selected
     isSelectedMenu = (item) => {
         const { selectedMenu } = this.state;
         return selectedMenu === item ? 'active' : '';
     }
 
+    // sets active state on task if it is selected
     isSelectedTask = (task) => {
         const { selectedTask } = this.state;
         return selectedTask === task ? 'active' : '';
     }
 
+    // select the menu and switch the view depending on the menu
     selectMenu = (item) => {
         const { selectedMenu } = this.state;
         if (item !== selectedMenu) {
@@ -133,6 +142,7 @@ class EventTasks extends Component {
         }
     }
 
+    // select a task a show a detailed view
     selectTask = (task) => {
         const { selectedTask } = this.state;
         if (task !== selectedTask) {
@@ -153,7 +163,7 @@ class EventTasks extends Component {
                             active={this.isSelectedTask(task)}
                             members={task.assignee}
                             completed={task.completed}
-                            key={task._id}
+                            key={task._id ? task._id : task}
                             onClick={loaded ? () => this.selectTask(task) : null}
                             onKeyPress={loaded ? e => this.handleKeyPress(e, 'SELECT_TASK', task) : null}
                         />

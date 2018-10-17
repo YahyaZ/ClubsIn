@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import Event from '../Events';
-
+/* Shows tasks that the current user is working on */
 class TaskSection extends Component {
     constructor(props) {
         super(props);

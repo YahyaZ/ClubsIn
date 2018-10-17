@@ -9,6 +9,7 @@ const styles = {
     },
 };
 
+/* Custom tooltip that has a larger font size */
 const CustomTooltip = ({ classes, children, ...other }) => (
     <Tooltip classes={{ tooltip: classes.tooltip }} {...other}>{children}</Tooltip>
 );

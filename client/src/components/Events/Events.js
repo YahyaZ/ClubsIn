@@ -5,6 +5,7 @@ import PropTypes from 'prop-types';
 import Member from '../Members';
 import './Event.css';
 
+/* Component that depending on loading, removes the link to the event detail */
 const Event = ({
     date,
     name,
@@ -49,6 +50,7 @@ Event.propTypes = {
     clubName: PropTypes.string,
 };
 
+/* Component that returns a summarised detail on an event */
 const EventDetails = ({
     date,
     name,

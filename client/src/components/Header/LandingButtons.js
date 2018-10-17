@@ -1,12 +1,13 @@
 import React, { Fragment } from 'react';
-import { Button } from 'react-bootstrap';
+import { Button, NavItem } from 'react-bootstrap';
+import { Link } from 'react-router-dom';
 import './Header.css';
-import MenuLink from './MenuLink';
 
+/* Buttons for the initial unlogged in welcome page */
 const LandingButtons = () => (
     <Fragment>
-        <MenuLink to="/login"><Button bsStyle="primary">Log In</Button></MenuLink>
-        <MenuLink to="/signup"><Button bsStyle="primary">Sign Up</Button></MenuLink>
+        <NavItem componentClass={Link} href="/login" to="/login"><Button bsStyle="primary">Log In</Button></NavItem>
+        <NavItem componentClass={Link} href="/signup" to="/signup"><Button bsStyle="primary">Sign Up</Button></NavItem>
     </Fragment>
 );
 

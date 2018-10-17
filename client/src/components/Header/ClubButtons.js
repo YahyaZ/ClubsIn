@@ -1,9 +1,10 @@
 import React, { Component, Fragment } from 'react';
 import { Button, NavItem } from 'react-bootstrap';
+import { Link } from 'react-router-dom';
 import './Header.css';
 import InviteClub from '../InviteClub';
-import MenuLink from './MenuLink';
 
+/* Buttons shown on a club's events page */
 class ClubButtons extends Component {
     constructor() {
         super();
@@ -29,9 +30,13 @@ class ClubButtons extends Component {
         const { match } = this.props; // eslint-disable-line
         return (
             <Fragment>
-                <MenuLink to={{ pathname: `/club/${match.params.clubId}/event` }}>
+                <NavItem
+                    componentClass={Link}
+                    href={`/club/${match.params.clubId}/event`}
+                    to={`/club/${match.params.clubId}/event`}
+                >
                     <Button bsStyle="primary">Add Event</Button>
-                </MenuLink>
+                </NavItem>
                 <NavItem>
                     <Button bsStyle="success" onClick={this.handleShow}>Invite Execs</Button>
                     <InviteClub show={show} clubId={match.params.clubId} hide={this.handleClose} />

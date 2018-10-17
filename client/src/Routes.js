@@ -15,7 +15,7 @@ import AddTask from './components/AddTask';
 /* Routes for application */
 
 // disable lint for this one prop as I'm not entirely 100% on the props that gets fed
-export default ({ childProps }) => ( // eslint-disable-line react/prop-types
+export default ({ childProps }) => ( // eslint-disable-line
     <Router>
         <div>
             <Header props={childProps} />

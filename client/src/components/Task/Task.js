@@ -4,6 +4,7 @@ import Skeleton from 'react-loading-skeleton';
 import Member from '../Members';
 import './Task.css';
 
+/* Task summary component for an event's tasks */
 const Task = ({
     name,
     date,

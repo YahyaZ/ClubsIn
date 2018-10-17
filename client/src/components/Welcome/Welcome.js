@@ -3,6 +3,7 @@ import { Button } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import './welcome.css';
 
+/* Welcome screen when user is not logged in */
 const Welcome = () => (
     <div className="whiteText jumbotron jumbotron-fluid" style={{ textAlign: 'center', backgroundColor: 'transparent' }}>
         <h1>Club&apos;in</h1>

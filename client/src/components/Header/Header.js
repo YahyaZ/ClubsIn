@@ -9,6 +9,7 @@ import EventButtons from './EventButtons';
 import LogOutButton from './LogOutButton';
 import PropsRoute from '../Routes/PropsRoute';
 
+/* Navbar with buttons that change depending on page */
 const Header = props => (
     <Navbar fixedTop>
         <Navbar.Header>

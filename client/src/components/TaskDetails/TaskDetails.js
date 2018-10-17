@@ -5,6 +5,7 @@ import PropTypes from 'prop-types';
 import Member from '../Members';
 import './TaskDetails.css';
 
+/* Detailed view of a task */
 const TaskDetails = ({
     taskId,
     name,
@@ -61,6 +62,7 @@ const TaskDetails = ({
     </div>
 );
 
+/* Changes the status of a task to complete/uncompleted based on current task state */
 const completeTask = (_id, date, name, description, completed, assignee, getTasks) => {
     fetch('/api/task', {
         method: 'PUT',

@@ -1,6 +1,7 @@
 import React from 'react';
 import { Button, NavItem } from 'react-bootstrap';
 
+/* Logout button that appears when a user is logged in */
 const LogOutButton = (props) => {
     const logout = () => {
         fetch('/api/user/logout', {
