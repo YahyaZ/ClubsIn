@@ -10,7 +10,7 @@ import Club from './containers/Clubs';
 import EventTasks from './containers/EventTasks';
 import NotFound from './components/NotFound';
 import SignUpNewClub from './components/SignUp/SignUpFormNewClub';
-import AddTask from './components/Tasks/AddTask';
+import AddTask from './components/AddTask';
 
 /* Routes for application */
 

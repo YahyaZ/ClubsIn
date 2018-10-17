@@ -14,7 +14,6 @@ import 'react-dates/initialize';
 import 'react-dates/lib/css/_datepicker.css';
 import './AddTask.css';
 
-
 class AddTask extends Component {
     constructor(props) {
         super(props);

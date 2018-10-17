@@ -5,26 +5,6 @@ import PropTypes from 'prop-types';
 import Member from '../Members';
 import './TaskDetails.css';
 
-const completeTask = (_id, date, name, description, completed, assignee, getTasks) => {
-    fetch('/api/task', {
-        method: 'PUT',
-        mode: 'cors',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-            _id,
-            due_date: date,
-            name,
-            description,
-            completed,
-            assignee,
-        }),
-    }).then((response) => {
-        if (response.status === 200) {
-            getTasks();
-        }
-    });
-};
-
 const TaskDetails = ({
     taskId,
     name,
@@ -80,6 +60,26 @@ const TaskDetails = ({
         </div>
     </div>
 );
+
+const completeTask = (_id, date, name, description, completed, assignee, getTasks) => {
+    fetch('/api/task', {
+        method: 'PUT',
+        mode: 'cors',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+            _id,
+            due_date: date,
+            name,
+            description,
+            completed,
+            assignee,
+        }),
+    }).then((response) => {
+        if (response.status === 200) {
+            getTasks();
+        }
+    });
+};
 
 export default TaskDetails;
 

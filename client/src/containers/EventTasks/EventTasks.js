@@ -3,8 +3,8 @@ import { Button } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import Skeleton from 'react-loading-skeleton';
 import AddEvent from '../../components/Events/AddEvent';
-import Task from '../../components/Tasks';
-import TaskDetails from '../../components/Tasks/TaskDetails';
+import Task from '../../components/Task';
+import TaskDetails from '../../components/TaskDetails';
 import MenuItem from './MenuItem';
 import './EventTasks.css';
 
