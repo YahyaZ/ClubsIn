@@ -168,6 +168,15 @@ describe('Events', function() {
                 authenticatedUser
                     .post('/api/event')
                     .send(pastEvent);
+                authenticatedUser
+                    .post('/api/event')
+                    .send(secondUpcomingEvent);
+                authenticatedUser
+                    .post('/api/event')
+                    .send(thirdUpcomingEvent);
+                authenticatedUser
+                    .post('/api/event')
+                    .send(fourthUpcomingEvent);
                 done();
             });
         });
@@ -178,7 +187,7 @@ describe('Events', function() {
                 .end(function(err, res) {
                     res.should.have.status(200);
                     res.body.should.be.a('array');
-                    res.body.should.have.length(1);
+                    res.body.should.have.length(3);
                     res.body[0].should.be.a('object');
                     res.body[0].name.should.equal(upcomingEvent.name);
                     res.body[0].club_id._id.should.equal(upcomingEvent.club_id);
