@@ -170,7 +170,7 @@ class AddTask extends Component {
         }).then((response) => {
             if (response.status !== 200) {
                 response.json().then((data) => {
-                    self.setState({ message: data.error, loading: false });
+                    self.setState({ message: Error[data.error], loading: false });
                 });
             } else {
                 self.props.history.push(`/club/${match.params.clubId}/event/${match.params.eventId}`);

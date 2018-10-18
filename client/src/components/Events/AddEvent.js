@@ -12,6 +12,7 @@ import 'react-dates/initialize';
 import 'react-dates/lib/css/_datepicker.css';
 import { SingleDatePicker } from 'react-dates';
 import RingLoader from 'react-spinners/RingLoader';
+import Error from '../../Error';
 
 /* Form used to add/edit an event */
 class AddEvent extends Component {
@@ -83,7 +84,7 @@ class AddEvent extends Component {
                 }
             } else {
                 response.json().then((data) => {
-                    self.setState({ message: data.error, loading: false });
+                    self.setState({ message: Error[data.error], loading: false });
                 });
             }
         });

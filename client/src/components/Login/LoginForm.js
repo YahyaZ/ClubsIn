@@ -12,6 +12,7 @@ import {
 import { Redirect } from 'react-router-dom';
 import BarLoader from 'react-spinners/BarLoader';
 import PropTypes from 'prop-types';
+import Error from '../../Error';
 /* API URL for logging on */
 const loginApi = '/api/user/login';
 
@@ -72,11 +73,10 @@ class LoginForm extends Component {
             self.setState({ loading: false });
             if (response.status === 400) {
                 response.json().then((data) => {
-                    setErrorMessage(data.error);
+                    setErrorMessage(Error[data.error]);
                 });
             } else if (response.status === 200) {
                 // User is logged in
-                // console.log('User logged in');
                 authenticate(true);
                 response.json().then((data) => {
                     localStorage.setItem('User', JSON.stringify(data));

@@ -55,7 +55,7 @@ class ExistingClub extends Component {
                 });
             } else {
                 response.json().then((data) => {
-                    self.setState({ errorMessage: data.error });
+                    self.setState({ errorMessage: Error[data.error] });
                 });
             }
         });

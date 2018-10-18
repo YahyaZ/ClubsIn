@@ -78,6 +78,7 @@ const completeTask = (_id, date, name, description, completed, assignee, getTask
         }),
     }).then((response) => {
         if (response.status === 200) {
+            // update tasks to get up-to-date from database
             getTasks();
         }
     });

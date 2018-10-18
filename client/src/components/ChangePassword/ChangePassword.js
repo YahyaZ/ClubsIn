@@ -63,7 +63,7 @@ class ChangePasswordForm extends Component {
                 if (response.status === 400) {
                     response.json().then((data) => {
                         self.setState({
-                            message: data.error,
+                            message: Error[data.error],
                             loading: false,
                         });
                     });
