@@ -3,7 +3,7 @@
  * @module UserServices
  */
 import User from '../model/users';
-import {createError, errorMessages} from './userErrorUtils';
+import { createError, errorMessages } from './userErrorUtils';
 /**
  * Find the user based on the current session
  * @param {Object} req - Express request Object
@@ -61,7 +61,6 @@ function signUp(req, res, next) {
         // Checks if the user is existing or not, if it doesnt, add it
         User.findOne({ email: req.body.email }, (err, user) => {
             if (err) {
-                console.log(err);
                 next(err);
             }
             // User Exists, so return User Already exists

@@ -22,6 +22,10 @@
       "linebreak-style": [0],
       "indent": ["error", 4],
       "no-unused-vars": ["error", { "args": "none" }],
-      "consistent-return": [0]
+      "consistent-return": [0],
+      "no-plusplus": ["error", { "allowForLoopAfterthoughts": true }],
+      "no-param-reassign": [0],
+      "camelcase": [0],
+      "no-useless-escape": [0]
     }
   }

@@ -1,18 +1,18 @@
 import express from 'express';
 import EventService from '../services/events';
 
-let router = express.Router();
+const router = express.Router();
 
 
 /**
  * GET METHOD - Get All Events
- *  parameters: 
+ *  parameters:
  *      -
  *  outputs:
  *      - 200: All events in a JSON format
  *      - 404: No events found
  */
-router.get('/', EventService.getAllEvents)
+router.get('/', EventService.getAllEvents);
 
 /**
  * POST METHOD - Add Event
@@ -30,13 +30,13 @@ router.post('/', EventService.addEvent);
 
 /**
  * GET METHOD - Get All Events
- *  parameters: 
+ *  parameters:
  *      -
  *  outputs:
  *      - 200: All events in a JSON format
  *      - 404: No events found
  */
-router.get('/upcoming', EventService.getUpcomingEvents)
+router.get('/upcoming', EventService.getUpcomingEvents);
 
 
 /**
@@ -50,14 +50,12 @@ router.get('/upcoming', EventService.getUpcomingEvents)
 
 router.get('/:id', EventService.findEvent);
 
-
-
 /**
  * DELETE METHOD
- * 
+ *
  * parameters:
  *  -id: id of the desired event to be deleted
- * 
+ *
  * responses:
  *  - 404: no event of such id was found
  *  - 204: event was deleted

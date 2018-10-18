@@ -1,31 +1,31 @@
-import mongoose from "mongoose";
+import mongoose from 'mongoose';
 
 /**
  * Event schema that defines the structure of how event data would look in the database
  */
-let eventSchema = new mongoose.Schema({
-    club_id: {type: mongoose.Schema.Types.ObjectId, ref:'Club'},
+const eventSchema = new mongoose.Schema({
+    club_id: { type: mongoose.Schema.Types.ObjectId, ref: 'Club' },
     name: {
         type: String,
-        required: [true, "Event name cannot be blank"],
-        trim: true
+        required: [true, 'Event name cannot be blank'],
+        trim: true,
     },
     description: {
         type: String,
         required: [true, 'University type cannot be blank'],
-        trime: true
+        trime: true,
     },
     date: {
         type: Date,
-        required: [true, "Date for event cannot be blank"]
+        required: [true, 'Date for event cannot be blank'],
     },
     created_by: {
-        type: mongoose.Schema.Types.ObjectId, 
+        type: mongoose.Schema.Types.ObjectId,
         ref: 'users',
-        required: [true, "Created by field cannot be blank"]
+        required: [true, 'Created by field cannot be blank'],
     },
-    last_modified: Date
+    last_modified: Date,
 });
 
-var Events = mongoose.model('events', eventSchema);
+const Events = mongoose.model('events', eventSchema);
 module.exports = Events;

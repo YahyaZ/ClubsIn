@@ -55,7 +55,7 @@ describe('User Management', function () {
                     res.should.have.status(400);
                     res.body.should.be.a('object');
                     res.body.should.not.have.a.property('username');
-                    res.body.should.have.a.property('error').eql('Wrong email or password');
+                    res.body.should.have.a.property('error').eql('INCORRECT_EMAIL_PASS');
                     done();
                 });
 
@@ -71,7 +71,7 @@ describe('User Management', function () {
                     res.should.have.status(400);
                     res.body.should.be.a('object');
                     res.body.should.not.have.a.property('_id');
-                    res.body.should.have.a.property('error').eql('Please fill out all fields');
+                    res.body.should.have.a.property('error').eql('MISSING_FIELDS');
                     done();
                 });
 
@@ -87,7 +87,7 @@ describe('User Management', function () {
                     res.should.have.status(400);
                     res.body.should.be.a('object');
                     res.body.should.not.have.a.property('_id');
-                    res.body.should.have.a.property('error').eql('Please fill out all fields');
+                    res.body.should.have.a.property('error').eql('MISSING_FIELDS');
                     done();
                 });
 
@@ -135,7 +135,7 @@ describe('User Management', function () {
                     res.should.have.status(400);
                     res.body.should.be.a('object');
                     res.body.should.not.have.a.property('_id');
-                    res.body.should.have.a.property('error').eql('User Already Exists');
+                    res.body.should.have.a.property('error').eql('EXISTING_USER');
                     done();
                 });
 
@@ -154,7 +154,7 @@ describe('User Management', function () {
                     res.should.have.status(400);
                     res.body.should.be.a('object');
                     res.body.should.not.have.a.property('_id');
-                    res.body.should.have.a.property('error').eql('Please fill out all fields');
+                    res.body.should.have.a.property('error').eql('MISSING_FIELDS');
                     done();
                 });
 
@@ -173,7 +173,7 @@ describe('User Management', function () {
                     res.should.have.status(400);
                     res.body.should.be.a('object');
                     res.body.should.not.have.a.property('_id');
-                    res.body.should.have.a.property('error').eql('Please fill out all fields');
+                    res.body.should.have.a.property('error').eql('MISSING_FIELDS');
                     done();
                 });
 
@@ -192,7 +192,7 @@ describe('User Management', function () {
                     res.should.have.status(400);
                     res.body.should.be.a('object');
                     res.body.should.not.have.a.property('_id');
-                    res.body.should.have.a.property('error').eql('Please fill out all fields');
+                    res.body.should.have.a.property('error').eql('MISSING_FIELDS');
                     done();
                 });
 
@@ -212,7 +212,7 @@ describe('User Management', function () {
                     res.should.have.status(400);
                     res.body.should.be.a('object');
                     res.body.should.not.have.a.property('_id');
-                    res.body.should.have.a.property('error').eql('Passwords do not match');
+                    res.body.should.have.a.property('error').eql('PASSWORD_MISMATCH');
                     done();
                 });
         });
@@ -308,7 +308,7 @@ describe('User Management', function () {
                             res.should.have.status(400);
                             res.body.should.be.a('object');
                             res.body.should.not.have.a.property('username');
-                            res.body.should.have.a.property('error').eql('Wrong email or password');
+                            res.body.should.have.a.property('error').eql('INCORRECT_EMAIL_PASS');
                             done();
                         });
                 });
@@ -331,7 +331,7 @@ describe('User Management', function () {
                     res.should.have.status(400);
                     res.body.should.be.a('object');
                     res.body.should.not.have.a.property('username');
-                    res.body.should.have.a.property('error').eql('Wrong email or password');
+                    res.body.should.have.a.property('error').eql('INCORRECT_EMAIL_PASS');
                     chai.request(server)
                         .post('/api/user/login')
                         .send(user)
@@ -339,7 +339,7 @@ describe('User Management', function () {
                             res.should.have.status(400);
                             res.body.should.be.a('object');
                             res.body.should.not.have.a.property('username');
-                            res.body.should.have.a.property('error').eql('Wrong email or password');
+                            res.body.should.have.a.property('error').eql('INCORRECT_EMAIL_PASS');
                             done();
                         });
                 });
@@ -361,7 +361,7 @@ describe('User Management', function () {
                     res.should.have.status(400);
                     res.body.should.be.a('object');
                     res.body.should.not.have.a.property('username');
-                    res.body.should.have.a.property('error').eql('Please fill out all fields');
+                    res.body.should.have.a.property('error').eql('MISSING_FIELDS');
                     chai.request(server)
                         .post('/api/user/login')
                         .send(user)
@@ -369,7 +369,7 @@ describe('User Management', function () {
                             res.should.have.status(400);
                             res.body.should.be.a('object');
                             res.body.should.not.have.a.property('username');
-                            res.body.should.have.a.property('error').eql('Wrong email or password');
+                            res.body.should.have.a.property('error').eql('INCORRECT_EMAIL_PASS');
                             done();
                         });
                 });
