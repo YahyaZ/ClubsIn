@@ -174,7 +174,6 @@ function getUpcomingEvents(req, res, next) {
     const limit = parseInt(req.query.limit, 10) || 5;
     ClubService.getClubsByUserId(userId, '', (clubs) => {
         const clubArray = clubs.map(club => club._id);
-
         Events.find({
             club_id: { $in: clubArray },
             date: { $gte: new Date() },
