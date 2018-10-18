@@ -60,7 +60,12 @@ async function getUserEvents(events, next) {
                 }
             }
             const foundUsers = await Promise.all(usersPromise);
-            const users = foundUsers.filter((item, pos, self) => self.indexOf(item) === pos);
+            const users = [];
+            for (let i = 0; i < foundUsers.length; i++) {
+                if (!users.find(user => user._id.equals(foundUsers[i]._id))) {
+                    users.push(foundUsers[i]);
+                }
+            }
             event.users = users;
         }));
     } catch (err) {
