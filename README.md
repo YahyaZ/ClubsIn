@@ -2,6 +2,14 @@
 
 ClubIn is a web application created using the MERN stack and is used to manage university clubs and societies internal executive activities predominantly on the management of events.
 
+## Major Libraries Utilised
+* React
+* React-bootstrap (Design)
+* Mongoose
+* Express
+* Eslint (code quality assurance)
+* Mocha (testing)
+* Morgan (logging)
 
 ## Installation and Running of the Project
 
