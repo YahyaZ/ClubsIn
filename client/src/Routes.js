@@ -5,7 +5,7 @@ import Landing from './components/Landing';
 import Authentication from './containers/Authentication';
 import PropsRoute from './components/Routes/PropsRoute';
 import AuthenticatedRoute from './components/Routes/AuthenticatedRoute';
-import AddEvent from './components/Events/AddEvent';
+import AddEvent from './components/AddEvent';
 import Club from './containers/Clubs';
 import EventTasks from './containers/EventTasks';
 import NotFound from './components/NotFound';

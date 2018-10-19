@@ -4,9 +4,10 @@
  */
 import express from 'express';
 import UserService from '../services/users';
-import { requiresLogin } from './auth'
+// Ignore as lint says it cannot find requiresLogin even though it exists
+import { requiresLogin } from './auth'; // eslint-disable-line
 
-let router = express.Router();
+const router = express.Router();
 
 /**
  * Route to signup users

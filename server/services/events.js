@@ -2,16 +2,16 @@ import mongoose from 'mongoose';
 import Events from '../model/events';
 import Users from '../model/users';
 import ClubService from './clubs';
-import {createError, errorMessages, successMessages} from './userErrorUtils'
+import { createError, errorMessages, successMessages } from './userErrorUtils';
 
 /**
  * Returns all events
  * @param {Object} res
  */
-function getAllEvents(res) {
+function getAllEvents(req, res, next) {
     Events.find((err, events) => {
-        if(err) return console.error(err);
-        res.json(events);
+        if (err) return next(err);
+        return res.json(events);
     });
 }
 
@@ -50,17 +50,22 @@ function getEventsByClubId(req, res, next) {
 async function getUserEvents(events, next) {
     try {
         await Promise.all(events.map(async (event) => {
-            const users = [];
-            for (const taskIndex in event.tasks) {
-                for (const userIndex in event.tasks[taskIndex].assignee) {
-                    const userDetails = await Users.findOne({ _id: event.tasks[taskIndex].assignee[userIndex] }).exec();
-                    if (userDetails
-                        && !users.find(user => user._id.equals(userDetails._id))) {
-                        users.push(userDetails);
-                    }
+            const usersPromise = [];
+            for (let taskIndex = 0; taskIndex < event.tasks.length; taskIndex++) {
+                for (let userIndex = 0; userIndex < event.tasks[taskIndex].assignee.length;
+                    userIndex++) {
+                    usersPromise.push(
+                        Users.findOne({ _id: event.tasks[taskIndex].assignee[userIndex] }).exec(),
+                    );
                 }
             }
-            console.log(users);
+            const foundUsers = await Promise.all(usersPromise);
+            const users = [];
+            for (let i = 0; i < foundUsers.length; i++) {
+                if (!users.find(user => user._id.equals(foundUsers[i]._id))) {
+                    users.push(foundUsers[i]);
+                }
+            }
             event.users = users;
         }));
     } catch (err) {
@@ -83,13 +88,12 @@ function addEvent(req, res, next) {
         date,
         createdBy,
     } = req.body;
-    console.log(req.body);
     if (clubId
         && name
         && description
         && date
         && createdBy) {
-        let eventData = {
+        const eventData = {
             club_id: clubId,
             name,
             description,
@@ -102,7 +106,7 @@ function addEvent(req, res, next) {
             else { return res.status(200).json(eventData); }
         });
     } else {
-        res.status(400).json({"error": errorMessages.MISSING_FIELDS})
+        res.status(400).json({ error: errorMessages.MISSING_FIELDS });
     }
 }
 
@@ -121,10 +125,10 @@ function updateEvent(req, res, next) {
             last_modified: new Date(),
         }, (err) => {
             if (err) createError(errorMessages.EVENT_NOT_FOUND, 404);
-            return res.status(200).json({"message": successMessages.EVENT_UPDATED});
-        })
+            return res.status(200).json({ message: successMessages.EVENT_UPDATED });
+        });
     } else {
-        res.status(400).json({"error": errorMessages.MISSING_FIELDS})
+        res.status(400).json({ error: errorMessages.MISSING_FIELDS });
     }
 }
 
@@ -166,24 +170,23 @@ function deleteEvent(req, res, next) {
  * @param {Object} next
  */
 function getUpcomingEvents(req, res, next) {
-    const userId = req.session.userId;
+    const { userId } = req.session;
     const limit = parseInt(req.query.limit, 10) || 5;
     ClubService.getClubsByUserId(userId, '', (clubs) => {
-        let clubArray = clubs.map(function(club){
-            return club._id;
-        })
+        const clubArray = clubs.map(club => club._id);
         Events.find({
-            club_id: {$in: clubArray},
-            date: {$gte : new Date() },
+            club_id: { $in: clubArray },
+            date: { $gte: new Date() },
         }).sort([['date', 1]])
-        .limit(limit).
-        populate('club_id', 'name').
-        exec(function(err, events){
-            if(err) next (err);
-            res.json(events);
-        })
+            .limit(limit)
+            .populate('club_id', 'name')
+            .exec((err, events) => {
+                if (err) next(err);
+                res.json(events);
+            });
     });
 }
+
 module.exports = {
     getAllEvents,
     getEventsByClubId,

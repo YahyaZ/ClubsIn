@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Button } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import Skeleton from 'react-loading-skeleton';
-import AddEvent from '../../components/Events/AddEvent';
+import AddEvent from '../../components/AddEvent';
 import Task from '../../components/Task';
 import TaskDetails from '../../components/TaskDetails';
 import MenuItem from './MenuItem';
@@ -73,7 +73,7 @@ class EventTasks extends Component {
             method: 'GET',
             mode: 'cors',
         }).then((response) => {
-            if (response.status === 401) {
+            if (response.status !== 200) {
                 return [];
             }
             return response.json();

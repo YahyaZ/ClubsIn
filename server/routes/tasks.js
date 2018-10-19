@@ -1,7 +1,7 @@
 import express from 'express';
 import TaskService from '../services/tasks';
 
-let router = express.Router();
+const router = express.Router();
 
 /**
  * /api/tasks/
@@ -20,7 +20,7 @@ let router = express.Router();
  *  - 200: Returns JSON of the newly created task data
  *  - 400: Fields are missing
  */
-router.post('/', TaskService.addTask)
+router.post('/', TaskService.addTask);
 
 /**
  * /api/tasks/assigned
@@ -40,8 +40,8 @@ router.get('/assigned', TaskService.assignedTask);
  * Responses:
  *  - 404: No task of this id was found
  *  - 200: JSON format return of the task of this id
- */ 
-router.get('/:id', TaskService.getTask)
+ */
+router.get('/:id', TaskService.getTask);
 
 /**
  * /api/tasks/:id
@@ -53,10 +53,7 @@ router.get('/:id', TaskService.getTask)
  *  - 404: No tasks with such event_id is found
  */
 
-router.get('/event/:id', TaskService.findTasksForEvent)
-
-
-
+router.get('/event/:id', TaskService.findTasksForEvent);
 
 /**
  * /api/tasks/:id
@@ -68,7 +65,6 @@ router.get('/event/:id', TaskService.findTasksForEvent)
  *    - 404: returned when task could not be found
  */
 router.delete('/:id', TaskService.deleteTask);
-
 
 /**
  * /api/tasks/

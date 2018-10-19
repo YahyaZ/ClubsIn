@@ -92,7 +92,7 @@ describe('Clubs', function () {
                 .end(function (err, res) {
                     res.should.have.status(400);
                     res.body.should.be.a('object');
-                    res.body.should.have.property('error').eql('Please fill out all fields');
+                    res.body.should.have.property('error').eql('MISSING_FIELDS');
                     authenticatedUser
                         .get('/api/user/profile')
                         .end(function (err, res) {
@@ -114,7 +114,7 @@ describe('Clubs', function () {
                 .end(function (err, res) {
                     res.should.have.status(400);
                     res.body.should.be.a('object');
-                    res.body.should.have.property('error').eql('Please fill out all fields');
+                    res.body.should.have.property('error').eql('MISSING_FIELDS');
                     authenticatedUser
                         .get('/api/user/profile')
                         .end(function (err, res) {
@@ -137,7 +137,7 @@ describe('Clubs', function () {
                 .end(function (err, res) {
                     res.should.have.status(400);
                     res.body.should.be.a('object');
-                    res.body.should.have.property('error').eql('Please fill out all fields');
+                    res.body.should.have.property('error').eql('MISSING_FIELDS');
                     authenticatedUser
                         .get('/api/user/profile')
                         .end(function (err, res) {
@@ -174,7 +174,7 @@ describe('Clubs', function () {
                         .end(function (err, res) {
                             res.should.have.status(400);
                             res.body.should.be.a('object');
-                            res.body.should.have.property('error').eql('Club already exists');
+                            res.body.should.have.property('error').eql('CLUB_EXISTS');
                             done();
                         })
                 });

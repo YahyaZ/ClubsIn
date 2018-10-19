@@ -55,7 +55,7 @@ class SignUp extends Component {
             if (response.status === 400) {
                 response.json().then((data) => {
                     self.setState({
-                        errorMessage: data.error,
+                        errorMessage: Error[data.error],
                         loading: false,
                     });
                 });
