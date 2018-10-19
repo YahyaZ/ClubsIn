@@ -51,6 +51,7 @@ async function getUserEvents(events, next) {
     try {
         await Promise.all(events.map(async (event) => {
             const usersPromise = [];
+            // Gey Assigned members from database
             for (let taskIndex = 0; taskIndex < event.tasks.length; taskIndex++) {
                 for (let userIndex = 0; userIndex < event.tasks[taskIndex].assignee.length;
                     userIndex++) {
@@ -59,6 +60,7 @@ async function getUserEvents(events, next) {
                     );
                 }
             }
+            // Remove any duplicate users
             const foundUsers = await Promise.all(usersPromise);
             const users = [];
             for (let i = 0; i < foundUsers.length; i++) {
@@ -171,13 +173,13 @@ function deleteEvent(req, res, next) {
  */
 function getUpcomingEvents(req, res, next) {
     const { userId } = req.session;
-    const limit = parseInt(req.query.limit, 10) || 5;
+    const limit = parseInt(req.query.limit, 10) || 5; // If no limit is defined, limit by 5
     ClubService.getClubsByUserId(userId, '', (clubs) => {
         const clubArray = clubs.map(club => club._id);
         Events.find({
             club_id: { $in: clubArray },
-            date: { $gte: new Date() },
-        }).sort([['date', 1]])
+            date: { $gte: new Date() }, // Date has to be past today
+        }).sort([['date', 1]]) //Sort by date ascending
             .limit(limit)
             .populate('club_id', 'name')
             .exec((err, events) => {

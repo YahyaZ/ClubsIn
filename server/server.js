@@ -16,7 +16,7 @@ import router from './routes';
 
 // Sets up the environment configurations
 if (process.env.NODE_ENV === 'test') {
-    logger.info('Using Test Environment');
+    console.log('Using Test Environment');
     dotenv.config({ path: `${path.resolve()}/server/.env` });
 } else {
     dotenv.config();
@@ -28,10 +28,10 @@ mongoose.connect(dbURL);
 
 // Once connected
 const db = mongoose.connection;
-db.on('error', () => logger.error('Mongoose Connection Failed'));
+db.on('error', () => console.log('Mongoose Connection Failed'));
 db.once('open', () => {
     if (process.env.NODE_ENV !== 'test') {
-        logger.verbose('MongoDB connected!');
+        console.log('MongoDB connected!');
     }
 });
 
@@ -90,6 +90,6 @@ app.use((err, _req, res, _next) => {
 });
 
 // Start the server
-app.listen(API_PORT, () => logger.info(`Listening on port ${API_PORT}`));
+app.listen(API_PORT, () => console.log(`Listening on port ${API_PORT}`));
 
 export default app;

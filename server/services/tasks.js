@@ -124,7 +124,7 @@ function assignedTask(req, res, next) {
     const { userId } = req.session;
     const limit = parseInt(req.query.limit, 10) || 5;
     Tasks.find({ assignee: userId, completed: false })
-        .sort({ due_date: 1 })
+        .sort({ due_date: 1 }) // Sort by due date ascending
         .limit(limit)
         .populate('event_id', 'club_id')
         .exec((err, tasks) => {
