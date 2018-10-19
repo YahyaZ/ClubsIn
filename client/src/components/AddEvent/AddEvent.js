@@ -84,7 +84,7 @@ class AddEvent extends Component {
                 }
             } else {
                 response.json().then((data) => {
-                    self.setState({ message: Error[data.error], loading: false });
+                    self.setState({ message: Error.getErrorMessage(data.error), loading: false });
                 });
             }
         });

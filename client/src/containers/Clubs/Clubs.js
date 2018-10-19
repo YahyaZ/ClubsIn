@@ -33,7 +33,7 @@ class Club extends Component {
             mode: 'cors',
         }).then((response) => {
             if (response.status === 401) {
-                return 'Error';
+                return {};
             }
             return response.json();
         }).then((club) => {
