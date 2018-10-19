@@ -11,6 +11,13 @@ const Error = {
     USER_IN_CLUB: 'You are already in that club',
     INVALID_LINK: 'Invite Link Invalid',
     NO_ID: 'ID not provided',
+    INVALID_ERROR: 'Something has gone wrong. Please try again.',
 };
 
-export default Error;
+const getErrorMessage = (errorCode) => {
+    const message = Error[errorCode];
+    if (message) return message;
+    return Error.INVALID_ERROR;
+}
+
+export default { getErrorMessage };

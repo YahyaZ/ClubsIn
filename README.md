@@ -25,6 +25,32 @@ Start backend server only - `npm run start:server`
 
 Start react client(frontend) only - `npm run start:client` 
 
+## Project Structure
+* client/
+  * public/
+    * auto generated react project folder
+  * src/
+    * components/
+      * Functional react components are found/added here
+    * containers/
+      * Larger components with smaller components within it
+    * resources/
+      * All images found here
+* log/
+  * results.log
+    * log file is automatically populated
+    * (e.g. 2018-10-14 12:37:01 info: Listening on port 4000)
+* server/
+  * model/
+    * Contains all Schema models for database collections
+  * routes/
+    * Contains ONLY API routes - No business logic
+  * services/
+    * Backend database logic called by API calls
+* test/
+  * contains test files for specific modules
+  * (e.g. test-clubs is for club testing ONLY)
+  
 ## Code Style and Guidelines
 
 * All variables should be in lower camel case e.g. emailAddress

@@ -73,7 +73,7 @@ class LoginForm extends Component {
             self.setState({ loading: false });
             if (response.status === 400) {
                 response.json().then((data) => {
-                    setErrorMessage(Error[data.error]);
+                    setErrorMessage(Error.getErrorMessage(data.error));
                 });
             } else if (response.status === 200) {
                 // User is logged in

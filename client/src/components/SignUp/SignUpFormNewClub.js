@@ -9,6 +9,7 @@ import {
 import { Redirect } from 'react-router-dom';
 import BarLoader from 'react-spinners/BarLoader';
 import Form from '../Form';
+import Error from '../../Error';
 
 /* Form for creating a new club */
 class SignUpFormNewClub extends Component {
@@ -68,7 +69,7 @@ class SignUpFormNewClub extends Component {
             self.setState({ message: '', loading: true });
             if (response.status === 400) {
                 response.json().then((data) => {
-                    self.setState({ message: data.error, loading: false });
+                    self.setState({ message: Error.getErrorMessage(data.error), loading: false });
                 });
             } else if (response.status === 200) {
                 response.json().then((data) => {
