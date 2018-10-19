@@ -66,7 +66,6 @@ class SignUpFormStart extends Component {
         }).then((response) => {
             if (response.status === 400) {
                 response.json().then((data) => {
-                    console.log(Error.getErrorMessage(data.error));
                     handleErrorMessage (Error.getErrorMessage(data.error));
                 });
             } else if (response.status === 200) {
