@@ -11,43 +11,8 @@ import dotenv from 'dotenv';
 import cors from 'cors';
 import path from 'path';
 import connectMongo from 'connect-mongo';
-import { createLogger, format, transports } from 'winston';
-import fs from 'fs';
 import router from './routes';
 
-const logDir = 'log';
-
-// Create the log directory if it does not exist
-
-if (!fs.existsSync(logDir)) {
-    fs.mkdirSync(logDir);
-}
-
-const filename = path.join(logDir, 'results.log');
-
-const logger = createLogger({
-    level: 'debug',
-    format: format.combine(
-        format.timestamp({
-            format: 'YYYY-MM-DD HH:mm:ss',
-        }),
-        format.printf(info => `${info.timestamp} ${info.level}: ${info.message}`),
-    ),
-    transports: [
-        new transports.Console({
-            level: 'info',
-            format: format.combine(
-                format.colorize({
-                    all: true,
-                }),
-                format.printf(
-                    info => `${info.timestamp} ${info.level}: ${info.message}`,
-                ),
-            ),
-        }),
-        new transports.File({ filename }),
-    ],
-});
 
 // Sets up the environment configurations
 if (process.env.NODE_ENV === 'test') {

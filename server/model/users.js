@@ -80,6 +80,7 @@ UserSchema.statics.authenticate = (email, password, callback) => {
  */
 UserSchema.pre('save', function encrypt(next) {
     const user = this;
+    // bcrypt hashes the password with 10 rounds
     bcrypt.hash(user.password, 10, (err, hash) => {
         if (err) {
             return next(err);

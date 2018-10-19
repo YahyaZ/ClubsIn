@@ -16,6 +16,10 @@ class App extends Component {
         this.authenticate();
     }
 
+    /**
+     * Can pass in an optional parameter if the user is logged in or, this will save time 
+     * by not calling the backend again
+     */
     authenticate = (isLoggedIn) => {
         const self = this;
         if (isLoggedIn) {

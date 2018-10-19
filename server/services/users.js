@@ -119,7 +119,9 @@ function login(req, res, next) {
  */
 function updatePassword(req, res, next) {
     if (req.body.newPassword && req.body.email && req.body.password) {
+        // Check whether current password is valid
         User.authenticate(req.body.email, req.body.password, (error, user) => {
+            // If it provides an error or no user is found, incorrect password
             if (error || !user) {
                 next(createError(errorMessages.INCORRECT_EMAIL_PASS, 400));
             } else {
@@ -146,6 +148,7 @@ function updatePassword(req, res, next) {
  * @param {Object} next
  */
 function logout(req, res, next) {
+    // If session exists, destroy it and send an empty response
     if (req.session) {
         req.session.destroy((err) => {
             if (err) {
@@ -161,6 +164,7 @@ function logout(req, res, next) {
  * Function called from  ./clubs.js
  * @param {Object} userId
  * @param {Object} clubId
+ * @returns {boolean} - returns whether the user was added correct or not 
  */
 function addUserToClub(userId, clubId) {
     if (userId && clubId) {
