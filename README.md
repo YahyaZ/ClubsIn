@@ -28,7 +28,7 @@ Start react client(frontend) only - `npm run start:client`
 ## Project Structure
 * client/
   * public/
-    * auto generated react folder
+    * auto generated react project folder
   * src/
     * components/
       * Functional react components are found/added here
