@@ -5,7 +5,6 @@ ClubIn is a web application created using the MERN stack and is used to manage u
 
 ## Installation and Running of the Project
 
-
 Installing The project:
 `npm install`
 
@@ -48,6 +47,16 @@ Start both simultaneously - `npm start`
       'One',  
       'Two',  
     ]  
+
+## .env File Access
+
+To gain access to the .env file(required for database calls) please contact tech leads:
+* Malek Darwiche 
+* Ramanathan Udaiyappan
+* Yahya Zein
+
+File has been ommitted from the repository for security & integrity purposes
+
 
 ## Credits
 
