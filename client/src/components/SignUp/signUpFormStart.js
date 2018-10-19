@@ -8,6 +8,7 @@ import {
 import PropTypes from 'prop-types';
 import BarLoader from 'react-spinners/BarLoader';
 import { Redirect } from 'react-router-dom';
+import Error from '../../Error';
 
 /* Form for creating a new user */
 class SignUpFormStart extends Component {
@@ -65,7 +66,8 @@ class SignUpFormStart extends Component {
         }).then((response) => {
             if (response.status === 400) {
                 response.json().then((data) => {
-                    handleErrorMessage (Error[data.error]);
+                    console.log(Error.getErrorMessage(data.error));
+                    handleErrorMessage (Error.getErrorMessage(data.error));
                 });
             } else if (response.status === 200) {
                 self.props.childProps.authenticate(true);
