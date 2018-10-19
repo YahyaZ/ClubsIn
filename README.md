@@ -1,22 +1,56 @@
 # ClubIn
 
-ClubIn is a web application created using the MERN stack and is used to manage university clubs and societies internal executive activities predominantly on the management of events.
+ClubIn is a web application created using the MERN stack and is used to manage university clubs and societies internal executive activities predominantly on the management of events. <br />
+**Disclaimer: Project has been optimised on Google Chrome. Other web browsers may experience unexpected issues**
 
+## Major Libraries Utilised
+* React
+* React-bootstrap (Design)
+* Mongoose
+* Express
+* Eslint (code quality assurance)
+* Mocha (testing)
+* Morgan (logging)
 
 ## Installation and Running of the Project
-
 
 Installing The project:
 `npm install`
 
 To run project:
 
-Start backend server - `npm run start:server`
+Start both simultaneously(regular start) - `npm start` 
 
-Start react client - `npm run start:client` 
+Start backend server only - `npm run start:server`
 
-Start both simultaneously - `npm start` 
+Start react client(frontend) only - `npm run start:client` 
 
+## Project Structure
+* client/
+  * public/
+    * auto generated react project folder
+  * src/
+    * components/
+      * Functional react components are found/added here
+    * containers/
+      * Larger components with smaller components within it
+    * resources/
+      * All images found here
+* log/
+  * results.log
+    * log file is automatically populated
+    * (e.g. 2018-10-14 12:37:01 info: Listening on port 4000)
+* server/
+  * model/
+    * Contains all Schema models for database collections
+  * routes/
+    * Contains ONLY API routes - No business logic
+  * services/
+    * Backend database logic called by API calls
+* test/
+  * contains test files for specific modules
+  * (e.g. test-clubs is for club testing ONLY)
+  
 ## Code Style and Guidelines
 
 * All variables should be in lower camel case e.g. emailAddress
@@ -48,6 +82,16 @@ Start both simultaneously - `npm start`
       'One',  
       'Two',  
     ]  
+
+## .env File Access
+
+To gain access to the .env file(required for database calls) please contact tech leads:
+* Malek Darwiche 
+* Ramanathan Udaiyappan
+* Yahya Zein
+
+File has been ommitted from the repository for security & integrity purposes
+
 
 ## Credits
 
