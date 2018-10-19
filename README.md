@@ -25,6 +25,8 @@ Start backend server only - `npm run start:server`
 
 Start react client(frontend) only - `npm run start:client` 
 
+Start mocha tests - `npm test`
+
 ## Project Structure
 * client/
   * public/
@@ -36,10 +38,6 @@ Start react client(frontend) only - `npm run start:client`
       * Larger components with smaller components within it
     * resources/
       * All images found here
-* log/
-  * results.log
-    * log file is automatically populated
-    * (e.g. 2018-10-14 12:37:01 info: Listening on port 4000)
 * server/
   * model/
     * Contains all Schema models for database collections
@@ -76,6 +74,7 @@ Start react client(frontend) only - `npm run start:client`
 * Max 100 characters on one line
 * Where possible, use destructuring assignment on props and state
 * If an object has more than three properties, seperate each property onto a new line
+* When possible, retrieve the properties from the object before using it in a method. E.g. use const { foo } = this.state rather than use this.state.foo within the method
 * Use trailing commas in multiple line arrays and objects,   
     e.g.  
     [  
