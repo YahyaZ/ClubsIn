@@ -10,11 +10,11 @@ Installing The project:
 
 To run project:
 
-Start backend server - `npm run start:server`
+Start both simultaneously(regular start) - `npm start` 
 
-Start react client - `npm run start:client` 
+Start backend server only - `npm run start:server`
 
-Start both simultaneously - `npm start` 
+Start react client(frontend) only - `npm run start:client` 
 
 ## Code Style and Guidelines
 
