@@ -2,6 +2,7 @@ import chai from 'chai';
 import chaiHttp from 'chai-http';
 import server from '../server/server'
 import University from '../server/model/universities'
+import ResponseChecks from './common-responses-checks';
 
 let should = chai.should();
 
@@ -27,13 +28,7 @@ describe('Universities', function () {
             chai.request(server)
                 .get('/api/university')
                 .end(function (err, res) {
-                    res.should.have.status(200);
-                    res.body.should.be.a('array');
-                    res.body.length.should.be.eql(3);
-                    res.body[0].should.be.a('object');
-                    res.body[0].should.have.property('name');
-                    res.body[0].should.have.property('abbreviation');
-
+                    ResponseChecks.validUniversities(res, 3);
                     done();
                 });
 

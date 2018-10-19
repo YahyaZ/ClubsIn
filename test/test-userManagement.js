@@ -3,6 +3,7 @@ import chaiHttp from 'chai-http';
 import request from 'supertest';
 import server from '../server/server';
 import User from '../server/model/users';
+import ResponseChecks from './common-responses-checks';
 /* global describe before beforeEach it */
 
 const should = chai.should();
@@ -32,14 +33,7 @@ describe('User Management', () => {
                 .post('/api/user/login')
                 .send(user)
                 .end((_err, res) => {
-                    res.should.have.status(200);
-                    res.body.should.be.a('object');
-                    res.body.should.have.a.property('email').eql(user.email);
-                    res.body.should.have.a.property('firstName');
-                    res.body.should.have.a.property('lastName');
-                    res.body.should.have.a.property('_id');
-                    res.body.should.have.a.property('clubs');
-                    res.body.should.not.have.a.property('password');
+                    ResponseChecks.validUser(res, user);
                     done();
                 });
         });
@@ -52,10 +46,7 @@ describe('User Management', () => {
                 .post('/api/user/login')
                 .send(user)
                 .end((_err, res) => {
-                    res.should.have.status(400);
-                    res.body.should.be.a('object');
-                    res.body.should.not.have.a.property('username');
-                    res.body.should.have.a.property('error').eql('INCORRECT_EMAIL_PASS');
+                    ResponseChecks.incorrectLogin(res);
                     done();
                 });
         });
@@ -67,10 +58,7 @@ describe('User Management', () => {
                 .post('/api/user/login')
                 .send(user)
                 .end((_err, res) => {
-                    res.should.have.status(400);
-                    res.body.should.be.a('object');
-                    res.body.should.not.have.a.property('_id');
-                    res.body.should.have.a.property('error').eql('MISSING_FIELDS');
+                    ResponseChecks.missingFields(res);
                     done();
                 });
         });
@@ -82,10 +70,7 @@ describe('User Management', () => {
                 .post('/api/user/login')
                 .send(user)
                 .end((_err, res) => {
-                    res.should.have.status(400);
-                    res.body.should.be.a('object');
-                    res.body.should.not.have.a.property('_id');
-                    res.body.should.have.a.property('error').eql('MISSING_FIELDS');
+                    ResponseChecks.missingFields(res);
                     done();
                 });
         });
@@ -104,15 +89,7 @@ describe('User Management', () => {
                 .post('/api/user/signup')
                 .send(user)
                 .end((_err, res) => {
-                    res.should.have.status(200);
-                    res.body.should.be.a('object');
-                    res.body.should.have.a.property('email').eql(user.email);
-                    res.body.should.have.a.property('firstName');
-                    res.body.should.have.a.property('lastName');
-                    res.body.should.have.a.property('_id');
-                    res.body.should.have.a.property('clubs');
-                    res.body.clubs.length.should.be.eql(0);
-                    res.body.should.not.have.a.property('password');
+                    ResponseChecks.userSignUp(res, user);
                     done();
                 });
         });
@@ -128,10 +105,7 @@ describe('User Management', () => {
                 .post('/api/user/signup')
                 .send(user)
                 .end((_err, res) => {
-                    res.should.have.status(400);
-                    res.body.should.be.a('object');
-                    res.body.should.not.have.a.property('_id');
-                    res.body.should.have.a.property('error').eql('EXISTING_USER');
+                    ResponseChecks.existingLogin(res);
                     done();
                 });
         });
@@ -146,10 +120,7 @@ describe('User Management', () => {
                 .post('/api/user/signup')
                 .send(user)
                 .end((_err, res) => {
-                    res.should.have.status(400);
-                    res.body.should.be.a('object');
-                    res.body.should.not.have.a.property('_id');
-                    res.body.should.have.a.property('error').eql('MISSING_FIELDS');
+                    ResponseChecks.missingFields(res);
                     done();
                 });
         });
@@ -164,10 +135,7 @@ describe('User Management', () => {
                 .post('/api/user/signup')
                 .send(user)
                 .end((_err, res) => {
-                    res.should.have.status(400);
-                    res.body.should.be.a('object');
-                    res.body.should.not.have.a.property('_id');
-                    res.body.should.have.a.property('error').eql('MISSING_FIELDS');
+                    ResponseChecks.missingFields(res);
                     done();
                 });
         });
@@ -182,10 +150,7 @@ describe('User Management', () => {
                 .post('/api/user/signup')
                 .send(user)
                 .end((_err, res) => {
-                    res.should.have.status(400);
-                    res.body.should.be.a('object');
-                    res.body.should.not.have.a.property('_id');
-                    res.body.should.have.a.property('error').eql('MISSING_FIELDS');
+                    ResponseChecks.missingFields(res);
                     done();
                 });
         });
@@ -201,10 +166,7 @@ describe('User Management', () => {
                 .post('/api/user/signup')
                 .send(user)
                 .end((_err, res) => {
-                    res.should.have.status(400);
-                    res.body.should.be.a('object');
-                    res.body.should.not.have.a.property('_id');
-                    res.body.should.have.a.property('error').eql('PASSWORD_MISMATCH');
+                    ResponseChecks.passwordMismatch(res);
                     done();
                 });
         });
@@ -216,8 +178,7 @@ describe('User Management', () => {
             chai.request(server)
                 .get('/api/user/logout')
                 .end((_err, res) => {
-                    res.should.have.status(204);
-                    res.body.should.be.empty;
+                    ResponseChecks.emptyBody(res);
                     done();
                 });
         });
@@ -256,15 +217,7 @@ describe('User Management', () => {
                 .put('/api/user/update')
                 .send(change)
                 .end((_err, res) => {
-                    res.should.have.status(200);
-                    res.body.should.be.a('object');
-                    res.body.should.have.a.property('email').eql(user.email);
-                    res.body.should.have.a.property('firstName');
-                    res.body.should.have.a.property('lastName');
-                    res.body.should.have.a.property('_id');
-                    res.body.should.have.a.property('clubs');
-                    res.body.should.not.have.a.property('password');
-
+                    ResponseChecks.validUser(res, user);
                     chai.request(server)
                         .post('/api/user/login')
                         .send(user)
@@ -294,10 +247,7 @@ describe('User Management', () => {
                         .post('/api/user/login')
                         .send(user)
                         .end(function (_err, res) {
-                            res.should.have.status(400);
-                            res.body.should.be.a('object');
-                            res.body.should.not.have.a.property('username');
-                            res.body.should.have.a.property('error').eql('INCORRECT_EMAIL_PASS');
+                            ResponseChecks.incorrectLogin(res);
                             done();
                         });
                 });
@@ -317,18 +267,12 @@ describe('User Management', () => {
                 .put('/api/user/update')
                 .send(change)
                 .end((_err, res) => {
-                    res.should.have.status(400);
-                    res.body.should.be.a('object');
-                    res.body.should.not.have.a.property('username');
-                    res.body.should.have.a.property('error').eql('INCORRECT_EMAIL_PASS');
+                    ResponseChecks.incorrectLogin(res);
                     chai.request(server)
                         .post('/api/user/login')
                         .send(user)
                         .end(function (_err, res) {
-                            res.should.have.status(400);
-                            res.body.should.be.a('object');
-                            res.body.should.not.have.a.property('username');
-                            res.body.should.have.a.property('error').eql('INCORRECT_EMAIL_PASS');
+                            ResponseChecks.incorrectLogin(res);
                             done();
                         });
                 });
@@ -347,18 +291,12 @@ describe('User Management', () => {
                 .put('/api/user/update')
                 .send(change)
                 .end((_err, res) => {
-                    res.should.have.status(400);
-                    res.body.should.be.a('object');
-                    res.body.should.not.have.a.property('username');
-                    res.body.should.have.a.property('error').eql('MISSING_FIELDS');
+                    ResponseChecks.missingFields(res);
                     chai.request(server)
                         .post('/api/user/login')
                         .send(user)
                         .end(function (_err, res) {
-                            res.should.have.status(400);
-                            res.body.should.be.a('object');
-                            res.body.should.not.have.a.property('username');
-                            res.body.should.have.a.property('error').eql('INCORRECT_EMAIL_PASS');
+                            ResponseChecks.incorrectLogin(res);
                             done();
                         });
                 });

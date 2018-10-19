@@ -4,6 +4,7 @@ import server from '../server/server';
 import Clubs from '../server/model/clubs';
 import Users from '../server/model/users';
 import request from 'supertest';
+import ResponseChecks from './common-responses-checks';
 
 let should = chai.should();
 
@@ -57,22 +58,12 @@ describe('Clubs', function () {
                 .post('/api/club/create')
                 .send(club)
                 .end(function (err, res) {
-                    res.should.have.status(200);
-                    res.body.should.be.a('object');
-                    res.body.should.have.property('_id');
-                    res.body.should.have.property('users');
-                    res.body.users.length.should.be.eql(1);
-                    res.body.users[0].should.be.eql(user._id);
-                    res.body.should.have.property('type');
-                    res.body.should.have.property('name');
-                    res.body.should.have.property('university');
-                    res.body.should.have.property('link');
+                    ResponseChecks.validNewClub(res, user);
                     club._id = res.body._id;
                     authenticatedUser
                         .get('/api/user/profile')
                         .end(function (err, res) {
-                            res.should.have.status(200);
-                            res.body.should.be.a('object');
+                            ResponseChecks.validUser(res, user);
                             res.body.clubs.length.should.be.eql(1);
                             res.body.clubs[0].should.be.eql(club._id);
                             done();
@@ -90,14 +81,11 @@ describe('Clubs', function () {
                 .post('/api/club/create')
                 .send(club)
                 .end(function (err, res) {
-                    res.should.have.status(400);
-                    res.body.should.be.a('object');
-                    res.body.should.have.property('error').eql('MISSING_FIELDS');
+                    ResponseChecks.missingFields(res);
                     authenticatedUser
                         .get('/api/user/profile')
                         .end(function (err, res) {
-                            res.should.have.status(200);
-                            res.body.should.be.a('object');
+                            ResponseChecks.validUser(res,user);
                             res.body.clubs.length.should.be.eql(0);
                             done();
                         })
@@ -112,14 +100,11 @@ describe('Clubs', function () {
                 .post('/api/club/create')
                 .send(club)
                 .end(function (err, res) {
-                    res.should.have.status(400);
-                    res.body.should.be.a('object');
-                    res.body.should.have.property('error').eql('MISSING_FIELDS');
+                    ResponseChecks.missingFields(res);
                     authenticatedUser
                         .get('/api/user/profile')
                         .end(function (err, res) {
-                            res.should.have.status(200);
-                            res.body.should.be.a('object');
+                            ResponseChecks.validUser(res,user);
                             res.body.clubs.length.should.be.eql(0);
                             done();
                         })
@@ -135,14 +120,11 @@ describe('Clubs', function () {
                 .post('/api/club/create')
                 .send(club)
                 .end(function (err, res) {
-                    res.should.have.status(400);
-                    res.body.should.be.a('object');
-                    res.body.should.have.property('error').eql('MISSING_FIELDS');
+                    ResponseChecks.missingFields(res);
                     authenticatedUser
                         .get('/api/user/profile')
                         .end(function (err, res) {
-                            res.should.have.status(200);
-                            res.body.should.be.a('object');
+                            ResponseChecks.validUser(res,user);
                             res.body.clubs.length.should.be.eql(0);
                             done();
                         })
@@ -164,17 +146,13 @@ describe('Clubs', function () {
                 .post('/api/club/create')
                 .send(clubOne)
                 .end(function (err, res) {
-                    res.should.have.status(200);
-                    res.body.should.be.a('object');
-                    res.body.should.have.property('_id')
+                    ResponseChecks.validNewClub(res, user);
                     // Add 2nd club
                     authenticatedUser
                         .post('/api/club/create')
                         .send(clubTwo)
                         .end(function (err, res) {
-                            res.should.have.status(400);
-                            res.body.should.be.a('object');
-                            res.body.should.have.property('error').eql('CLUB_EXISTS');
+                            ResponseChecks.clubExists(res);
                             done();
                         })
                 });
@@ -195,17 +173,13 @@ describe('Clubs', function () {
                 .post('/api/club/create')
                 .send(clubOne)
                 .end(function (err, res) {
-                    res.should.have.status(200);
-                    res.body.should.be.a('object');
-                    res.body.should.have.property('_id')
+                    ResponseChecks.validNewClub(res,user);
                     // Add 2nd club
                     authenticatedUser
                         .post('/api/club/create')
                         .send(clubTwo)
                         .end(function (err, res) {
-                            res.should.have.status(200);
-                            res.body.should.be.a('object');
-                            res.body.should.have.property('_id')
+                            ResponseChecks.validNewClub(res,user);
                             done();
                         })
                 });
@@ -221,9 +195,7 @@ describe('Clubs', function () {
                 .post('/api/club/create')
                 .send(club)
                 .end(function (err, res) {
-                    res.should.have.status(401);
-                    res.body.should.be.a('object');
-                    res.body.should.have.property('error').eql('You are unauthorised to see this page');
+                    ResponseChecks.unauthorised(res);
                     done();
                 });
         });
@@ -255,8 +227,7 @@ describe('Clubs', function () {
                     .post('/api/club/create')
                     .send(club)
                     .end(function (err, res) {
-                        res.should.have.status(200);
-                        res.body.should.have.property('_id');
+                        ResponseChecks.validNewClub(res, user);
                         club._id = res.body._id;
                         authenticatedUserTwo
                             .post('/api/user/login')
@@ -267,8 +238,7 @@ describe('Clubs', function () {
                                     .post('/api/club/create')
                                     .send(clubTwo)
                                     .end(function (err, res) {
-                                        res.body.should.have.property('_id');
-                                        clubTwo._id = res.body._id;
+                                        ResponseChecks.validNewClub(res, userTwo);
                                         done();
                                     });
                             });
@@ -280,19 +250,11 @@ describe('Clubs', function () {
             authenticatedUser.
                 get('/api/club')
                 .end(function (err, res) {
-                    res.should.have.status(200);
-                    res.body.should.be.a('array');
-                    res.body.length.should.be.eq(1);
-                    res.body[0].should.have.property('_id').eql(club._id);
-                    res.body[0].should.have.property('type').eql(club.type);
-                    res.body[0].should.have.property('university').eql(club.university);
+                    ResponseChecks.userClubs(res,club);
                     authenticatedUserTwo.
                         get('/api/club')
                         .end(function (err, res) {
-                            res.should.have.status(200);
-                            res.body.should.be.a('array');
-                            res.body.length.should.be.eq(1);
-                            res.body[0].should.have.property('_id').eql(clubTwo._id);
+                            ResponseChecks.userClubs(res,clubTwo);
                             done();
                         });
                 });
@@ -301,11 +263,7 @@ describe('Clubs', function () {
             authenticatedUser.
                 get(`/api/club/${club._id}`)
                 .end(function (err, res) {
-                    res.should.have.status(200);
-                    res.body.should.be.a('Object');
-                    res.body.should.have.property('_id').eql(club._id);
-                    res.body.should.have.property('type').eql(club.type);
-                    res.body.should.have.property('university').eql(club.university);
+                    ResponseChecks.singleClub(res, club);
                     done();
                 });
         });
@@ -313,9 +271,7 @@ describe('Clubs', function () {
             authenticatedUser.
                 get(`/api/club/${clubTwo._id}`)
                 .end(function (err, res) {
-                    res.should.have.status(401);
-                    res.body.should.be.a('Object');
-                    res.body.should.have.property('error').eql('You are unauthorised to see this page');
+                    ResponseChecks.unauthorised(res);
                     done();
                 });
         });
@@ -323,11 +279,7 @@ describe('Clubs', function () {
             authenticatedUser.
                 get(`/api/club?q=name`)
                 .end(function (err, res) {
-                    res.should.have.status(200);
-                    res.body.should.be.a('array');
-                    res.body[0].should.have.property('_id').eql(club._id);
-                    res.body[0].should.have.property('name')
-                    res.body[0].should.not.have.property('university');
+                    ResponseChecks.singleClubQuery(res, club);
                     done();
                 });
         });
@@ -352,8 +304,7 @@ describe('Clubs', function () {
                 .post('/api/user/login')
                 .send(userTwo)
                 .end(function(err,res){
-                    res.should.have.status(200);
-                    res.body.should.have.property('_id');
+                    ResponseChecks.validUser(res, userTwo);
                     userTwo._id = res.body._id;
                     done();
                 });
@@ -365,9 +316,7 @@ describe('Clubs', function () {
                     .post('/api/club/create')
                     .send(club)
                     .end(function (err, res) {
-                        res.should.have.status(200);
-                        res.body.should.have.property('_id');
-                        res.body.should.have.property('link');
+                        ResponseChecks.validLink(res);
                         club._id = res.body._id;
                         club.link = res.body.link;
                         done();

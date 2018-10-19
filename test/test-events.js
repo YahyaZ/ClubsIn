@@ -4,12 +4,13 @@ import server from '../server/server';
 import Events from '../server/model/events';
 import Users from '../server/model/users';
 import request from 'supertest';
+import ResponseChecks from './common-responses-checks';
 
 let should = chai.should();
 
 chai.use(chaiHttp);
 
-describe('Events', function() {
+describe('Events', function () {
     const user = {
         email: 'john.smith@gmail.com',
         password: 'Test1234',
@@ -33,15 +34,14 @@ describe('Events', function() {
                     .post('/api/user/login')
                     .send(user)
                     .end(function (err, res) {
-                        res.should.have.status(200);
-                        user._id = res.body._id;
+                        ResponseChecks.validUser(res, user);
                         done();
                     });
             })
         })
     })
 
-    describe('Create an event', function() {
+    describe('Create an event', function () {
         beforeEach(done => {
             Events.remove({}, err => {
                 done();
@@ -56,25 +56,14 @@ describe('Events', function() {
                 date: '2018-10-18T15:26:07.493Z',
                 createdBy: '5ba6d9a367c37124881cca5c',
             };
-            
+
             authenticatedUser
                 .post('/api/event/')
                 .send(event)
-                .end(function(err, res) {
-                    res.should.have.status(200);
-                    res.body.should.be.a('object');
-                    res.body.should.have.property('club_id');
-                    res.body.should.have.property('name');
-                    res.body.should.have.property('description');
-                    res.body.should.have.property('date');
-                    res.body.should.have.property('created_by');
-                    authenticatedUser
-                        .get('/api/user/profile')
-                        .end(function (err, res) {
-                            res.should.have.status(200);
-                            res.body.should.be.a('object');
-                            done();
-                        })
+                .end(function (err, res) {
+                    ResponseChecks.validEvent(res);
+                    done();
+
                 });
         });
 
@@ -88,10 +77,8 @@ describe('Events', function() {
             authenticatedUser
                 .post('/api/event/')
                 .send(event)
-                .end(function(err, res) {
-                    res.should.have.status(400);
-                    res.body.should.be.a('object');
-                    res.body.should.have.property('error').eql('MISSING_FIELDS');
+                .end(function (err, res) {
+                    ResponseChecks.missingFields(res);
                     done();
                 });
         });
@@ -109,99 +96,9 @@ describe('Events', function() {
                 .post('/api/event/')
                 .send(event)
                 .end(function (err, res) {
-                    res.should.have.status(401);
-                    res.body.should.be.a('object');
-                    res.body.should.have.property('error').eql('You are unauthorised to see this page');
+                    ResponseChecks.unauthorised(res);
                     done();
                 });
         });
-    })
-
-    describe('Get upcoming events', function() {
-        const upcomingDate = new Date();
-        upcomingDate.setDate(upcomingDate.getDate() + 1);
-        const upcomingEvent = {
-            club_id: '5ba7090d8046d72680a34505',
-            name: 'upcoming event',
-            description: 'event description',
-            date: upcomingDate.toISOString(),
-            createdBy: '5ba7090d8046d72680a34505',
-        }
-
-        const secondUpcomingEvent = {
-            club_id: '5ba7090d8046d72680a34505',
-            name: 'upcoming event',
-            description: 'event description',
-            date: upcomingDate.toISOString(),
-            createdBy: '5ba7090d8046d72680a34505',
-        }
-
-        const thirdUpcomingEvent = {
-            club_id: '5ba7090d8046d72680a34505',
-            name: 'upcoming event',
-            description: 'event description',
-            date: upcomingDate.toISOString(),
-            createdBy: '5ba7090d8046d72680a34505',
-        }
-
-        const fourthUpcomingEvent = {
-            club_id: '5ba7090d8046d72680a34505',
-            name: 'upcoming event',
-            description: 'event description',
-            date: upcomingDate.toISOString(),
-            createdBy: '5ba7090d8046d72680a34505',
-        }
-
-        const pastEvent = {
-            club_id: '5ba7090d8046d72680a34505',
-            name: 'past event',
-            description: 'event description',
-            date: '2018-10-18T15:26:07.493Z',
-            createdBy: '5ba7090d8046d72680a34505',
-        }
-        
-        beforeEach(done => {
-            Events.remove({}, err => {
-                authenticatedUser
-                    .post('/api/event')
-                    .send(upcomingEvent);
-                authenticatedUser
-                    .post('/api/event')
-                    .send(pastEvent);
-                authenticatedUser
-                    .post('/api/event')
-                    .send(secondUpcomingEvent);
-                authenticatedUser
-                    .post('/api/event')
-                    .send(thirdUpcomingEvent);
-                authenticatedUser
-                    .post('/api/event')
-                    .send(fourthUpcomingEvent);
-                done();
-            });
-        });
-
-        it('should get only upcoming events', function() {
-            authenticatedUser
-                .get('/api/event/upcoming')
-                .end(function(err, res) {
-                    res.should.have.status(200);
-                    res.body.should.be.a('array');
-                    res.body.should.have.length(3);
-                    res.body[0].should.be.a('object');
-                    res.body[0].name.should.equal(upcomingEvent.name);
-                    res.body[0].club_id._id.should.equal(upcomingEvent.club_id);
-                })
-        })
-
-        it('should only return three events', function() {
-            authenticatedUser
-                .get('/api/event/upcoming')
-                .end(function(err, res) {
-                    res.should.have.status(200);
-                    res.body.should.be.a('array');
-                    res.body.should.have.length(3);
-                })
-        })
-    })
-})
+    });
+});

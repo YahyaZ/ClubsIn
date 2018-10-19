@@ -3,6 +3,7 @@ import chaiHttp from 'chai-http';
 import request from 'supertest';
 import server from '../server/server';
 import User from '../server/model/users';
+import ResponseChecks from './common-responses-checks';
 /* global describe before afterEach it res */
 
 const should = chai.should();
@@ -50,14 +51,7 @@ describe('Authentication', () => {
         authenticatedUser
             .get('/api/user/profile')
             .end((err, res) => {
-                res.should.have.status(200);
-                res.body.should.be.a('object');
-                res.body.should.have.a.property('email').eql(user.email);
-                res.body.should.have.a.property('firstName');
-                res.body.should.have.a.property('lastName');
-                res.body.should.have.a.property('_id');
-                res.body.should.have.a.property('clubs');
-                res.body.should.not.have.a.property('password');
+                ResponseChecks.validUser(res, user);
                 done();
             });
     });
@@ -66,9 +60,7 @@ describe('Authentication', () => {
         chai.request(server)
             .get('/api/user/profile')
             .end((err, res) => {
-                res.should.have.status(401);
-                res.body.should.be.a('object');
-                res.body.should.have.a.property('error').eql('You are unauthorised to see this page');
+                ResponseChecks.unauthorised(res);
                 done();
             });
     });
@@ -84,9 +76,7 @@ describe('Authentication', () => {
                 chai.request(server)
                     .get('/api/user/profile')
                     .end((error, response) => {
-                        response.should.have.status(401);
-                        response.body.should.be.a('object');
-                        response.body.should.have.a.property('error').eql('You are unauthorised to see this page');
+                        ResponseChecks.unauthorised(response);
                         done();
                     });
             });
