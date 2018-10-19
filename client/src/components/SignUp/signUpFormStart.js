@@ -71,6 +71,7 @@ class SignUpFormStart extends Component {
             } else if (response.status === 200) {
                 self.props.childProps.authenticate(true);
                 response.json().then((data) => {
+                    // If user is logged in, add the user object in local storage
                     localStorage.setItem('User', JSON.stringify(data));
                     self.setState({ redirect: true});
                 });
