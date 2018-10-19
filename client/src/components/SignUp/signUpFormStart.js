@@ -6,15 +6,88 @@ import {
     InputGroup,
 } from 'react-bootstrap';
 import PropTypes from 'prop-types';
+import BarLoader from 'react-spinners/BarLoader';
+import { Redirect } from 'react-router-dom';
 
 /* Form for creating a new user */
 class SignUpFormStart extends Component {
+
+    constructor(){
+        super();
+        this.state = {
+            input: {
+                email: '',
+                firstName: '',
+                lastName: '',
+                password: '',
+                passwordConf: '',
+            },
+            loading: false,
+            redirect: false,
+        };
+
+        this.handleInputChange = this.handleInputChange.bind(this);
+        this.submitForm = this.submitForm.bind(this);
+    }
+
+    /**
+     * Updates any input change in the Form
+     * @param {Object} newPartialInput
+     */
+    handleInputChange(newPartialInput) {
+        this.setState(state => ({
+            ...state,
+            input: {
+                ...state.input,
+                ...newPartialInput,
+            },
+        }));
+    }
+
+    /**
+     * 
+     * @param {obj} e - event object
+     * Calls the Sign up api and displays an error if given 
+     */
+    submitForm(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        const self = this;
+        const { input } = this.state;
+        const { handleErrorMessage } = this.props;
+        self.setState({ loading: true });
+        fetch('/api/user/signup', {
+            method: 'POST',
+            mode: 'cors',
+            credentials: 'same-origin',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(input),
+        }).then((response) => {
+            if (response.status === 400) {
+                response.json().then((data) => {
+                    handleErrorMessage (Error[data.error]);
+                });
+            } else if (response.status === 200) {
+                self.props.childProps.authenticate(true);
+                response.json().then((data) => {
+                    localStorage.setItem('User', JSON.stringify(data));
+                    self.setState({ redirect: true});
+                });
+            } 
+            self.setState({loading:false,});
+        });
+    }
+
     render() {
-        const { message, buttonClick, handleInputChange } = this.props;
+        const { handleInputChange, submitForm } = this;
+        const { loading, errorMessage, redirect } = this.state;
+        if (redirect) {
+            return <Redirect to="/" />;
+        }
+
         return (
             <div>
-                {message}
-                <form className="form-body" onSubmit={buttonClick}>
+                <form className="form-body" onSubmit={submitForm}>
                     <FormGroup>
                         <InputGroup>
                             <InputGroup.Addon><FaUser /></InputGroup.Addon>
@@ -73,6 +146,12 @@ class SignUpFormStart extends Component {
                     </FormGroup>
                     <button type="submit" className="form-button">Sign Up</button>
                 </form>
+                <BarLoader
+                                loading={loading}
+                                width="480"
+                                height="10"
+                                color="#0B58B6"
+                            /> <br />
             </div>
         );
     }
